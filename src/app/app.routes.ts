@@ -7,6 +7,11 @@ export const appRoutes: Route[] = [
       import('@smart-management/auth').then((m) => m.RegisterComponent),
   },
   {
+    path: 'login',
+    loadComponent: () =>
+      import('@smart-management/auth').then((m) => m.LoginComponent),
+  },
+  {
     path: '**',
     redirectTo: 'register',
     pathMatch: 'full',
