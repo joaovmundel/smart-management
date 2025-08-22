@@ -1,0 +1,48 @@
+.tokens-container {
+  min-height: 100vh;
+  background: #23272b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+.tokens-header {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.tokens-title {
+  color: #23272b;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.tokens-btn {
+  background: #23272b !important;
+  color: #fff !important;
+  font-weight: 500;
+}
+
+.tokens-card {
+  width: 100%;
+  max-width: 700px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  padding: 1.5rem;
+}
+
+.tokens-table {
+  width: 100%;
+}
+
+.tokens-empty {
+  text-align: center;
+  color: #888;
+  padding: 2rem 0;
+}

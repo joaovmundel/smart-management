@@ -15,7 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@smart-management/admin": ["src/libs/admin/src/index.ts"],
       "@smart-management/auth": ["src/libs/auth/src/index.ts"],
+      "@smart-management/layout": ["src/libs/layout/src/index.ts"],
       "@smart-management/shared": ["src/libs/shared/src/index.ts"]
     }
   },

@@ -1,0 +1,31 @@
+<div class="tokens-container">
+  <div class="tokens-header">
+    <h2 class="tokens-title">Tokens de Registro</h2>
+    <button mat-raised-button color="primary" class="tokens-btn">Novo Token</button>
+  </div>
+  <mat-card class="tokens-card">
+    <mat-table [dataSource]="tokens" class="tokens-table" *ngIf="tokens.length; else empty">
+      <ng-container matColumnDef="token">
+        <mat-header-cell *matHeaderCellDef>Token</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.token }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="createdAt">
+        <mat-header-cell *matHeaderCellDef>Criado em</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.createdAt | date:'short' }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button mat-icon-button color="primary" (click)="copyToken(element.token)">
+            <mat-icon>content_copy</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <ng-template #empty>
+      <div class="tokens-empty">Nenhum token encontrado.</div>
+    </ng-template>
+  </mat-card>
+</div>

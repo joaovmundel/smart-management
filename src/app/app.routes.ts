@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { LayoutComponent } from '@smart-management/layout';
 
 export const appRoutes: Route[] = [
   {
@@ -27,8 +28,19 @@ export const appRoutes: Route[] = [
       import('@smart-management/auth').then((m) => m.SetPasswordComponent),
   },
   {
+    path: '',
+    component: LayoutComponent,
+    children: [
+      {
+        path: 'admin/tokens',
+        loadComponent: () =>
+          import('@smart-management/admin').then((m) => m.TokensComponent),
+      },
+    ],
+  },
+  {
     path: '**',
-    redirectTo: 'register',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
 ];
