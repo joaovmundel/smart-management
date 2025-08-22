@@ -1,0 +1,4 @@
+<button mat-button [matMenuTriggerFor]="menu">{{ item.label }}</button>
+<mat-menu #menu="matMenu">
+	<button mat-menu-item *ngFor="let sub of item.routes" [routerLink]="sub.route">{{ sub.label }}</button>
+</mat-menu>

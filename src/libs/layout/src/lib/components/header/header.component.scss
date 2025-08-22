@@ -1,0 +1,31 @@
+.header-navbar {
+  background: #313030;
+  color: #fff;
+}
+
+.header-navbar .logo {
+  font-weight: bold;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+}
+
+.header-navbar nav {
+  margin-left: 40px;
+}
+
+.header-navbar nav a {
+  color: #fff;
+  font-weight: 500;
+  margin-left: 1rem;
+  border-radius: 4px;
+  padding: 6px 16px;
+  transition: background 0.2s;
+}
+
+.header-navbar nav a:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.header-navbar nav a.active {
+  border-bottom: 2px solid #fff;
+}
