@@ -1,0 +1,54 @@
+<div class="users-container">
+  <div class="users-header">
+    <h2 class="users-title">Gerenciar Usuários</h2>
+    <button mat-raised-button color="primary" class="users-btn" (click)="redirectToCreateUser()">Novo Usuário</button>
+  </div>
+  <mat-card class="users-card">
+    <mat-table [dataSource]="users" class="users-table" *ngIf="users.length; else empty">
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+        <mat-cell *matCellDef="let user">{{ user.id }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="nome">
+        <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+        <mat-cell *matCellDef="let user">{{ user.nome }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="telefone">
+        <mat-header-cell *matHeaderCellDef>Telefone</mat-header-cell>
+        <mat-cell *matCellDef="let user">{{ user.telefone }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="email">
+        <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+        <mat-cell *matCellDef="let user">{{ user.email }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="empresa">
+        <mat-header-cell *matHeaderCellDef>Empresa</mat-header-cell>
+        <mat-cell *matCellDef="let user">{{ user.empresa?.nome }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="criadoEm">
+        <mat-header-cell *matHeaderCellDef>Criado em</mat-header-cell>
+        <mat-cell *matCellDef="let user">{{ user.criadoEm }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="tokenRegistro">
+        <mat-header-cell *matHeaderCellDef>Token de Registro</mat-header-cell>
+        <mat-cell *matCellDef="let user">{{ user.tokenRegistro }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef class="table-cell--actions">Ações</mat-header-cell>
+        <mat-cell *matCellDef="let user" class="users-actions-cell table-cell--actions">
+          <button mat-icon-button color="primary" (click)="editUser(user)" matTooltip="Editar">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteUser(user)" matTooltip="Deletar">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+    <ng-template #empty>
+      <div class="users-empty">Nenhum usuário encontrado.</div>
+    </ng-template>
+  </mat-card>
+</div>

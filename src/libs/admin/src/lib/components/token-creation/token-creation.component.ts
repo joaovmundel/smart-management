@@ -10,18 +10,14 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { v4 as uuidv4 } from 'uuid';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Empresa, empresasMock } from '@smart-management/shared';
 
-interface Empresa {
-  id: string;
-  nome: string;
-}
 
 @Component({
   selector: 'lib-token-creation',
@@ -34,18 +30,29 @@ interface Empresa {
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+    MatAutocompleteModule,
     MatButtonModule,
-    NgxMatSelectSearchModule,
   ],
 })
 export class TokenCreationComponent implements OnInit, OnDestroy {
+
+  onEmpresaSelected(event: MatAutocompleteSelectedEvent): void {
+    const nome = event.option.value;
+    const empresa = this.empresas.find(e => e.nome === nome) || null;
+    this.form.get('empresa')?.setValue(empresa);
+  }
+
+  onEmpresaBlur(): void {
+    const nome = this.empresaFilterCtrl.value;
+    const empresa = this.empresas.find(e => e.nome === nome) || null;
+    this.form.get('empresa')?.setValue(empresa);
+    if (!empresa) {
+      this.form.get('empresa')?.setErrors({ required: true });
+    }
+  }
   private readonly _dialogRef = inject(MatDialogRef<TokenCreationComponent>);
   form: FormGroup;
-  empresas: Empresa[] = [
-    { id: '1', nome: 'Empresa Alpha' },
-    { id: '2', nome: 'Empresa Beta' },
-    { id: '3', nome: 'Empresa Gama' },
-  ];
+  empresas: Empresa[] = empresasMock;
   filteredEmpresas: Empresa[] = [...this.empresas];
   empresaFilterCtrl = new FormControl('');
   private destroy$ = new Subject<void>();

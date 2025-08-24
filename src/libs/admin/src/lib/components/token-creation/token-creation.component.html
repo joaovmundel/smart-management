@@ -11,17 +11,19 @@
     </mat-form-field>
     <mat-form-field appearance="outline" class="token-creation__field">
       <mat-label>Empresa</mat-label>
-      <mat-select formControlName="empresa" [compareWith]="compareEmpresa">
-        <mat-option>
-          <ngx-mat-select-search
-            [formControl]="empresaFilterCtrl"
-            placeholderLabel="Buscar empresa..."
-          ></ngx-mat-select-search>
-        </mat-option>
-        <mat-option *ngFor="let empresa of filteredEmpresas" [value]="empresa">
+      <input
+        type="text"
+        matInput
+        [formControl]="empresaFilterCtrl"
+        [matAutocomplete]="autoEmpresa"
+        [required]="true"
+        (blur)="onEmpresaBlur()"
+      />
+      <mat-autocomplete #autoEmpresa="matAutocomplete" (optionSelected)="onEmpresaSelected($event)">
+        <mat-option *ngFor="let empresa of filteredEmpresas" [value]="empresa.nome">
           {{ empresa.nome }}
         </mat-option>
-      </mat-select>
+      </mat-autocomplete>
     </mat-form-field>
     <button
       mat-raised-button

@@ -7,14 +7,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { ConfirmationModalComponent } from '../../components/confirmation-modal/confirmation-modal.component';
-import { TokenCreationComponent } from '../token-creation/token-creation.component';
 import { Subject, takeUntil } from 'rxjs';
-
-interface Token {
-  token: string;
-  empresa: string;
-  createdAt: Date;
-}
+import { mockedTokens, Token } from '@smart-management/shared';
+import { TokenCreationComponent } from '../../components/token-creation/token-creation.component';
 
 @Component({
   selector: 'lib-tokens',
@@ -34,10 +29,7 @@ export class TokensComponent implements OnDestroy {
   private dialog = inject(MatDialog);
   private destroy$ = new Subject<void>();
 
-  tokens: Token[] = [
-    { token: 'ABC123', empresa: 'Empresa A', createdAt: new Date() },
-    { token: 'XYZ789', empresa: 'Empresa B', createdAt: new Date(Date.now() - 86400000) },
-  ];
+  tokens: Token[] = mockedTokens;
   displayedColumns = ['token', 'empresa', 'createdAt', 'actions'];
 
   constructor(private snackBar: MatSnackBar) {}
