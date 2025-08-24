@@ -1,0 +1,22 @@
+<div class="modal-container">
+  <div class="modal-content">
+    <h1 class="modal-content__title">Confirmar ação</h1>
+    <p>Tem certeza de que deseja continuar?</p>
+    <div class="modal-actions">
+      <button
+        class="modal-actions__button"
+        mat-raised-button
+        (click)="cancel()"
+      >
+        Não
+      </button>
+      <button
+        class="modal-actions__button"
+        mat-raised-button
+        (click)="confirm()"
+      >
+        Sim
+      </button>
+    </div>
+  </div>
+</div>

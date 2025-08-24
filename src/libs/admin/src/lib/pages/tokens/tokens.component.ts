@@ -1,13 +1,18 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
+import { ConfirmationModalComponent } from '../../components/confirmation-modal/confirmation-modal.component';
+import { TokenCreationComponent } from '../token-creation/token-creation.component';
+import { Subject, takeUntil } from 'rxjs';
 
 interface Token {
   token: string;
+  empresa: string;
   createdAt: Date;
 }
 
@@ -20,22 +25,56 @@ interface Token {
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    MatSnackBarModule
+    MatSnackBarModule,
   ],
   templateUrl: './tokens.component.html',
-  styleUrls: ['./tokens.component.scss']
+  styleUrls: ['./tokens.component.scss'],
 })
-export class TokensComponent {
+export class TokensComponent implements OnDestroy {
+  private dialog = inject(MatDialog);
+  private destroy$ = new Subject<void>();
+
   tokens: Token[] = [
-    { token: 'ABC123', createdAt: new Date() },
-    { token: 'XYZ789', createdAt: new Date(Date.now() - 86400000) }
+    { token: 'ABC123', empresa: 'Empresa A', createdAt: new Date() },
+    { token: 'XYZ789', empresa: 'Empresa B', createdAt: new Date(Date.now() - 86400000) },
   ];
-  displayedColumns = ['token', 'createdAt', 'actions'];
+  displayedColumns = ['token', 'empresa', 'createdAt', 'actions'];
 
   constructor(private snackBar: MatSnackBar) {}
 
-  copyToken(token: string) {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  copyToken(token: string): void {
     navigator.clipboard.writeText(token);
-    this.snackBar.open('Token copiado!', 'Fechar', { duration: 2000, panelClass: 'snackbar-success' });
+    this.snackBar.open('Token copiado!', 'Fechar', {
+      duration: 2000,
+      panelClass: 'snackbar-success',
+    });
+  }
+
+  openTokenCreationModal(): void {
+    this.dialog.open(TokenCreationComponent);
+  }
+
+  deleteToken(token: Token): void {
+    this.dialog
+      .open(ConfirmationModalComponent)
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          const idx = this.tokens.findIndex((t) => t.token === token.token);
+          if (idx > -1) {
+            this.tokens.splice(idx, 1);
+            this.snackBar.open('Token deletado!', 'Fechar', {
+              duration: 2000,
+              panelClass: 'snackbar-success',
+            });
+          }
+        }
+      });
   }
 }

@@ -1,0 +1,38 @@
+<div class="token-creation">
+  <h1 class="token-creation__title">Criar novo token</h1>
+  <p class="token-creation__description">
+    Gere um novo token de registro para permitir que novos usuários se inscrevam
+    na plataforma.
+  </p>
+  <form [formGroup]="form" class="token-creation__form">
+    <mat-form-field appearance="outline" class="token-creation__field">
+      <mat-label>Token (UUID)</mat-label>
+      <input matInput formControlName="token" readonly />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="token-creation__field">
+      <mat-label>Empresa</mat-label>
+      <mat-select formControlName="empresa" [compareWith]="compareEmpresa">
+        <mat-option>
+          <ngx-mat-select-search
+            [formControl]="empresaFilterCtrl"
+            placeholderLabel="Buscar empresa..."
+          ></ngx-mat-select-search>
+        </mat-option>
+        <mat-option *ngFor="let empresa of filteredEmpresas" [value]="empresa">
+          {{ empresa.nome }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="form.invalid"
+    >
+      Criar Token
+    </button>
+    <button mat-flat-button color="secondary" type="button" (click)="close()">
+      Cancelar
+    </button>
+  </form>
+</div>

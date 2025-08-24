@@ -1,7 +1,7 @@
 <div class="tokens-container">
   <div class="tokens-header">
     <h2 class="tokens-title">Tokens de Registro</h2>
-    <button mat-raised-button color="primary" class="tokens-btn">Novo Token</button>
+    <button mat-raised-button color="primary" class="tokens-btn" (click)="openTokenCreationModal()">Novo Token</button>
   </div>
   <mat-card class="tokens-card">
     <mat-table [dataSource]="tokens" class="tokens-table" *ngIf="tokens.length; else empty">
@@ -9,20 +9,29 @@
         <mat-header-cell *matHeaderCellDef>Token</mat-header-cell>
         <mat-cell *matCellDef="let element">{{ element.token }}</mat-cell>
       </ng-container>
+      <ng-container matColumnDef="empresa">
+        <mat-header-cell *matHeaderCellDef>Empresa</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.empresa }}</mat-cell>
+      </ng-container>
       <ng-container matColumnDef="createdAt">
         <mat-header-cell *matHeaderCellDef>Criado em</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{ element.createdAt | date:'short' }}</mat-cell>
+        <mat-cell *matCellDef="let element">{{
+          element.createdAt | date : 'short'
+        }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          <button mat-icon-button color="primary" (click)="copyToken(element.token)">
+        <mat-header-cell *matHeaderCellDef class="table-cell--actions">Ações</mat-header-cell>
+        <mat-cell *matCellDef="let element" class="tokens-actions-cell table-cell--actions">
+          <button mat-icon-button color="primary" (click)="copyToken(element.token)" matTooltip="Copiar">
             <mat-icon>content_copy</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteToken(element)" matTooltip="Deletar">
+            <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>
       </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
     <ng-template #empty>
       <div class="tokens-empty">Nenhum token encontrado.</div>

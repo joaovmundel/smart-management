@@ -1,19 +1,18 @@
 .tokens-container {
-  min-height: 100vh;
-  background: #23272b;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem 0;
+  height: 100vh;
+  background: #23272b;
+  padding: 2rem;
 }
 
 .tokens-header {
   width: 100%;
-  max-width: 700px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
+  align-items: flex-end;
+  margin-bottom: 0;
 }
 
 .tokens-title {
@@ -23,22 +22,35 @@
 }
 
 .tokens-btn {
-  background: #23272b !important;
-  color: #fff !important;
+  background: #fff !important;
+  color: #1976d2 !important;
   font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  margin-bottom: 8px;
+}
+
+.tokens-table {
+  background-color: #fff;
+}
+
+.table-cell--actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .tokens-card {
   width: 100%;
-  max-width: 700px;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
   padding: 1.5rem;
+  margin: 0 auto;
 }
 
-.tokens-table {
-  width: 100%;
+.tokens-actions-cell {
+  display: flex;
+  gap: 8px;
 }
 
 .tokens-empty {
