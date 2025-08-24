@@ -1,4 +1,11 @@
-<button mat-button [matMenuTriggerFor]="menu">{{ item.label }}</button>
-<mat-menu #menu="matMenu">
-	<button mat-menu-item *ngFor="let sub of item.routes" [routerLink]="sub.route">{{ sub.label }}</button>
-</mat-menu>
+<a mat-button class="dropdown">
+  <span class="dropdown__label">{{ item.label }}</span>
+  <div class="dropdown__content">
+    <span
+      class="dropdown__label dropdown__content__item"
+      *ngFor="let sub of item.routes"
+      [routerLink]="sub.route"
+      >{{ sub.label }}</span
+    >
+  </div>
+</a>

@@ -1,9 +1,12 @@
 <mat-toolbar color="primary" class="header-navbar">
-	<span class="logo">Smart Management</span>
-	<nav>
-        <a mat-button routerLink="/home">Home</a>
-        <lib-navitem [item]="$any(navItems[0])"></lib-navitem>
-		<a mat-button routerLink="/about">Sobre</a>
-		<a mat-button routerLink="/contact">Contato</a>
-	</nav>
+  <span class="logo">Smart Management</span>
+  <nav>
+    <ng-container *ngFor="let item of navItems">
+      @if(!item.isDropdown) {
+      <lib-navitem [item]="$any(item)"></lib-navitem>
+      }@else {
+      <lib-dropdown [item]="$any(item)"></lib-dropdown>
+      }
+    </ng-container>
+  </nav>
 </mat-toolbar>

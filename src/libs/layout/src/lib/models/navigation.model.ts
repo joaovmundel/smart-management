@@ -1,5 +1,5 @@
 export interface NavItem {
-    isDropdown: boolean;
+    isDropdown?: boolean;
     label: string;
     route: string;
 }
