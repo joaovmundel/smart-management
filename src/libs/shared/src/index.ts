@@ -1,7 +1,7 @@
 export * from './lib/shared/shared.component';
 
 //Models
-export * from './lib/models/empresa.model';
+export * from './lib/models/company.model';
 export * from './lib/models/token.model';
 export * from './lib/models/user.model';
 

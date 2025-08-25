@@ -1,5 +1,5 @@
 export interface Token {
   token: string;
-  empresa: string;
+  companyId: string;
   createdAt: Date;
 }

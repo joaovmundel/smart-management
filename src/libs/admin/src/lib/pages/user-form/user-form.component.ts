@@ -21,7 +21,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Empresa, empresasMock, User } from '@smart-management/shared';
+import { Company, empresasMock, User } from '@smart-management/shared';
 
 @Component({
   selector: 'lib-admin-user-form',
@@ -52,9 +52,9 @@ export class UserFormComponent implements OnInit, OnDestroy {
     }
     return null;
   }
-  empresas: Empresa[] = empresasMock;
+  empresas: Company[] = empresasMock;
   empresaFilterCtrl: FormControl = new FormControl('');
-  filteredEmpresas: Empresa[] = this.empresas.slice();
+  filteredEmpresas: Company[] = this.empresas.slice();
   private routeSub?: Subscription;
   userForm: FormGroup;
   hidePassword = true;
@@ -69,8 +69,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
       if (!s) {
         this.filteredEmpresas = this.empresas.slice();
       } else {
-        this.filteredEmpresas = this.empresas.filter((e: Empresa) =>
-          e.nome.toLowerCase().includes(s)
+        this.filteredEmpresas = this.empresas.filter((e: Company) =>
+          e.name.toLowerCase().includes(s)
         );
       }
     });
@@ -78,24 +78,24 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   onEmpresaSelected(event: MatAutocompleteSelectedEvent): void {
     const nome = event.option.value;
-    const empresa = this.empresas.find((e) => e.nome === nome) || null;
+    const empresa = this.empresas.find((e) => e.name === nome) || null;
     this.userForm.get('empresa')?.setValue(empresa);
   }
 
   onEmpresaBlur(): void {
     const nome = this.empresaFilterCtrl.value;
-    const empresa = this.empresas.find((e) => e.nome === nome) || null;
+    const empresa = this.empresas.find((e) => e.name === nome) || null;
     this.userForm.get('empresa')?.setValue(empresa);
     if (!empresa) {
       this.userForm.get('empresa')?.setErrors({ required: true });
     }
   }
 
-  empresasFiltradas(): Empresa[] {
+  empresasFiltradas(): Company[] {
     return this.filteredEmpresas;
   }
 
-  compareEmpresa(a: Empresa, b: Empresa): boolean {
+  compareEmpresa(a: Company, b: Company): boolean {
     return !!a && !!b && a.id === b.id;
   }
 

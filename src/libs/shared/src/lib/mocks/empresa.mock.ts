@@ -1,10 +1,10 @@
-import { Empresa } from "../models/empresa.model";
+import { Company } from "../models/company.model";
 
-export const empresasMock: Empresa[] = [
-  { id: '1', nome: 'Empresa X' },
-  { id: '2', nome: 'Empresa Y' },
-  { id: '3', nome: 'Empresa Z' },
-  { id: '4', nome: 'Empresa Alpha' },
-  { id: '5', nome: 'Empresa Beta' },
-  { id: '6', nome: 'Empresa Gamma' },
+export const empresasMock: Company[] = [
+  { id: '1', name: 'Empresa X' },
+  { id: '2', name: 'Empresa Y' },
+  { id: '3', name: 'Empresa Z' },
+  { id: '4', name: 'Empresa Alpha' },
+  { id: '5', name: 'Empresa Beta' },
+  { id: '6', name: 'Empresa Gamma' },
 ];

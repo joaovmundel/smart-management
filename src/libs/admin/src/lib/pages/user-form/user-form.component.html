@@ -66,8 +66,8 @@
           (blur)="onEmpresaBlur()"
         />
         <mat-autocomplete #autoEmpresa="matAutocomplete" (optionSelected)="onEmpresaSelected($event)">
-          <mat-option *ngFor="let empresa of filteredEmpresas" [value]="empresa.nome">
-            {{ empresa.nome }}
+          <mat-option *ngFor="let empresa of filteredEmpresas" [value]="empresa.name">
+            {{ empresa.name }}
           </mat-option>
         </mat-autocomplete>
         <mat-error *ngIf="userForm.get('empresa')?.hasError('required') && userForm.get('empresa')?.touched">

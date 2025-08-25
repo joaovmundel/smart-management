@@ -16,7 +16,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Empresa, empresasMock } from '@smart-management/shared';
+import { Company, empresasMock } from '@smart-management/shared';
 
 
 @Component({
@@ -38,13 +38,13 @@ export class TokenCreationComponent implements OnInit, OnDestroy {
 
   onEmpresaSelected(event: MatAutocompleteSelectedEvent): void {
     const nome = event.option.value;
-    const empresa = this.empresas.find(e => e.nome === nome) || null;
+    const empresa = this.empresas.find(e => e.name === nome) || null;
     this.form.get('empresa')?.setValue(empresa);
   }
 
   onEmpresaBlur(): void {
     const nome = this.empresaFilterCtrl.value;
-    const empresa = this.empresas.find(e => e.nome === nome) || null;
+    const empresa = this.empresas.find(e => e.name === nome) || null;
     this.form.get('empresa')?.setValue(empresa);
     if (!empresa) {
       this.form.get('empresa')?.setErrors({ required: true });
@@ -52,8 +52,8 @@ export class TokenCreationComponent implements OnInit, OnDestroy {
   }
   private readonly _dialogRef = inject(MatDialogRef<TokenCreationComponent>);
   form: FormGroup;
-  empresas: Empresa[] = empresasMock;
-  filteredEmpresas: Empresa[] = [...this.empresas];
+  empresas: Company[] = empresasMock;
+  filteredEmpresas: Company[] = [...this.empresas];
   empresaFilterCtrl = new FormControl('');
   private destroy$ = new Subject<void>();
 
@@ -70,8 +70,8 @@ export class TokenCreationComponent implements OnInit, OnDestroy {
       .subscribe((search: string | null) => {
         this.filteredEmpresas = search
           ? this.empresas.filter((e) =>
-              e.nome.toLowerCase().includes(search.toLowerCase())
-            )
+            e.name.toLowerCase().includes(search.toLowerCase())
+          )
           : [...this.empresas];
       });
   }
@@ -85,7 +85,7 @@ export class TokenCreationComponent implements OnInit, OnDestroy {
     this._dialogRef.close();
   }
 
-  compareEmpresa(e1: Empresa, e2: Empresa): boolean {
+  compareEmpresa(e1: Company, e2: Company): boolean {
     return e1 && e2 && e1.id === e2.id;
   }
 }

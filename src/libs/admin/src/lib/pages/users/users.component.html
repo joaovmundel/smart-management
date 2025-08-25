@@ -11,11 +11,11 @@
       </ng-container>
       <ng-container matColumnDef="nome">
         <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.nome }}</mat-cell>
+        <mat-cell *matCellDef="let user">{{ user.name }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="telefone">
         <mat-header-cell *matHeaderCellDef>Telefone</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.telefone }}</mat-cell>
+        <mat-cell *matCellDef="let user">{{ user.phone }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="email">
         <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
@@ -23,15 +23,15 @@
       </ng-container>
       <ng-container matColumnDef="empresa">
         <mat-header-cell *matHeaderCellDef>Empresa</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.empresa?.nome }}</mat-cell>
+        <mat-cell *matCellDef="let user">{{ user.company?.name }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="criadoEm">
         <mat-header-cell *matHeaderCellDef>Criado em</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.criadoEm }}</mat-cell>
+        <mat-cell *matCellDef="let user">{{ user.createdAt | date: 'shortDate':'America/SaoPaulo' }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="tokenRegistro">
         <mat-header-cell *matHeaderCellDef>Token de Registro</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.tokenRegistro }}</mat-cell>
+        <mat-cell *matCellDef="let user">{{ user.registerToken }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef class="table-cell--actions">Ações</mat-header-cell>

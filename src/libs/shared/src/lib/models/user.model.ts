@@ -1,13 +1,13 @@
-import { Empresa } from './empresa.model';
+import { Company } from "./company.model";
 
 export interface User {
   id: string;
-  nome: string;
+  name: string;
   email: string;
-  telefone: string;
-  empresa: Empresa | null;
+  phone: string;
+  company: Company | null;
   password?: string;
   confirmPassword?: string;
-  tokenRegistro?: string;
-  criadoEm?: Date;
+  registerToken?: string;
+  createdAt?: Date;
 }

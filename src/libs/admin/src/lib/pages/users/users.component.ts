@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
-import { mockedUsers } from '@smart-management/shared';
+import { mockedUsers, User } from '@smart-management/shared';
 
 @Component({
   selector: 'lib-admin-users',
@@ -24,7 +24,7 @@ import { mockedUsers } from '@smart-management/shared';
 })
 export class UsersComponent {
   private readonly _router: Router = inject(Router);
-  users = mockedUsers;
+  users: User[] = mockedUsers;
 
   displayedColumns = [
     'id',
