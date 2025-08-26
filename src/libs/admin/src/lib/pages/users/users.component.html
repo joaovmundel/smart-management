@@ -27,7 +27,7 @@
       </ng-container>
       <ng-container matColumnDef="criadoEm">
         <mat-header-cell *matHeaderCellDef>Criado em</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.createdAt | date: 'shortDate':'America/SaoPaulo' }}</mat-cell>
+        <mat-cell *matCellDef="let user">{{ user.createdAt | date: 'short' }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="tokenRegistro">
         <mat-header-cell *matHeaderCellDef>Token de Registro</mat-header-cell>

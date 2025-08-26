@@ -35,26 +35,11 @@ import { Company, empresasMock } from '@smart-management/shared';
   ],
 })
 export class TokenCreationComponent implements OnInit, OnDestroy {
-
-  onEmpresaSelected(event: MatAutocompleteSelectedEvent): void {
-    const nome = event.option.value;
-    const empresa = this.empresas.find(e => e.name === nome) || null;
-    this.form.get('empresa')?.setValue(empresa);
-  }
-
-  onEmpresaBlur(): void {
-    const nome = this.empresaFilterCtrl.value;
-    const empresa = this.empresas.find(e => e.name === nome) || null;
-    this.form.get('empresa')?.setValue(empresa);
-    if (!empresa) {
-      this.form.get('empresa')?.setErrors({ required: true });
-    }
-  }
   private readonly _dialogRef = inject(MatDialogRef<TokenCreationComponent>);
   form: FormGroup;
-  empresas: Company[] = empresasMock;
-  filteredEmpresas: Company[] = [...this.empresas];
-  empresaFilterCtrl = new FormControl('');
+  companies: Company[] = empresasMock;
+  filteredCompanies: Company[] = [...this.companies];
+  companyFilterCtrl = new FormControl('');
   private destroy$ = new Subject<void>();
 
   constructor(private fb: FormBuilder) {
@@ -65,27 +50,41 @@ export class TokenCreationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.empresaFilterCtrl.valueChanges
+    this.companyFilterCtrl.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((search: string | null) => {
-        this.filteredEmpresas = search
-          ? this.empresas.filter((e) =>
-            e.name.toLowerCase().includes(search.toLowerCase())
+        this.filteredCompanies = search
+          ? this.companies.filter((company) =>
+            company.name.toLowerCase().includes(search.toLowerCase())
           )
-          : [...this.empresas];
+          : [...this.companies];
       });
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  onCompanySelected(event: MatAutocompleteSelectedEvent): void {
+    const name = event.option.value;
+    const company = this.companies.find(e => e.name === name) || null;
+    this.form.get('empresa')?.setValue(company);
   }
+
+  onCompanyBlur(): void {
+    const name = this.companyFilterCtrl.value;
+    const company = this.companies.find(e => e.name === name) || null;
+    this.form.get('empresa')?.setValue(company);
+    if (!company) {
+      this.form.get('empresa')?.setErrors({ required: true });
+    }
+  }
+
+
+  //TODO: Implementar a lógica de criação do token
 
   close(): void {
     this._dialogRef.close();
   }
 
-  compareEmpresa(e1: Company, e2: Company): boolean {
-    return e1 && e2 && e1.id === e2.id;
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -14,14 +14,14 @@
       <input
         type="text"
         matInput
-        [formControl]="empresaFilterCtrl"
-        [matAutocomplete]="autoEmpresa"
+        [formControl]="companyFilterCtrl"
+        [matAutocomplete]="autoCompany"
         [required]="true"
-        (blur)="onEmpresaBlur()"
+        (blur)="onCompanyBlur()"
       />
-      <mat-autocomplete #autoEmpresa="matAutocomplete" (optionSelected)="onEmpresaSelected($event)">
-        <mat-option *ngFor="let empresa of filteredEmpresas" [value]="empresa.name">
-          {{ empresa.name }}
+      <mat-autocomplete #autoCompany="matAutocomplete" (optionSelected)="onCompanySelected($event)">
+        <mat-option *ngFor="let company of filteredCompanies" [value]="company.name">
+          {{ company.name }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
