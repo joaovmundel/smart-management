@@ -46,6 +46,11 @@ export const appRoutes: Route[] = [
         loadComponent: () =>
           import('@smart-management/admin').then((m) => m.UserFormComponent),
       },
+      {
+        path: 'admin/users/edit/:id',
+        loadComponent: () =>
+          import('@smart-management/admin').then((m) => m.UserFormComponent),
+      },
     ],
   },
   {

@@ -41,8 +41,8 @@ export class UsersComponent {
     this._router.navigate(['/admin/users/create']);
   }
 
-  editUser(user: unknown) {
-    // Lógica para editar usuário
+  editUser(user: User) {
+    this._router.navigate(['/admin/users/edit', user.id]);
   }
 
   deleteUser(user: unknown) {

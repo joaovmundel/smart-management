@@ -22,6 +22,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Company, empresasMock, User } from '@smart-management/shared';
+import { mockedUsers } from '@smart-management/shared';
 
 @Component({
   selector: 'lib-admin-user-form',
@@ -52,51 +53,47 @@ export class UserFormComponent implements OnInit, OnDestroy {
     }
     return null;
   }
-  empresas: Company[] = empresasMock;
-  empresaFilterCtrl: FormControl = new FormControl('');
-  filteredEmpresas: Company[] = this.empresas.slice();
+  companies: Company[] = empresasMock;
+  companyFilterCtrl: FormControl = new FormControl('');
+  filteredCompanies: Company[] = this.companies.slice();
   private routeSub?: Subscription;
   userForm: FormGroup;
   hidePassword = true;
   hideConfirmPassword = true;
   loading = false;
   isEdit = false;
-  userId?: number;
+  userId?: string;
 
-  private setupEmpresaSearch(): void {
-    this.empresaFilterCtrl.valueChanges.subscribe((search: string) => {
+  private setupCompanySearch(): void {
+    this.companyFilterCtrl.valueChanges.subscribe((search: string) => {
       const s = (search || '').trim().toLowerCase();
       if (!s) {
-        this.filteredEmpresas = this.empresas.slice();
+        this.filteredCompanies = this.companies.slice();
       } else {
-        this.filteredEmpresas = this.empresas.filter((e: Company) =>
+        this.filteredCompanies = this.companies.filter((e: Company) =>
           e.name.toLowerCase().includes(s)
         );
       }
     });
   }
 
-  onEmpresaSelected(event: MatAutocompleteSelectedEvent): void {
-    const nome = event.option.value;
-    const empresa = this.empresas.find((e) => e.name === nome) || null;
-    this.userForm.get('empresa')?.setValue(empresa);
+  onCompanySelected(event: MatAutocompleteSelectedEvent): void {
+    const name = event.option.value;
+    const company = this.companies.find((e) => e.name === name) || null;
+    this.userForm.get('company')?.setValue(company);
   }
 
-  onEmpresaBlur(): void {
-    const nome = this.empresaFilterCtrl.value;
-    const empresa = this.empresas.find((e) => e.name === nome) || null;
-    this.userForm.get('empresa')?.setValue(empresa);
-    if (!empresa) {
-      this.userForm.get('empresa')?.setErrors({ required: true });
+  onCompanyBlur(): void {
+    const name = this.companyFilterCtrl.value;
+    const company = this.companies.find((e) => e.name === name) || null;
+    this.userForm.get('company')?.setValue(company);
+    if (!company) {
+      this.userForm.get('company')?.setErrors({ required: true });
     }
   }
 
-  empresasFiltradas(): Company[] {
-    return this.filteredEmpresas;
-  }
-
-  compareEmpresa(a: Company, b: Company): boolean {
-    return !!a && !!b && a.id === b.id;
+  compareCompanies(companyA: Company, companyB: Company): boolean {
+    return !!companyA && !!companyB && companyA.id === companyB.id;
   }
 
   constructor(
@@ -109,7 +106,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       {
         nome: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
-        telefone: ['', [Validators.required]],
+        phone: ['', [Validators.required]],
         empresa: [null, [Validators.required]],
         password: ['', [Validators.minLength(6)]],
         confirmPassword: [''],
@@ -120,27 +117,31 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Exemplo: checar se há parâmetro de rota para edição
-    this.setupEmpresaSearch();
+    this.setupCompanySearch();
     this.routeSub = this.route.params.subscribe(
       (params: { id?: string }): void => {
         if (params['id']) {
           this.isEdit = true;
-          this.userId = +params['id'];
-          // Aqui você buscaria os dados do usuário para edição (mock):
-          // this.loadUser(this.userId);
-          // Exemplo de preenchimento:
-          // this.userForm.patchValue({ nome: 'João', empresa: this.empresas[0], ... });
-          // Para edição, senha não é obrigatória
+          this.userId = params['id'];
+          const user: User | undefined = mockedUsers.find((u: User) => u.id === this.userId);
+          if (user) {
+            this.userForm.patchValue({
+              nome: user.name,
+              email: user.email,
+              phone: user.phone,
+              company: this.companies.find(e => e.id === user.company?.id) || null,
+              tokenRegistro: user.registerToken || '',
+              password: '',
+              confirmPassword: ''
+            });
+            if (user.company && user.company.name) {
+              this.companyFilterCtrl.setValue(user.company.name);
+            }
+          }
           this.userForm.get('password')?.clearValidators();
           this.userForm.get('confirmPassword')?.clearValidators();
           this.userForm.get('password')?.updateValueAndValidity();
           this.userForm.get('confirmPassword')?.updateValueAndValidity();
-          // Preencher autocomplete se já houver empresa
-          const empresa = this.userForm.get('empresa')?.value;
-          if (empresa && empresa.nome) {
-            this.empresaFilterCtrl.setValue(empresa.nome);
-          }
         }
       }
     );

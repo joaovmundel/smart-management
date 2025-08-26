@@ -45,11 +45,11 @@
     <div class="user-form-row">
       <mat-form-field appearance="fill" class="user-form-field half">
         <mat-label>Telefone</mat-label>
-        <input matInput type="text" formControlName="telefone" required />
+        <input matInput type="text" formControlName="phone" required />
         <mat-error
           *ngIf="
-            userForm.get('telefone')?.hasError('required') &&
-            userForm.get('telefone')?.touched
+            userForm.get('phone')?.hasError('required') &&
+            userForm.get('phone')?.touched
           "
         >
           Telefone é obrigatório
@@ -59,18 +59,19 @@
         <mat-label>Empresa</mat-label>
         <input
           type="text"
+          placeholder="Selecione a empresa"
           matInput
-          [formControl]="empresaFilterCtrl"
-          [matAutocomplete]="autoEmpresa"
+          [formControl]="companyFilterCtrl"
+          [matAutocomplete]="autoCompany"
           [required]="true"
-          (blur)="onEmpresaBlur()"
+          (blur)="onCompanyBlur()"
         />
-        <mat-autocomplete #autoEmpresa="matAutocomplete" (optionSelected)="onEmpresaSelected($event)">
-          <mat-option *ngFor="let empresa of filteredEmpresas" [value]="empresa.name">
-            {{ empresa.name }}
+        <mat-autocomplete #autoCompany="matAutocomplete" (optionSelected)="onCompanySelected($event)">
+          <mat-option *ngFor="let company of filteredCompanies" [value]="company.name">
+            {{ company.name }}
           </mat-option>
         </mat-autocomplete>
-        <mat-error *ngIf="userForm.get('empresa')?.hasError('required') && userForm.get('empresa')?.touched">
+        <mat-error *ngIf="userForm.get('company')?.hasError('required') && userForm.get('company')?.touched">
           Empresa é obrigatória
         </mat-error>
       </mat-form-field>
