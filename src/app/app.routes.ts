@@ -32,6 +32,11 @@ export const appRoutes: Route[] = [
     component: LayoutComponent,
     children: [
       {
+        path: 'home',
+        loadComponent: () =>
+          import('@smart-management/home').then((m) => m.HomeComponent),
+      },
+      {
         path: 'admin/tokens',
         loadComponent: () =>
           import('@smart-management/admin').then((m) => m.TokensComponent),
@@ -55,7 +60,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: '**',
-    redirectTo: 'login',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
 ];
