@@ -10,6 +10,7 @@ export const navbarRoutes: (NavItem | DropdownItem)[] = [
     routes: [
       { label: 'Tokens', route: '/admin/tokens' },
       { label: 'Usuários', route: '/admin/users' },
+      { label: 'Empresas', route: '/admin/companies' }
     ],
   },
 ];

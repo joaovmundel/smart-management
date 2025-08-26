@@ -1,0 +1,14 @@
+<div class="card__container">
+    <div class="card__logo-area">
+        <img class="company__logo" [src]="company?.logoUrl" alt="Logo da empresa">
+    </div>
+    <hr class="card__divider">
+    <div class="card__title">
+        <p class="company__name">{{ company?.name }}</p>
+    </div>
+    <div class="card__actions">
+        <button mat-icon-button color="primary" matTooltip="Editar">
+            <mat-icon>edit</mat-icon>
+        </button>
+    </div>
+</div>

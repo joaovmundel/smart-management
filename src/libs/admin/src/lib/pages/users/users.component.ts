@@ -12,7 +12,7 @@ import { take } from 'rxjs';
 import { ConfirmationModalComponent } from '../../components/confirmation-modal/confirmation-modal.component';
 
 @Component({
-  selector: 'lib-admin-users',
+  selector: 'users-list',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
   standalone: true,

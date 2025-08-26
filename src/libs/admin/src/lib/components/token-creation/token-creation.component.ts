@@ -20,7 +20,7 @@ import { Company, empresasMock } from '@smart-management/shared';
 
 
 @Component({
-  selector: 'lib-token-creation',
+  selector: 'token-creation',
   templateUrl: './token-creation.component.html',
   styleUrls: ['./token-creation.component.scss'],
   standalone: true,

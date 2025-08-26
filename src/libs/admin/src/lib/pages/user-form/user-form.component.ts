@@ -25,7 +25,7 @@ import { Company, empresasMock, User } from '@smart-management/shared';
 import { mockedUsers } from '@smart-management/shared';
 
 @Component({
-  selector: 'lib-admin-user-form',
+  selector: 'admin-user-form',
   standalone: true,
   imports: [
     CommonModule,

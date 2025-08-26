@@ -4,7 +4,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-  selector: 'lib-confirmation-modal',
+  selector: 'confirmation-modal',
   templateUrl: './confirmation-modal.component.html',
   styleUrls: ['./confirmation-modal.component.scss'],
   standalone: true,
