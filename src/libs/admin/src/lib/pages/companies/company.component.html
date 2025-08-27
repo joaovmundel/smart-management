@@ -4,9 +4,14 @@
             <h1>Listagem de empresas</h1>
         </div>
         <div class="cards-area">
-            <ng-container *ngFor="let company of companyList">
+            <ng-container *ngFor="let company of paginatedCompanies">
                 <company-card [company]="company"></company-card>
             </ng-container>
+        </div>
+        <div class="pagination" *ngIf="totalPages > 1">
+            <button mat-flat-button color="secondary" (click)="setPage(page - 1)" [disabled]="page === 1">Anterior</button>
+            <span>Página {{page}} de {{totalPages}}</span>
+            <button mat-flat-button (click)="setPage(page + 1)" [disabled]="page === totalPages">Próxima</button>
         </div>
     </div>
 </div>
