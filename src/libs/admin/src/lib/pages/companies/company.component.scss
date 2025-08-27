@@ -6,22 +6,35 @@
   background-color: #23272b;
 }
 
+.company-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 60px;
+  padding: 16px;
+}
+
 .companies-list {
   background-color: #40474e;
   border-radius: 16px;
   margin: 16px;
-  margin-top: 60px;
+  margin-top: 4px;
   margin-bottom: 60px;
   padding: 16px;
 }
 
-.page-title {
-  color: white;
+.search-box {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.search-field {
+  width: 320px;
 }
 
 .cards-area {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 40px;
   padding: 16px;
   justify-items: center;

@@ -1,7 +1,19 @@
 <div class="company-container">
+    <div class="company-actions">
+        <button mat-flat-button>
+            Adicionar empresa
+        </button>
+    </div>
     <div class="companies-list">
-        <div class="page-title">
-            <h1>Listagem de empresas</h1>
+        <div class="search-box">
+            <mat-form-field appearance="fill" class="search-field">
+                <mat-label>Buscar empresa</mat-label>
+                <input matInput [(ngModel)]="search" (ngModelChange)="onSearchChange()"
+                    placeholder="Digite o nome da empresa" type="text">
+                <button mat-icon-button matSuffix disabled tabindex="-1">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </mat-form-field>
         </div>
         <div class="cards-area">
             <ng-container *ngFor="let company of paginatedCompanies">
@@ -9,7 +21,8 @@
             </ng-container>
         </div>
         <div class="pagination" *ngIf="totalPages > 1">
-            <button mat-flat-button color="secondary" (click)="setPage(page - 1)" [disabled]="page === 1">Anterior</button>
+            <button mat-flat-button color="secondary" (click)="setPage(page - 1)"
+                [disabled]="page === 1">Anterior</button>
             <span>Página {{page}} de {{totalPages}}</span>
             <button mat-flat-button (click)="setPage(page + 1)" [disabled]="page === totalPages">Próxima</button>
         </div>
