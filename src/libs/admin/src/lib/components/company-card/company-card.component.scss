@@ -2,7 +2,7 @@
   &__container {
     position: relative;
     width: 250px;
-    height: 300px;
+    height: 320px;
     border-radius: 16px;
     background-color: white;
     display: flex;
@@ -23,10 +23,14 @@
     width: 85%;
   }
 
+  &__details {
+    padding: 8px;
+  }
+
   &__actions {
     position: absolute;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     width: 100%;
     padding: 12px 0;
     bottom: 0;
@@ -41,5 +45,11 @@
   &__name {
     font-size: 16px;
     font-weight: 500;
+    margin: 0;
+  }
+  &__details {
+    margin: 0;
+    font-size: 14px;
+    text-align: center;
   }
 }

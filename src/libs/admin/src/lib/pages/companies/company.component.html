@@ -1,5 +1,12 @@
 <div class="company-container">
-    <div class="cards-area">
-        <company-card [company]="companyMock"></company-card>
+    <div class="companies-list">
+        <div class="page-title">
+            <h1>Listagem de empresas</h1>
+        </div>
+        <div class="cards-area">
+            <ng-container *ngFor="let company of companyList">
+                <company-card [company]="company"></company-card>
+            </ng-container>
+        </div>
     </div>
 </div>

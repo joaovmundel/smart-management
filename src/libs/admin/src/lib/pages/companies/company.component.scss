@@ -4,11 +4,24 @@
   width: 100%;
   height: 100vh;
   background-color: #23272b;
-  margin-top: 20px;
 }
 
-.cards-area{
+.companies-list {
+  background-color: #40474e;
+  border-radius: 16px;
+  margin: 16px;
+  margin-top: 60px;
+  padding: 16px;
+}
+
+.page-title {
+  color: white;
+}
+
+.cards-area {
   display: flex;
-  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 50px;
   padding: 16px;
 }
