@@ -1,0 +1,29 @@
+.company-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #23272b;
+  padding: 70px;
+}
+
+.company-form {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.company-form-title {
+  text-align: center;
+}
+
+.company-form-field {
+  width: 100%;
+}
+
+.company-form-actions {
+  display: flex;
+  justify-content: space-between;
+}

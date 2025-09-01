@@ -1,11 +1,12 @@
 import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { Router, RouterModule } from "@angular/router";
 import { Company, mockCompany, mockCompanyList } from "@smart-management/shared";
-import { FormsModule } from '@angular/forms';
 import { CompanyCardComponent } from "../../components/company-card/company-card.component";
 
 @Component({
@@ -14,16 +15,18 @@ import { CompanyCardComponent } from "../../components/company-card/company-card
     styleUrls: ['./company.component.scss'],
     standalone: true,
     imports: [
-        CompanyCardComponent,
-        CommonModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
+    CompanyCardComponent,
+    CommonModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
     FormsModule,
     MatIconModule,
-    ]
+    RouterModule
+]
 })
 export class CompanyComponent {
+    private readonly _router: Router = inject(Router);
     companyMock: Company = mockCompany;
     companyList: Company[] = mockCompanyList;
     page = 1;
@@ -56,6 +59,10 @@ export class CompanyComponent {
         if (page >= 1 && page <= this.totalPages) {
             this.page = page;
         }
+    }
+
+    goToCreatePage(): void {
+        this._router.navigate(['/admin/companies/create']);
     }
 
     onSearchChange() {

@@ -1,57 +1,70 @@
-.company-container {
+.company {
   display: flex;
   flex-direction: column;
   width: 100%;
   min-height: 100vh;
   background-color: #23272b;
-}
 
-.company-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 60px;
-  padding: 16px;
-}
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 60px;
+    padding: 16px;
+  }
 
-.companies-list {
-  background-color: #40474e;
-  border-radius: 16px;
-  margin: 16px;
-  margin-top: 4px;
-  margin-bottom: 60px;
-  padding: 16px;
-}
+  &__list {
+    background-color: #40474e;
+    border-radius: 16px;
+    margin: 16px;
+    margin-top: 4px;
+    margin-bottom: 60px;
+    padding: 16px;
+  }
 
-.search-box {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-bottom: 24px;
-}
-.search-field {
-  width: 320px;
-}
+  &__list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
+  }
 
-.cards-area {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 40px;
-  padding: 16px;
-  justify-items: center;
-  align-items: stretch;
-}
+  &__title-text {
+    color: white;
+    font-size: 48px;
+  }
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-weight: 500;
-  gap: 16px;
-  margin: 24px 0 0 0;
-}
+  &__search-box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 0;
+  }
 
-.pagination button:disabled {
-  background: #555;
-  cursor: not-allowed;
+  &__search-field {
+    width: 320px;
+  }
+
+  &__cards-area {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    padding: 16px;
+    justify-items: center;
+    align-items: stretch;
+  }
+
+  &__pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: 500;
+    gap: 16px;
+    margin: 24px 0 0 0;
+
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+  }
 }
