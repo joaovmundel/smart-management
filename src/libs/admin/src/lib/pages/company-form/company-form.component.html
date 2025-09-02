@@ -1,80 +1,83 @@
 <div class="company-form-container">
-  <form
-    class="company-form"
-    [formGroup]="companyForm"
-    (ngSubmit)="onSubmit()"
-    autocomplete="off"
-  >
+  <form class="company-form" [formGroup]="companyForm" (ngSubmit)="onSubmit()" autocomplete="off">
     <h2 class="company-form-title">
       {{ isEdit ? 'Editar Empresa' : 'Adicionar Empresa' }}
     </h2>
-    <div class="company-form-row">
-      <mat-form-field appearance="fill" class="company-form-field half">
-        <mat-label>Nome</mat-label>
-        <input matInput type="text" formControlName="name" required />
-        <mat-error *ngIf="companyForm.get('name')?.hasError('required') && companyForm.get('name')?.touched">
-          Nome é obrigatório
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="fill" class="company-form-field half">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" />
-        <mat-error *ngIf="companyForm.get('email')?.hasError('email') && companyForm.get('email')?.touched">
-          Email inválido
-        </mat-error>
-      </mat-form-field>
-    </div>
-    <div class="company-form-row">
-      <mat-form-field appearance="fill" class="company-form-field half">
-        <mat-label>CNPJ</mat-label>
-        <input matInput type="text" formControlName="cnpj" />
-      </mat-form-field>
-      <mat-form-field appearance="fill" class="company-form-field half">
-        <mat-label>Telefone</mat-label>
-        <input matInput type="text" formControlName="phone" />
-      </mat-form-field>
-    </div>
-    <div class="company-form-row">
-      <mat-form-field appearance="fill" class="company-form-field full">
-        <mat-label>Descrição</mat-label>
-        <textarea matInput formControlName="description" rows="2"></textarea>
-      </mat-form-field>
-    </div>
-    <div class="company-form-row">
-      <mat-form-field appearance="fill" class="company-form-field half">
-        <mat-label>Website</mat-label>
-        <input matInput type="url" formControlName="websiteUrl" />
-      </mat-form-field>
-      <mat-form-field appearance="fill" class="company-form-field half">
-        <mat-label>Logo (URL)</mat-label>
-        <input matInput type="url" formControlName="logoUrl" />
-      </mat-form-field>
-    </div>
-    <div class="company-form-row">
-      <mat-form-field appearance="fill" class="company-form-field half">
-        <mat-label>Cidade</mat-label>
-        <input matInput type="text" formControlName="city" />
-      </mat-form-field>
-      <mat-form-field appearance="fill" class="company-form-field half">
-        <mat-label>Estado</mat-label>
-        <input matInput type="text" formControlName="state" />
-      </mat-form-field>
-    </div>
-    <div class="company-form-row">
-      <mat-form-field appearance="fill" class="company-form-field half">
-        <mat-label>CEP</mat-label>
-        <input matInput type="text" formControlName="zipCode" />
-      </mat-form-field>
-      <mat-form-field appearance="fill" class="company-form-field half">
-        <mat-label>País</mat-label>
-        <input matInput type="text" formControlName="country" />
-      </mat-form-field>
-    </div>
-    <div class="company-form-row">
-      <mat-form-field appearance="fill" class="company-form-field full">
-        <mat-label>Endereço</mat-label>
-        <input matInput type="text" formControlName="address" />
-      </mat-form-field>
+    <div class="form-fields">
+      <div class="column-1">
+        <div class="company-form-row">
+          <mat-form-field appearance="fill" class="company-form-field half">
+            <mat-label>Nome</mat-label>
+            <input matInput type="text" formControlName="name" required />
+            <mat-error *ngIf="companyForm.get('name')?.hasError('required') && companyForm.get('name')?.touched">
+              Nome é obrigatório
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="company-form-field half">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" />
+            <mat-error *ngIf="companyForm.get('email')?.hasError('email') && companyForm.get('email')?.touched">
+              Email inválido
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="company-form-row">
+          <mat-form-field appearance="fill" class="company-form-field half">
+            <mat-label>Website</mat-label>
+            <input matInput type="url" formControlName="websiteUrl" />
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="company-form-field half">
+            <mat-label>Logo (URL)</mat-label>
+            <input matInput type="url" formControlName="logoUrl" />
+          </mat-form-field>
+        </div>
+        <div class="company-form-row">
+          <mat-form-field appearance="fill" class="company-form-field half">
+            <mat-label>CNPJ</mat-label>
+            <input matInput type="text" formControlName="cnpj" />
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="company-form-field half">
+            <mat-label>Telefone</mat-label>
+            <input matInput type="text" formControlName="phone" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="column-2">
+        <div class="company-form-row">
+          <mat-form-field appearance="fill" class="company-form-field half">
+            <mat-label>CEP</mat-label>
+            <input matInput type="text" formControlName="zipCode" />
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="company-form-field half">
+            <mat-label>Cidade</mat-label>
+            <input matInput type="text" formControlName="city" />
+          </mat-form-field>
+        </div>
+        <div class="company-form-row">
+          <mat-form-field appearance="fill" class="company-form-field half">
+            <mat-label>Estado</mat-label>
+            <input matInput type="text" formControlName="state" />
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="company-form-field half">
+            <mat-label>País</mat-label>
+            <input matInput type="text" formControlName="country" />
+          </mat-form-field>
+        </div>
+        <div class="company-form-row">
+          <mat-form-field appearance="fill" class="company-form-field full">
+            <mat-label>Endereço</mat-label>
+            <input matInput type="text" formControlName="address" />
+          </mat-form-field>
+        </div>
+        <div class="company-form-row">
+          <mat-form-field appearance="fill" class="company-form-field full">
+            <mat-label>Descrição</mat-label>
+            <textarea class="text-area--max-height" matInput formControlName="description" rows="2"
+              maxlength="250"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
     </div>
     <div class="company-form-actions">
       <button mat-button color="accent" type="button" (click)="onCancel()" [disabled]="loading">
@@ -83,7 +86,8 @@
       <button mat-raised-button color="primary" type="submit" [disabled]="loading">
         <ng-container *ngIf="!loading">{{ isEdit ? 'Salvar' : 'Adicionar' }}</ng-container>
         <ng-container *ngIf="loading">
-          <mat-progress-spinner diameter="22" mode="indeterminate" color="accent" class="spinner-btn"></mat-progress-spinner>
+          <mat-progress-spinner diameter="22" mode="indeterminate" color="accent"
+            class="spinner-btn"></mat-progress-spinner>
         </ng-container>
       </button>
     </div>

@@ -1,6 +1,6 @@
 <div class="company">
     <div class="company__actions">
-        <button mat-flat-button class="company__add-btn" (click)="goToCreatePage()">
+        <button mat-raised-button colo="primary" class="company__add-btn" (click)="goToCreatePage()">
             Adicionar empresa
         </button>
     </div>
@@ -22,7 +22,12 @@
         </div>
         <div class="company__cards-area">
             <ng-container *ngFor="let company of paginatedCompanies">
-                <company-card [company]="company"></company-card>
+                <company-card 
+                    [company]="company"
+                    (view)="onViewDetails($event)"
+                    (edit)="onEditCompany($event)"
+                    (delete)="onDelete($event)"
+                ></company-card>
             </ng-container>
         </div>
         <div class="company__pagination" *ngIf="totalPages > 1">

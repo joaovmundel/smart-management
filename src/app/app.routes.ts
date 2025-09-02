@@ -57,6 +57,11 @@ export const appRoutes: Route[] = [
           import('@smart-management/admin').then((m) => m.CompanyFormComponent),
       },
       {
+        path: 'admin/companies/edit/:id',
+        loadComponent: () =>
+          import('@smart-management/admin').then((m) => m.CompanyFormComponent),
+      },
+      {
         path: 'admin/users',
         loadComponent: () =>
           import('@smart-management/admin').then((m) => m.UsersComponent),

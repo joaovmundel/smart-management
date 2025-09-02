@@ -8,6 +8,9 @@ import { MatInputModule } from '@angular/material/input';
 import { Router, RouterModule } from "@angular/router";
 import { Company, mockCompany, mockCompanyList } from "@smart-management/shared";
 import { CompanyCardComponent } from "../../components/company-card/company-card.component";
+import { MatDialog } from "@angular/material/dialog";
+import { ConfirmationModalComponent } from "../../components/confirmation-modal/confirmation-modal.component";
+import { take } from "rxjs";
 
 @Component({
     selector: 'company-list',
@@ -15,18 +18,20 @@ import { CompanyCardComponent } from "../../components/company-card/company-card
     styleUrls: ['./company.component.scss'],
     standalone: true,
     imports: [
-    CompanyCardComponent,
-    CommonModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatIconModule,
-    RouterModule
-]
+        CompanyCardComponent,
+        CommonModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        MatIconModule,
+        RouterModule
+    ]
 })
 export class CompanyComponent {
     private readonly _router: Router = inject(Router);
+    private readonly _dialog: MatDialog = inject(MatDialog);
+
     companyMock: Company = mockCompany;
     companyList: Company[] = mockCompanyList;
     page = 1;
@@ -59,6 +64,23 @@ export class CompanyComponent {
         if (page >= 1 && page <= this.totalPages) {
             this.page = page;
         }
+    }
+
+    onViewDetails(company: Company): void {
+        this._router.navigate([`/admin/companies/${company.id}`]);
+    }
+
+    onDelete(company: Company): void {
+        this._dialog.open(ConfirmationModalComponent).afterClosed().pipe(take(1)).subscribe(result => {
+            if (result === true) {
+                //TODO: Implements delete method
+                console.log(`Deletando a empresa ${company.id}`);
+            }
+        });
+    }
+
+    onEditCompany(company: Company): void {
+        this._router.navigate([`/admin/companies/edit/${company.id}`]);
     }
 
     goToCreatePage(): void {

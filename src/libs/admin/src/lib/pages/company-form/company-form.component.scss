@@ -11,8 +11,13 @@
   flex-direction: column;
   background-color: #ffffff;
   gap: 16px;
-  padding: 16px;
+  padding: 32px;
   border-radius: 16px;
+}
+
+.form-fields {
+  display: flex;
+  gap: 24px;
 }
 
 .company-form-title {
@@ -25,5 +30,10 @@
 
 .company-form-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 24px;
+}
+
+.text-area--max-height {
+  max-height: 150px;
 }

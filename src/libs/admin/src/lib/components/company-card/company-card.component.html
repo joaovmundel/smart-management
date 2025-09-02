@@ -13,13 +13,13 @@
     </div>
     <hr class="card__divider">
     <div class="card__actions">
-        <button mat-icon-button color="primary" matTooltip="Ver detalhes">
+        <button mat-icon-button color="primary" matTooltip="Ver detalhes" (click)="onView()">
             <mat-icon>web</mat-icon>
         </button>
-        <button mat-icon-button color="primary" matTooltip="Editar">
+        <button mat-icon-button color="primary" matTooltip="Editar" (click)="onEdit()">
             <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="warn" matTooltip="Deletar">
+        <button mat-icon-button color="warn" matTooltip="Deletar" (click)="onDelete()">
             <mat-icon>delete</mat-icon>
         </button>
     </div>
