@@ -4,7 +4,7 @@ export const mockCompany: Company = {
     id: '1',
     name: 'Smart Solutions Ltda',
     description: 'Empresa de tecnologia focada em soluções inteligentes.',
-    logoUrl: 'https://png.pngtree.com/element_our/png/20181228/building-vector-icon-png_296032.jpg',
+    logoUrl: 'https://static.vecteezy.com/system/resources/thumbnails/024/553/534/small_2x/lion-head-logo-mascot-wildlife-animal-illustration-generative-ai-png.png',
     websiteUrl: 'https://smartsolutions.com',
     cnpj: '12.345.678/0001-99',
     phone: '+55 11 99999-9999',

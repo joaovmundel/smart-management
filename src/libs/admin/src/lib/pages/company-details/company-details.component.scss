@@ -1,0 +1,43 @@
+.company-details {
+  display: flex;
+  justify-content: center;
+  background-color: #23272b;
+  padding: 70px;
+  opacity: 100%;
+  min-height: 100vh;
+
+  &__card {
+    background-color: #f2f2f0;
+    border-radius: 16px;
+    padding: 16px;
+    min-width: 600px;
+    height: 450px;
+  }
+
+  &__info-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    background-color: white;
+    border-radius: 16px;
+    padding: 8px;
+    width: 250px;
+  }
+
+  &__info{
+    h2 {
+      font-size: 24px;
+      font-weight: 500;
+    }
+  }
+
+  &__profile-photo {
+    img {
+      width: 150px;
+      height: 150px;
+      border-radius: 100%;
+      background-color: gray;
+    }
+  }
+}
