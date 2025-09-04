@@ -6,12 +6,19 @@
   opacity: 100%;
   min-height: 100vh;
 
+  * {
+    box-sizing: border-box;
+  }
+
   &__card {
     background-color: #f2f2f0;
     border-radius: 16px;
     padding: 16px;
     min-width: 600px;
-    height: 450px;
+    width: 60%;
+    min-height: 450px;
+    height: 55vh;
+    max-height: 550px;
   }
 
   &__info-area {
@@ -22,13 +29,27 @@
     background-color: white;
     border-radius: 16px;
     padding: 8px;
-    width: 250px;
+    width: 300px;
+    height: 95%;
   }
 
-  &__info{
+  &__info-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     h2 {
       font-size: 24px;
       font-weight: 500;
+      margin: 0;
+    }
+    p {
+      margin: 0;
     }
   }
 
@@ -40,4 +61,10 @@
       background-color: gray;
     }
   }
+}
+
+.divider {
+  margin-top: 0;
+  height: 1px;
+  width: 100%;
 }

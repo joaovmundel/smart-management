@@ -6,12 +6,27 @@
             </div>
             <div class="company-details__info">
                 <h2 class="company-details__name">{{ company.name }}</h2>
-                <p class="company-details__cnpj">{{ company.cnpj }}</p>
-                <p class="company-details__email">{{ company.email }}</p>
-                <p class="company-details__phone">{{ company.phone }}</p>
-                <a class="company-details__website" [href]="company.websiteUrl" target="_blank">{{ company.websiteUrl }}</a>
-                <p class="company-details__address">{{ company.address }}</p>
-
+                <hr class="divider"/>
+                <span class="company-details__info-group">
+                    <mat-icon>badge</mat-icon>
+                    <p class="company-details__cnpj">{{ company.cnpj }}</p>
+                </span>
+                <span class="company-details__info-group">
+                    <mat-icon>email</mat-icon>
+                    <p class="company-details__email">{{ company.email }}</p>
+                </span>
+                <span class="company-details__info-group">
+                    <mat-icon>phone</mat-icon>
+                    <p class="company-details__phone">{{ company.phone }}</p>
+                </span>
+                <span class="company-details__info-group">
+                    <mat-icon>location_on</mat-icon>
+                    <p class="company-details__location">{{ company.city }}, {{ company.state }}, {{ company.country }}</p>
+                </span>
+                <span class="company-details__info-group">
+                    <mat-icon>public</mat-icon>
+                    <a class="company-details__website" [href]="company.websiteUrl" target="_blank">{{ company.websiteUrl }}</a>
+                </span>
             </div>
         </div>
     </div>
