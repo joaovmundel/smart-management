@@ -1,8 +1,9 @@
 .users-container {
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   background: #23272b;
   padding: 2rem;
 }
@@ -10,13 +11,23 @@
 .users-header {
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  flex-direction: column;
   margin-bottom: 0;
+  padding: 16px;
+
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 8px;
+    button {
+      margin: 0;
+    }
+  }
 }
 
 .users-title {
-  color: #23272b;
+  color: white;
   font-weight: 600;
   letter-spacing: 1px;
 }

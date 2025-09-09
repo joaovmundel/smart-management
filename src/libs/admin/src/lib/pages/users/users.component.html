@@ -1,36 +1,40 @@
 <div class="users-container">
-  <div class="users-header" *ngIf="!tableOnly">
-    <h2 class="users-title">Gerenciar Usuários</h2>
-    <button
-      mat-raised-button
-      color="primary"
-      class="users-btn"
-      (click)="redirectToCreateUser()"
-    >
-      Novo Usuário
-    </button>
-    <div class="users-search">
-      <mat-form-field
-        appearance="outline"
-        style="width: 100%; max-width: 350px; margin-bottom: 16px"
+  <div class="users-header">
+    <h2 *ngIf="!tableOnly" class="users-title">Gerenciar Usuários</h2>
+    <div class="users-header__actions">
+      <button
+        *ngIf="!tableOnly"
+        mat-raised-button
+        color="primary"
+        class="users-btn"
+        (click)="redirectToCreateUser()"
       >
-        <mat-label>Buscar usuário</mat-label>
-        <input
-          matInput
-          placeholder="Nome, email ou telefone"
-          [(ngModel)]="searchTerm"
-          (ngModelChange)="applyFilter()"
-        />
-        <button
-          *ngIf="searchTerm"
-          matSuffix
-          mat-icon-button
-          aria-label="Limpar"
-          (click)="clearSearch()"
+        Novo Usuário
+      </button>
+      <div class="users-search">
+        <mat-form-field
+          style="width: 100%; max-width: 350px"
+          subscriptSizing="dynamic"
         >
-          <mat-icon>close</mat-icon>
-        </button>
-      </mat-form-field>
+          <mat-label>Buscar usuário</mat-label>
+          <input
+            matInput
+            placeholder="Nome, email ou telefone"
+            [(ngModel)]="searchTerm"
+            (ngModelChange)="applyFilter()"
+          />
+          <mat-icon matSuffix>search</mat-icon>
+          <button
+            *ngIf="searchTerm"
+            matSuffix
+            mat-icon-button
+            aria-label="Limpar"
+            (click)="clearSearch()"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
     </div>
   </div>
   <mat-card class="users-card">
