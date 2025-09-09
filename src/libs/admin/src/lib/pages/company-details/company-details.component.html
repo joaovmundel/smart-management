@@ -29,5 +29,12 @@
                 </span>
             </div>
         </div>
+        <div class="company-details__description">
+            <h1>Descrição da empresa</h1>
+            <p>
+                {{ company.description }}
+            </p>
+        </div>
     </div>
+    <users-list [tableOnly]="true"></users-list>
 </div>

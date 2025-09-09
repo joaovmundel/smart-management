@@ -1,10 +1,44 @@
 <div class="users-container">
-  <div class="users-header">
+  <div class="users-header" *ngIf="!tableOnly">
     <h2 class="users-title">Gerenciar Usuários</h2>
-    <button mat-raised-button color="primary" class="users-btn" (click)="redirectToCreateUser()">Novo Usuário</button>
+    <button
+      mat-raised-button
+      color="primary"
+      class="users-btn"
+      (click)="redirectToCreateUser()"
+    >
+      Novo Usuário
+    </button>
+    <div class="users-search">
+      <mat-form-field
+        appearance="outline"
+        style="width: 100%; max-width: 350px; margin-bottom: 16px"
+      >
+        <mat-label>Buscar usuário</mat-label>
+        <input
+          matInput
+          placeholder="Nome, email ou telefone"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="applyFilter()"
+        />
+        <button
+          *ngIf="searchTerm"
+          matSuffix
+          mat-icon-button
+          aria-label="Limpar"
+          (click)="clearSearch()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
   </div>
   <mat-card class="users-card">
-    <mat-table [dataSource]="users" class="users-table" *ngIf="users.length; else empty">
+    <mat-table
+      [dataSource]="filteredUsers"
+      class="users-table"
+      *ngIf="filteredUsers.length; else empty"
+    >
       <ng-container matColumnDef="id">
         <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
         <mat-cell *matCellDef="let user">{{ user.id }}</mat-cell>
@@ -27,19 +61,36 @@
       </ng-container>
       <ng-container matColumnDef="criadoEm">
         <mat-header-cell *matHeaderCellDef>Criado em</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.createdAt | date: 'short' }}</mat-cell>
+        <mat-cell *matCellDef="let user">{{
+          user.createdAt | date : 'short'
+        }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="tokenRegistro">
         <mat-header-cell *matHeaderCellDef>Token de Registro</mat-header-cell>
         <mat-cell *matCellDef="let user">{{ user.registerToken }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef class="table-cell--actions">Ações</mat-header-cell>
-        <mat-cell *matCellDef="let user" class="users-actions-cell table-cell--actions">
-          <button mat-icon-button color="primary" (click)="editUser(user)" matTooltip="Editar">
+        <mat-header-cell *matHeaderCellDef class="table-cell--actions"
+          >Ações</mat-header-cell
+        >
+        <mat-cell
+          *matCellDef="let user"
+          class="users-actions-cell table-cell--actions"
+        >
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="editUser(user)"
+            matTooltip="Editar"
+          >
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button color="warn" (click)="deleteUser(user)" matTooltip="Deletar">
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="deleteUser(user)"
+            matTooltip="Deletar"
+          >
             <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>
