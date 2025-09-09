@@ -11,6 +11,7 @@ import { CompanyCardComponent } from "../../components/company-card/company-card
 import { MatDialog } from "@angular/material/dialog";
 import { ConfirmationModalComponent } from "../../components/confirmation-modal/confirmation-modal.component";
 import { take } from "rxjs";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @Component({
     selector: 'company-list',
@@ -25,6 +26,7 @@ import { take } from "rxjs";
         MatInputModule,
         FormsModule,
         MatIconModule,
+        MatProgressSpinnerModule,
         RouterModule
     ]
 })
@@ -34,6 +36,7 @@ export class CompanyComponent {
 
     companyMock: Company = mockCompany;
     companyList: Company[] = mockCompanyList;
+    isLoading = false;
     page = 1;
     pageSize = 12;
     search = '';

@@ -1,9 +1,9 @@
 .company-form-container {
   display: flex;
   justify-content: center;
-  align-items: center;
   background-color: #23272b;
   padding: 70px;
+  min-height: 100vh;
 }
 
 .company-form {
@@ -11,6 +11,7 @@
   flex-direction: column;
   background-color: #ffffff;
   gap: 16px;
+  height: 630px;
   padding: 32px;
   border-radius: 16px;
 }

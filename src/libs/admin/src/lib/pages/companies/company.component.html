@@ -21,13 +21,23 @@
             </div>
         </div>
         <div class="company__cards-area">
-            <ng-container *ngFor="let company of paginatedCompanies">
-                <company-card 
-                    [company]="company"
-                    (view)="onViewDetails($event)"
-                    (edit)="onEditCompany($event)"
-                    (delete)="onDelete($event)"
-                ></company-card>
+            <ng-container *ngIf="isLoading">
+                <div class="company__loading">
+                    <mat-spinner diameter="50"></mat-spinner>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="!isLoading && paginatedCompanies.length === 0">
+                <p class="company__empty-list">Nenhuma empresa encontrada.</p>
+            </ng-container>
+            <ng-container *ngIf="!isLoading && paginatedCompanies.length > 0">
+                <ng-container *ngFor="let company of paginatedCompanies">
+                    <company-card 
+                        [company]="company"
+                        (view)="onViewDetails($event)"
+                        (edit)="onEditCompany($event)"
+                        (delete)="onDelete($event)"
+                    ></company-card>
+                </ng-container>
             </ng-container>
         </div>
         <div class="company__pagination" *ngIf="totalPages > 1">

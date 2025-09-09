@@ -21,6 +21,13 @@
     padding: 16px;
   }
 
+  &__empty-list {
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    margin-top: 40px;
+  }
+
   &__list-header {
     display: flex;
     justify-content: space-between;
