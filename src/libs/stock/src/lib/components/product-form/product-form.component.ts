@@ -67,7 +67,7 @@ export class ProductFormComponent implements OnInit {
         this.product?.grossValue ?? 0,
         [Validators.required, Validators.min(0)],
       ],
-      categoryId: [this.product?.categoryId || '', [Validators.required]],
+      category: [this.product?.category || {}, [Validators.required]],
     });
   }
 

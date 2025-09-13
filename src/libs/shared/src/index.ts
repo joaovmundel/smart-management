@@ -10,3 +10,4 @@ export * from './lib/mocks/empresa.mock';
 export * from './lib/mocks/token.mock';
 export * from './lib/mocks/user.mock';
 export * from './lib/mocks/company.mock';
+export * from './lib/mocks/product.mock';

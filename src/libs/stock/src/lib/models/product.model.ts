@@ -1,4 +1,4 @@
-import { Category } from "./category.model";
+import { Category } from './category.model';
 
 export interface Product {
   id: string;
@@ -8,11 +8,22 @@ export interface Product {
   stockAmount: number;
   saleValue: number;
   grossValue: number;
-  categoryId: string;
+  category: Category;
   createdAt: Date;
   updatedAt: Date;
+  color?: Color[];
+  sizes?: Size[];
 }
 
-export interface ProductWithCategory extends Product {
-  category: Category;
+export interface Size {
+  id: string;
+  label: string;
+  description?: string;
 }
+
+export interface Color {
+  id: string;
+  name: string;
+  hexCode: string;
+}
+

@@ -1,0 +1,19 @@
+<div class="product-card">
+    <div class="product-card__image-container">
+        <img [src]="product.photoUrl" alt="{{ product.name }}" class="product-card__image" />
+    </div>
+    <div class="product-card__info-area">
+        <div class="product-card__info-area__group">
+            <h3 class="product-card__info-area__group__name">{{ product.name }}</h3>
+            <p class="product-card__info-area__group__description">{{ product.description}}</p>
+        </div>
+        <div class="product-card__info-area__group">
+            <span class="product-card__info-area__group__subgroup">{{ product.category.name }}
+                <p class="product-card__info-area__group__subgroup__description">{{ product.category.description }}</p>
+                <p class="product-card__info-area__group__subgroup__price">R$ {{ product.saleValue | number:'1.2-2' }}</p>
+            </span>
+            <p class="product-card__info-area__group__stock" [ngClass]="{'in-stock': product.stockAmount > 0, 'out-of-stock': product.stockAmount === 0}">
+                {{ product.stockAmount > 0 ? (product.stockAmount + ' em estoque') : 'Esgotado' }}
+            </p>
+    </div>
+</div>
