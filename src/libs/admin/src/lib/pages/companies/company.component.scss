@@ -1,9 +1,12 @@
+
+@import '../../../../../../styles/variables';
+
 .company {
   display: flex;
   flex-direction: column;
   width: 100%;
   min-height: 100vh;
-  background-color: #23272b;
+  background-color: $background-primary;
 
   &__actions {
     display: flex;
@@ -13,7 +16,7 @@
   }
 
   &__list {
-    background-color: #40474e;
+    background-color: $background-secondary;
     border-radius: 16px;
     margin: 16px;
     margin-top: 4px;

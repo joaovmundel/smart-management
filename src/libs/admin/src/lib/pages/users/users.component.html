@@ -44,24 +44,26 @@
       *ngIf="filteredUsers.length; else empty"
     >
       <ng-container matColumnDef="id">
-        <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.id }}</mat-cell>
+        <mat-header-cell *matHeaderCellDef class="col-id">ID</mat-header-cell>
+        <mat-cell *matCellDef="let user" class="col-id" title="{{ user.id }}">
+          {{ user.id }}
+        </mat-cell>
       </ng-container>
       <ng-container matColumnDef="nome">
-        <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.name }}</mat-cell>
+        <mat-header-cell *matHeaderCellDef class="col-nome">Nome</mat-header-cell>
+        <mat-cell *matCellDef="let user" class="col-nome" title="{{ user.name }}">{{ user.name }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="telefone">
-        <mat-header-cell *matHeaderCellDef>Telefone</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.phone }}</mat-cell>
+        <mat-header-cell *matHeaderCellDef class="col-telefone">Telefone</mat-header-cell>
+        <mat-cell *matCellDef="let user" class="col-telefone" title="{{ user.phone }}">{{ user.phone }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="email">
-        <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.email }}</mat-cell>
+        <mat-header-cell *matHeaderCellDef class="col-email">Email</mat-header-cell>
+        <mat-cell *matCellDef="let user" class="col-email" title="{{ user.email }}">{{ user.email }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="empresa">
-        <mat-header-cell *matHeaderCellDef>Empresa</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.company?.name }}</mat-cell>
+        <mat-header-cell *matHeaderCellDef class="col-empresa">Empresa</mat-header-cell>
+        <mat-cell *matCellDef="let user" class="col-empresa" title="{{ user.company?.name }}">{{ user.company?.name }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="criadoEm">
         <mat-header-cell *matHeaderCellDef>Criado em</mat-header-cell>
@@ -70,8 +72,8 @@
         }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="tokenRegistro">
-        <mat-header-cell *matHeaderCellDef>Token de Registro</mat-header-cell>
-        <mat-cell *matCellDef="let user">{{ user.registerToken }}</mat-cell>
+        <mat-header-cell *matHeaderCellDef class="col-token">Token de Registro</mat-header-cell>
+        <mat-cell *matCellDef="let user" class="col-token" title="{{ user.registerToken }}">{{ user.registerToken }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef class="table-cell--actions"

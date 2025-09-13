@@ -1,3 +1,4 @@
+@import '../../../../../../styles/variables';
 .company-details__description h1 {
   font-size: 2.5rem;
 }
@@ -12,7 +13,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #23272b;
+  background-color: $background-primary;
   padding: 70px;
   opacity: 100%;
   min-height: 100vh;

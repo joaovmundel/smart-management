@@ -1,10 +1,11 @@
+@import '../../../../../../styles/variables';
 
 .login-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #23272b;
+  background: $background-primary;
 }
 
 .login-form {
@@ -19,7 +20,7 @@
 }
 
 .login-title {
-  color: #23272b;
+  color: $background-primary;
   text-align: center;
   margin-bottom: 1.5rem;
   font-weight: 600;
@@ -51,7 +52,7 @@
 }
 
 .login-btn {
-  background: #23272b !important;
+  background: $background-primary !important;
   color: #fff !important;
   font-weight: 500;
   min-width: 120px;
@@ -59,7 +60,7 @@
 }
 
 .register-btn {
-  color: #23272b !important;
+  color: $background-primary !important;
   font-weight: 500;
 }
 

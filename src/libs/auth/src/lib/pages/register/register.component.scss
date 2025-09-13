@@ -1,10 +1,11 @@
+@import '../../../../../../styles/variables';
 
 .register-container {
 	min-height: 100vh;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: #23272b;
+	background: $background-primary;
 }
 
 .register-form {
@@ -19,7 +20,7 @@
 }
 
 .register-title {
-	color: #23272b;
+	color: $background-primary;
 	text-align: center;
 	margin-bottom: 1.5rem;
 	font-weight: 600;
@@ -51,7 +52,7 @@
 }
 
 .register-btn {
-	background: #23272b !important;
+	background: $background-primary !important;
 	color: #fff !important;
 	font-weight: 500;
 	min-width: 120px;
@@ -63,7 +64,7 @@
 }
 
 .login-btn {
-	color: #23272b !important;
+	color: $background-primary !important;
 	font-weight: 500;
 }
 
@@ -80,7 +81,7 @@
 }
 
 .snackbar-success {
-	background: #23272b !important;
+	background: $background-primary !important;
 	color: #fff !important;
 }
 

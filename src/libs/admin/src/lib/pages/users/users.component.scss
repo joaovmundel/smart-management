@@ -1,10 +1,29 @@
+.col-nome, .col-telefone, .col-email, .col-empresa, .col-token {
+  max-width: 180px;
+  min-width: 80px;
+  width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+.col-id {
+  max-width: 70px;
+  min-width: 50px;
+  width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@import '../../../../../../styles/variables';
 .users-container {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   align-items: center;
   min-height: 100vh;
-  background: #23272b;
+  background: $background-primary;
   padding: 2rem;
 }
 
