@@ -1,0 +1,24 @@
+<div class="color-size">
+  <h1 class="color-size__title">Cadastrar cores e tamanhos para o produto</h1>
+  <div class="forms-area">
+    <div class="color-form">
+      <div class="color-form__input">
+        <mat-form-field appearance="fill">
+          <mat-label>Cor</mat-label>
+          <ngx-colors ngx-colors-trigger [(ngModel)]="leftColor"></ngx-colors>
+          <mat-form-field>
+            <input matInput [(ngModel)]="leftColor" />
+          </mat-form-field>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="addColor()">
+          Adicionar Cor
+        </button>
+      </div>
+      <div class="color-form__list"></div>
+    </div>
+    <div class="size-form">
+      <div class="size-form__input"></div>
+      <div class="size-form__list"></div>
+    </div>
+  </div>
+</div>

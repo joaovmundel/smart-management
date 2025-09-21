@@ -71,7 +71,8 @@ export class ProductFormComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onSubmit(e: Event) {
+    e.preventDefault();
     if (this.form.valid) {
       const formValue = this.form.value;
       const product: Product = {
@@ -85,6 +86,11 @@ export class ProductFormComponent implements OnInit {
     } else {
       this.form.markAllAsTouched();
     }
+  }
+
+  nextStep(): void {
+    //TODO: Remove this line and implement step logic in parent component
+    this.save.emit(this.form.value);
   }
 
   onCancel() {

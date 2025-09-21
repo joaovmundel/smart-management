@@ -1,0 +1,41 @@
+@import '../../../../../../styles/variables';
+
+.color-size {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $background-primary;
+  min-height: 100vh;
+  &__title {
+    color: white;
+    font-size: 32px;
+  }
+}
+
+.forms-area {
+  display: flex;
+  gap: 24px;
+  background-color: $background-light;
+  border-radius: 16px;
+  min-width: 500px;
+  max-width: 900px;
+  min-height: 400px;
+}
+
+.color-form,
+.size-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.color-form__input,
+.size-form__input {
+  margin-bottom: 12px;
+}
+
+.color-form__list,
+.size-form__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
