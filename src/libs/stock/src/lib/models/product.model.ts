@@ -22,8 +22,8 @@ export interface Size {
 }
 
 export interface Color {
-  id: string;
+  id?: string;
   name: string;
-  hexCode: string;
+  code: string;
 }
 

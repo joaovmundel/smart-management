@@ -1,6 +1,6 @@
 @import '../../../../../../styles/variables';
 
-.color-size {
+.color {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,7 +14,6 @@
 
 .forms-area {
   display: flex;
-  gap: 24px;
   background-color: $background-light;
   border-radius: 16px;
   min-width: 500px;
@@ -22,19 +21,81 @@
   min-height: 400px;
 }
 
-.color-form,
-.size-form {
+.color-form {
   display: flex;
   flex-direction: column;
 }
 
-.color-form__input,
-.size-form__input {
-  margin-bottom: 12px;
+.color-form {
+  flex: 1;
+  padding: 16px;
+
+  &__title {
+    align-self: center;
+    font-size: 18px;
+  }
+
+  &__form {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    justify-content: center;
+  }
+
+  &__list {
+    display: flex;
+    padding: 8px;
+    border: 1px solid $border-primary;
+
+    &-title {
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+      margin: 0;
+    }
+
+    &-items {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow-y: auto;
+      padding: 0;
+      margin: 0;
+      gap: 4px;
+    }
+
+    &-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 4px 8px;
+      border: 1px solid $border-primary;
+      border-radius: 8px;
+
+      &__info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+      }
+
+      &-color {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 1px solid $border-primary;
+      }
+
+      &-name {
+        font-size: 14px;
+      }
+    }
+  }
 }
 
-.color-form__list,
-.size-form__list {
+.color-form__list {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;

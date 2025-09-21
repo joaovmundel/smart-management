@@ -1,24 +1,61 @@
-<div class="color-size">
-  <h1 class="color-size__title">Cadastrar cores e tamanhos para o produto</h1>
+<div class="color">
+  <h1 class="color__title">Cadastrar cores e tamanhos para o produto</h1>
   <div class="forms-area">
     <div class="color-form">
-      <div class="color-form__input">
-        <mat-form-field appearance="fill">
-          <mat-label>Cor</mat-label>
-          <ngx-colors ngx-colors-trigger [(ngModel)]="leftColor"></ngx-colors>
-          <mat-form-field>
-            <input matInput [(ngModel)]="leftColor" />
-          </mat-form-field>
+      <h2 class="color-form__title">Adicionar nova variante de cor</h2>
+      <form [formGroup]="colorForm" class="color-form__form">
+        <mat-form-field>
+          <input
+            matInput
+            placeholder="Nome da variante"
+            formControlName="colorVariantNameCtrl"
+          />
         </mat-form-field>
-        <button mat-raised-button color="primary" (click)="addColor()">
-          Adicionar Cor
-        </button>
+        <mat-form-field>
+          <mat-label>Cor</mat-label>
+          <input matInput formControlName="colorVariantCodeTextCtrl" />
+          <ngx-colors
+            class="suffix"
+            matSuffix
+            ngx-colors-trigger
+            formControlName="colorVariantPickerCtrl"
+          ></ngx-colors>
+          <mat-error
+            *ngIf="
+              this.colorForm.controls['colorVariantPickerCtrl'].hasError(
+                'invalidColor'
+              )
+            "
+          >
+            Cor inválida.
+          </mat-error>
+        </mat-form-field>
+      </form>
+      <div class="color-form__list">
+        <h3 class="color-form__list-title">Variantes de cor</h3>
+        <ul class="color-form__list-items">
+          <li
+            class="color-form__list-item"
+            *ngFor="let color of colors; let i = index"
+          >
+            <div class="color-form__list-item__info">
+              <div
+                class="color-form__list-item-color"
+                [ngStyle]="{ 'background-color': color.code }"
+              ></div>
+              <span class="color-form__list-item-name">{{ color.name }}</span>
+            </div>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="removeColor(i)"
+              aria-label="Remover cor"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </li>
+        </ul>
       </div>
-      <div class="color-form__list"></div>
-    </div>
-    <div class="size-form">
-      <div class="size-form__input"></div>
-      <div class="size-form__list"></div>
     </div>
   </div>
 </div>
