@@ -20,7 +20,8 @@
       "@smart-management/home": ["src/libs/home/src/index.ts"],
       "@smart-management/layout": ["src/libs/layout/src/index.ts"],
       "@smart-management/shared": ["src/libs/shared/src/index.ts"],
-      "@smart-management/stock": ["src/libs/stock/src/index.ts"]
+      "@smart-management/stock": ["src/libs/stock/src/index.ts"],
+      "@smart-management/ui": ["src/libs/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
