@@ -1,20 +1,20 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import {
-  ReactiveFormsModule,
   FormBuilder,
-  Validators,
   FormGroup,
+  ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 import { LoginData } from '../../models/auth.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'lib-login',

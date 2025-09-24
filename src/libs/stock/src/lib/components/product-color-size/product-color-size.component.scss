@@ -1,52 +1,65 @@
 @import '../../../../../../styles/variables';
 
-.color {
+.product-color-size {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: $background-primary;
   min-height: 100vh;
+
   &__title {
     color: white;
     font-size: 32px;
   }
-}
 
-.forms-area {
-  display: flex;
-  background-color: $background-light;
-  border-radius: 16px;
-  min-width: 500px;
-  max-width: 900px;
-  min-height: 400px;
-}
-
-.color-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.color-form {
-  flex: 1;
-  padding: 16px;
-
-  &__title {
-    align-self: center;
-    font-size: 18px;
-  }
-
-  &__form {
+  &__forms-area {
     display: flex;
-    gap: 8px;
-    margin-top: 16px;
-    margin-bottom: 16px;
-    justify-content: center;
+    background-color: $background-light;
+    border-radius: 16px;
+    min-width: 500px;
+    width: 100%;
+    max-width: 900px;
+    min-height: 400px;
   }
 
-  &__list {
+  &__color-form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 16px;
+
+    &-title {
+      align-self: center;
+      font-size: 18px;
+    }
+
+    &-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+      margin-bottom: 16px;
+      justify-content: center;
+    }
+
+    &-field {
+      // Adicione estilos específicos para o campo se necessário
+    }
+    &-field--picker {
+      ::ng-deep .mdc-text-field {
+        padding-right: 4px;
+      }
+    }
+    &-picker {
+      // Estilos para o ngx-colors
+    }
+  }
+
+  &__color-list {
     display: flex;
     padding: 8px;
     border: 1px solid $border-primary;
+    flex-wrap: wrap;
+    gap: 8px;
 
     &-title {
       width: 100%;
@@ -74,7 +87,7 @@
       border: 1px solid $border-primary;
       border-radius: 8px;
 
-      &__info {
+      &-info {
         display: flex;
         align-items: center;
         gap: 8px;
@@ -93,10 +106,4 @@
       }
     }
   }
-}
-
-.color-form__list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
 }
