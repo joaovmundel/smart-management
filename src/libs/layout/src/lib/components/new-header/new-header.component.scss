@@ -1,0 +1,9 @@
+@use 'src/styles/variables' as *;
+
+.new-header {
+  display: flex;
+  flex: 1;
+  height: 61px;
+  background-color: $primary-dark;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
