@@ -1,14 +1,23 @@
 <mat-drawer #drawer class="sidebar-menu" mode="side" [opened]="true">
   <div class="sidebar-menu__header">
-    <h1 class="sidebar-menu__title">Smart Management</h1>
+    <a class="sidebar-menu__title" (click)="goHome()">Smart Management</a>
   </div>
   <ul class="sidebar-menu__items">
     <li *ngFor="let item of navItems">
       @if(item.isDropdown){
-        <lib-dropdown [item]="$any(item)" [isSuspended]="true"></lib-dropdown>
+      <lib-dropdown [item]="$any(item)" [isSuspended]="true"></lib-dropdown>
       }@else {
-        <lib-navitem [item]="$any(item)" [isSuspended]="true"></lib-navitem>
+      <lib-navitem [item]="$any(item)" [isSuspended]="true"></lib-navitem>
       }
+    </li>
+    <li class="sidebar-menu__logout">
+      <lib-navitem
+        [item]="{ label: 'Logout', route: '/logout' }"
+        [isSuspended]="true"
+        [hasIcon]="true"
+        iconName="logout"
+        iconPosition="end"
+      ></lib-navitem>
     </li>
   </ul>
 </mat-drawer>

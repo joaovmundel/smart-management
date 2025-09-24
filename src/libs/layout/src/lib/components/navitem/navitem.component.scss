@@ -9,10 +9,26 @@
   padding: 6px 16px;
   transition: background 0.2s;
 
+  ::ng-deep {
+    .mdc-button__label {
+      flex: 1;
+    }
+  }
+
   &--subitem {
     margin: 0;
     padding: 0 24px;
     height: 48px;
+  }
+
+  &__label {
+    display: flex;
+    gap: 12px;
+
+    &--icon-end {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 }
 

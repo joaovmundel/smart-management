@@ -1,1 +1,19 @@
-<a class="nav-link" [ngClass]="isSuspended ? 'nav-link--subitem' : ''" mat-button [routerLink]="item.route">{{ item.label }}</a>
+<a
+  class="nav-link"
+  [ngClass]="{ 'nav-link--subitem': isSuspended }"
+  mat-button
+  [routerLink]="item.route"
+>
+  <span
+    class="nav-link__label"
+    [ngClass]="{ 'nav-link__label--icon-end': iconPosition === 'end' }"
+  >
+    <ng-container *ngIf="hasIcon && iconName && iconPosition === 'start'">
+      <mat-icon class="nav-link__icon">{{ iconName }}</mat-icon>
+    </ng-container>
+    {{ item.label }}
+    <ng-container *ngIf="hasIcon && iconName && iconPosition === 'end'">
+      <mat-icon class="nav-link__icon">{{ iconName }}</mat-icon>
+    </ng-container>
+  </span>
+</a>

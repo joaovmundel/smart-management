@@ -1,6 +1,7 @@
 @use 'src/styles/variables' as *;
 
 .sidebar-menu {
+  position: relative;
   width: 250px;
   height: 100vh;
   background-color: $primary-dark;
@@ -21,6 +22,7 @@
     font-size: 1.5em;
     font-weight: 500;
     line-height: normal;
+    cursor: pointer;
   }
 
   &__items {
@@ -30,5 +32,13 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+  }
+
+  &__logout {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 12px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 }
