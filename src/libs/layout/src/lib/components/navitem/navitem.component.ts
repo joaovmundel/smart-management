@@ -12,5 +12,6 @@ import { MatButtonModule } from "@angular/material/button";
     imports: [CommonModule, RouterModule, MatButtonModule]
 })
 export class NavItemComponent {
+    @Input() isSuspended = false;
     @Input() item!: NavItem;
 }

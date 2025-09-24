@@ -1,6 +1,11 @@
+.layout-container{
+  display: flex;
+  overflow-y: hidden;
+}
 .content {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 60px;
+  overflow-y: auto;
+  box-sizing: border-box;
 }

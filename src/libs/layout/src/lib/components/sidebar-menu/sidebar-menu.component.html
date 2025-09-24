@@ -1,0 +1,14 @@
+<mat-drawer #drawer class="sidebar-menu" mode="side" [opened]="true">
+  <div class="sidebar-menu__header">
+    <h1 class="sidebar-menu__title">Smart Management</h1>
+  </div>
+  <ul class="sidebar-menu__items">
+    <li *ngFor="let item of navItems">
+      @if(item.isDropdown){
+        <lib-dropdown [item]="$any(item)" [isSuspended]="true"></lib-dropdown>
+      }@else {
+        <lib-navitem [item]="$any(item)" [isSuspended]="true"></lib-navitem>
+      }
+    </li>
+  </ul>
+</mat-drawer>

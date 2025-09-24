@@ -1,3 +1,4 @@
+@if(!isSuspended){
 <a mat-button class="dropdown">
   <span class="dropdown__label">{{ item.label }}</span>
   <div class="dropdown__content">
@@ -9,3 +10,15 @@
     >
   </div>
 </a>
+}@else {
+<mat-accordion multi>
+  <mat-expansion-panel class="suspended-dropdown" [ngClass]="{'suspended-dropdown--open': _open()}" (opened)="_open.set(true)" (closed)="_open.set(false)">
+    <mat-expansion-panel-header class="suspended-dropdown__header">
+      <mat-panel-title class="suspended-dropdown__title">{{ item.label }}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <ng-container *ngFor="let route of item.routes; let i = index">
+      <lib-navitem [item]="route" [isSuspended]="true"></lib-navitem>
+    </ng-container>
+  </mat-expansion-panel>
+</mat-accordion>
+}
