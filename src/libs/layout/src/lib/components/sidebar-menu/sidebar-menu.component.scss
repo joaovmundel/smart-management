@@ -1,31 +1,85 @@
 @use 'src/styles/variables' as *;
 
-.sidebar-menu {
+.sidebar-menu-container{
   position: relative;
-  width: 250px;
+  display: flex;
   height: 100vh;
-  background-color: $primary-dark;
-  color: $neutral-light;
+  overflow: hidden;
+  
+  // Quando o sidebar está aberto
+  &.sidebar-open {
+    width: 250px;
+  }
+  
+  // Quando o sidebar está fechado
+  &.sidebar-closed {
+    width: 0;
+  }
+}
+
+.sidebar-menu {
+  width: 250px;
+  min-width: 250px; /* Largura mínima garantida */
+  max-width: 250px; /* Largura máxima para evitar expansão */
+  height: 100vh;
+  background-color: $background-primary;
+  color: $text-light;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1000;
+  flex-shrink: 0; /* Não permite encolher durante animações */
+  
+  // Configurações específicas do Angular Material
+  &.mat-drawer {
+    box-shadow: none;
+    border-right: none;
+  }
+  
+  // Garante transição suave
+  transition: none; // Deixa o Angular Material controlar
 
   &__header {
     display: flex;
     align-items: center;
-    height: 20px;
-    padding: 20px;
+    justify-content: space-between;
+    height: 60px; /* Altura aumentada para ficar proporcional */
+    padding: 0 20px; /* Padding apenas lateral */
     font-weight: bold;
     text-align: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    min-width: 250px; /* Garante largura mínima */
+    box-sizing: border-box;
+    flex-shrink: 0; /* Não permite encolher */
   }
 
   &__title {
     margin: 0;
-    width: 100%;
+    flex: 1;
     font-size: 20px;
     font-weight: 500;
     line-height: normal;
     cursor: pointer;
+    text-align: left;
+    white-space: nowrap; /* Evita quebra de linha */
+    overflow: hidden; /* Esconde overflow se necessário */
+    text-overflow: ellipsis; /* Adiciona ... se texto for muito longo */
+    min-width: 0; /* Permite que o flex item seja menor que seu conteúdo */
+  }
+
+  &__close-btn {
+    background: none;
+    border: none;
+    color: $text-light;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
   }
 
   &__items {
@@ -43,5 +97,68 @@
     width: 100%;
     padding: 12px 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  // Estilos para mobile
+  &.mobile {
+    z-index: 1000;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  }
+}
+
+// Overlay para mobile
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  cursor: pointer;
+}
+
+// Media queries para responsividade
+@media (max-width: 768px) {
+  .sidebar-menu-container {
+    // Em mobile, o container nunca ocupa espaço no layout
+    &.sidebar-open,
+    &.sidebar-closed {
+      width: 0 !important;
+      position: absolute;
+    }
+  }
+  
+  .sidebar-menu {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+  }
+}
+
+// Para desktop - comportamento padrão sem transforms conflitantes
+@media (min-width: 769px) {
+  .sidebar-menu-container {
+    position: relative;
+    
+    // Transição suave apenas para desktop com delay para sincronizar
+    transition: width 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  .sidebar-menu {
+    position: relative;
+  }
+}
+
+// Sobrescrevendo estilos do Angular Material para animações mais suaves
+::ng-deep {
+  .mat-drawer-transition {
+    transition-duration: 250ms !important;
+    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  }
+  
+  .mat-drawer-container {
+    background-color: transparent !important;
   }
 }

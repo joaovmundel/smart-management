@@ -1,50 +1,68 @@
 <div class="company">
-    <div class="company__actions">
-        <button mat-raised-button colo="primary" class="company__add-btn" (click)="goToCreatePage()">
-            Adicionar empresa
-        </button>
+  <div class="company__list">
+    <div class="company__list-header">
+      <div class="company__search-box">
+        <mat-form-field appearance="fill" class="company__search-field">
+          <mat-label>Buscar empresa</mat-label>
+          <input
+            matInput
+            [(ngModel)]="search"
+            (ngModelChange)="onSearchChange()"
+            placeholder="Digite o nome da empresa"
+            type="text"
+          />
+          <button mat-icon-button matSuffix disabled tabindex="-1">
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+    <button
+      mat-icon-button
+      color="primary"
+      class="company__add-btn"
+      (click)="goToCreatePage()"
+      aria-label="Adicionar empresa"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
     </div>
-    <div class="company__list">
-        <div class="company__list-header">
-            <div class="company__title">
-                <h1 class="company__title-text">Empresas</h1>
-            </div>
-            <div class="company__search-box">
-                <mat-form-field appearance="fill" class="company__search-field">
-                    <mat-label>Buscar empresa</mat-label>
-                    <input matInput [(ngModel)]="search" (ngModelChange)="onSearchChange()"
-                        placeholder="Digite o nome da empresa" type="text">
-                    <button mat-icon-button matSuffix disabled tabindex="-1">
-                        <mat-icon>search</mat-icon>
-                    </button>
-                </mat-form-field>
-            </div>
+    <div class="company__cards-area">
+      <ng-container *ngIf="isLoading">
+        <div class="company__loading">
+          <mat-spinner diameter="50"></mat-spinner>
         </div>
-        <div class="company__cards-area">
-            <ng-container *ngIf="isLoading">
-                <div class="company__loading">
-                    <mat-spinner diameter="50"></mat-spinner>
-                </div>
-            </ng-container>
-            <ng-container *ngIf="!isLoading && paginatedCompanies.length === 0">
-                <p class="company__empty-list">Nenhuma empresa encontrada.</p>
-            </ng-container>
-            <ng-container *ngIf="!isLoading && paginatedCompanies.length > 0">
-                <ng-container *ngFor="let company of paginatedCompanies">
-                    <company-card 
-                        [company]="company"
-                        (view)="onViewDetails($event)"
-                        (edit)="onEditCompany($event)"
-                        (delete)="onDelete($event)"
-                    ></company-card>
-                </ng-container>
-            </ng-container>
-        </div>
-        <div class="company__pagination" *ngIf="totalPages > 1">
-            <button mat-flat-button color="secondary" (click)="setPage(page - 1)"
-                [disabled]="page === 1">Anterior</button>
-            <span>Página {{page}} de {{totalPages}}</span>
-            <button mat-flat-button (click)="setPage(page + 1)" [disabled]="page === totalPages">Próxima</button>
-        </div>
+      </ng-container>
+      <ng-container *ngIf="!isLoading && paginatedCompanies.length === 0">
+        <p class="company__empty-list">Nenhuma empresa encontrada.</p>
+      </ng-container>
+      <ng-container *ngIf="!isLoading && paginatedCompanies.length > 0">
+        <ng-container *ngFor="let company of paginatedCompanies">
+          <company-card
+            [company]="company"
+            (view)="onViewDetails($event)"
+            (edit)="onEditCompany($event)"
+            (delete)="onDelete($event)"
+          ></company-card>
+        </ng-container>
+      </ng-container>
     </div>
+    <div class="company__pagination" *ngIf="totalPages > 1">
+      <button
+        mat-flat-button
+        color="secondary"
+        (click)="setPage(page - 1)"
+        [disabled]="page === 1"
+      >
+        Anterior
+      </button>
+      <span>Página {{ page }} de {{ totalPages }}</span>
+      <button
+        mat-flat-button
+        (click)="setPage(page + 1)"
+        [disabled]="page === totalPages"
+      >
+        Próxima
+      </button>
+    </div>
+  </div>
 </div>

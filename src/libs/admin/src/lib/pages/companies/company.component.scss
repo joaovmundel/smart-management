@@ -1,4 +1,3 @@
-
 @import '../../../../../../styles/variables';
 
 .company {
@@ -16,7 +15,6 @@
 
   &__list {
     background-color: $background-secondary;
-    border-radius: 16px;
     margin: 16px;
     margin-top: 4px;
     margin-bottom: 60px;
@@ -32,9 +30,21 @@
 
   &__list-header {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 8px;
     margin-bottom: 24px;
+  }
+
+  &__add-btn {
+    height: 56px;
+    width: 56px;
+    border-radius: 8px;
+    background-color: $background-light;
+    ::ng-deep {
+      span {
+        border-radius: 8px;
+      }
+    }
   }
 
   &__title-text {

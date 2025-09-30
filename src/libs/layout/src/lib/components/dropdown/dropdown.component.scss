@@ -1,7 +1,9 @@
+@use 'src/styles/variables' as *;
+
 .dropdown {
   position: relative;
   display: inline-block;
-  color: white;
+  color: $text-light;
   padding: 12px 16px;
   z-index: 1;
   border-radius: 4px;
@@ -12,7 +14,7 @@
   &__content {
     display: none;
     position: absolute;
-    background-color: #4b4a4a;
+    background-color: $background-secondary;
     border-radius: 4px;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -54,7 +56,7 @@
 }
 
 .dropdown:hover {
-  background: #3e424a;
+  background: $background-highlight;
   cursor: pointer;
 }
 
@@ -69,7 +71,7 @@
   box-shadow: none !important;
 
   &:hover, &--open {
-    background: #2f4b97 !important;
+    background: $background-highlight !important;
     border-radius: 0 !important;
   }
 
@@ -80,7 +82,7 @@
     ::ng-deep {
       .mat-expansion-indicator {
         svg {
-          fill: white;
+          fill: $text-light;
         }
       }
     }
@@ -89,6 +91,6 @@
   &__title {
     font-size: 14px;
     font-weight: 500;
-    color: white;
+    color: $text-light;
   }
 }

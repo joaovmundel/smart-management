@@ -1,23 +1,53 @@
-<mat-drawer #drawer class="sidebar-menu" mode="side" [opened]="true">
-  <div class="sidebar-menu__header">
-    <a class="sidebar-menu__title" (click)="goHome()">Smart Management</a>
+<div class="sidebar-menu-container"
+     [class.sidebar-open]="isOpen$ | async"
+     [class.sidebar-closed]="!(isOpen$ | async)">
+  <!-- Overlay para mobile quando sidebar está aberto -->
+  <div 
+    class="sidebar-overlay" 
+    *ngIf="(isMobile$ | async) && (isOpen$ | async)"
+    (click)="closeSidebar()">
   </div>
-  <ul class="sidebar-menu__items">
-    <li *ngFor="let item of navItems">
-      @if(item.isDropdown){
-      <lib-dropdown [item]="$any(item)" [isSuspended]="true"></lib-dropdown>
-      }@else {
-      <lib-navitem [item]="$any(item)" [isSuspended]="true"></lib-navitem>
-      }
-    </li>
-    <li class="sidebar-menu__logout">
-      <lib-navitem
-        [item]="{ label: 'Logout', route: '/logout' }"
-        [isSuspended]="true"
-        [hasIcon]="true"
-        iconName="logout"
-        iconPosition="end"
-      ></lib-navitem>
-    </li>
-  </ul>
-</mat-drawer>
+
+  <mat-drawer 
+    #drawer 
+    class="sidebar-menu" 
+    [mode]="(isMobile$ | async) ? 'over' : 'side'" 
+    [opened]="isOpen$ | async"
+    [class.mobile]="isMobile$ | async"
+    [disableClose]="false"
+    position="start">
+    
+    <div class="sidebar-menu__header">
+      <a class="sidebar-menu__title" (click)="goHome()">Smart Management</a>
+      
+      <!-- Botão de fechar para mobile -->
+      <button 
+        *ngIf="isMobile$ | async"
+        class="sidebar-menu__close-btn"
+        (click)="closeSidebar()"
+        aria-label="Fechar menu">
+        ✕
+      </button>
+    </div>
+
+    <ul class="sidebar-menu__items">
+      <li *ngFor="let item of navItems" (click)="onItemClick()">
+        @if(item.isDropdown){
+        <lib-dropdown [item]="$any(item)" [isSuspended]="true"></lib-dropdown>
+        }@else {
+        <lib-navitem [item]="$any(item)" [isSuspended]="true"></lib-navitem>
+        }
+      </li>
+      
+      <li class="sidebar-menu__logout" (click)="onItemClick()">
+        <lib-navitem
+          [item]="{ label: 'Logout', route: '/logout' }"
+          [isSuspended]="true"
+          [hasIcon]="true"
+          iconName="logout"
+          iconPosition="end"
+        ></lib-navitem>
+      </li>
+    </ul>
+  </mat-drawer>
+</div>
