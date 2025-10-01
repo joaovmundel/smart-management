@@ -1,11 +1,11 @@
 <div class="delete-confirmation-container">
   <h2 mat-dialog-title>
     <mat-icon color="warn">warning</mat-icon>
-    Confirmar Exclusão
+    {{ data.title || 'Confirmar Exclusão' }}
   </h2>
   
   <mat-dialog-content>
-    <p>Tem certeza que deseja excluir a categoria <strong>"{{ data.category.name }}"</strong>?</p>
+    <p>{{ data.message || 'Tem certeza que deseja excluir este item?' }}</p>
     <p class="warning-text">Esta ação não pode ser desfeita.</p>
   </mat-dialog-content>
 

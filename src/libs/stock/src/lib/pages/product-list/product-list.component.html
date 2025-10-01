@@ -1,6 +1,32 @@
-<div class="product-creation">
-  <sm-product-form
-    (save)="onSave($event)"
-    (cancelForm)="onCancel()"
-  ></sm-product-form>
+<div class="product-page">
+  <!-- Painel Expansível para Formulário de Criação -->
+  <mat-expansion-panel 
+    [expanded]="isFormExpanded" 
+    (expandedChange)="isFormExpanded = $event"
+    class="product-creation-panel">
+    
+    <mat-expansion-panel-header>
+      <mat-panel-title class="product-creation-panel__title">
+        <mat-icon>add_circle</mat-icon>
+        Criar Novo Produto
+      </mat-panel-title>
+      <mat-panel-description>
+        {{ isFormExpanded ? 'Preencha os dados do produto' : 'Clique para adicionar um novo produto' }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div class="product-creation">
+      <sm-product-form
+        (save)="onSave($event)"
+        (cancelForm)="onCancel()"
+      ></sm-product-form>
+    </div>
+  </mat-expansion-panel>
+
+  <!-- Tabela de produtos -->
+  <sm-product-table
+    [products]="products"
+    (editProduct)="onEditProduct($event)"
+    (deleteProduct)="onDeleteProduct($event)"
+  ></sm-product-table>
 </div>

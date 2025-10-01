@@ -1,0 +1,118 @@
+<div class="product-table-container">
+  <!-- Barra de busca -->
+  <div class="search-bar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Buscar produto</mat-label>
+      <input 
+        matInput 
+        [(ngModel)]="searchTerm" 
+        (input)="onSearch()" 
+        placeholder="Digite o nome do produto...">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- Tabela de produtos -->
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" class="product-table">
+      
+      <!-- Coluna da Foto -->
+      <ng-container matColumnDef="photo">
+        <th mat-header-cell *matHeaderCellDef>Foto</th>
+        <td mat-cell *matCellDef="let product" class="photo-cell">
+          <div class="product-photo">
+            <img 
+              *ngIf="product.photoUrl; else noPhoto" 
+              [src]="product.photoUrl" 
+              [alt]="product.name"
+              class="product-image">
+            <ng-template #noPhoto>
+              <div class="no-photo">
+                <mat-icon>image</mat-icon>
+              </div>
+            </ng-template>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Coluna do Nome -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <td mat-cell *matCellDef="let product" class="name-cell">
+          <div class="product-name">{{ product.name }}</div>
+        </td>
+      </ng-container>
+
+      <!-- Coluna da Descrição -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Descrição</th>
+        <td mat-cell *matCellDef="let product" class="description-cell">
+          <div class="product-description" [title]="product.description || 'Sem descrição'">
+            {{ product.description || 'Sem descrição' }}
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Coluna da Categoria -->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Categoria</th>
+        <td mat-cell *matCellDef="let product" class="category-cell">
+          {{ product.category?.name || 'Sem categoria' }}
+        </td>
+      </ng-container>
+
+      <!-- Coluna do Valor de Venda -->
+      <ng-container matColumnDef="saleValue">
+        <th mat-header-cell *matHeaderCellDef>Valor de Venda</th>
+        <td mat-cell *matCellDef="let product" class="value-cell">
+          {{ formatCurrency(product.saleValue) }}
+        </td>
+      </ng-container>
+
+      <!-- Coluna do Valor Bruto -->
+      <ng-container matColumnDef="grossValue">
+        <th mat-header-cell *matHeaderCellDef>Valor Bruto</th>
+        <td mat-cell *matCellDef="let product" class="value-cell">
+          {{ formatCurrency(product.grossValue) }}
+        </td>
+      </ng-container>
+
+      <!-- Coluna das Ações -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="actions-header">Ações</th>
+        <td mat-cell *matCellDef="let product" class="actions-cell">
+          <button 
+            mat-icon-button 
+            color="primary" 
+            (click)="onEdit(product)"
+            matTooltip="Editar produto">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button 
+            mat-icon-button 
+            color="warn" 
+            (click)="onDelete(product)"
+            matTooltip="Excluir produto">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Mensagem quando não há produtos -->
+    <div *ngIf="dataSource.data.length === 0" class="no-data">
+      <mat-icon>inventory_2</mat-icon>
+      <p>Nenhum produto encontrado</p>
+    </div>
+  </div>
+
+  <!-- Paginação -->
+  <mat-paginator 
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    aria-label="Selecione a página dos produtos">
+  </mat-paginator>
+</div>

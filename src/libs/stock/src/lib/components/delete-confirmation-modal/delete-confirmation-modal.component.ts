@@ -3,7 +3,12 @@ import { CommonModule } from '@angular/common';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { Category } from '../../models/category.model';
+
+export interface DeleteConfirmationData {
+  title?: string;
+  message?: string;
+  item?: unknown;
+}
 
 @Component({
   selector: 'sm-delete-confirmation-modal',
@@ -20,7 +25,7 @@ import { Category } from '../../models/category.model';
 export class DeleteConfirmationModalComponent {
   constructor(
     public dialogRef: MatDialogRef<DeleteConfirmationModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { category: Category }
+    @Inject(MAT_DIALOG_DATA) public data: DeleteConfirmationData
   ) {}
 
   onConfirm(): void {
