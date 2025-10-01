@@ -1,17 +1,15 @@
 @use 'src/styles/variables' as *;
 
-.sidebar-menu-container{
+.sidebar-menu-container {
   position: relative;
   display: flex;
   height: 100vh;
   overflow: hidden;
-  
-  // Quando o sidebar está aberto
+
   &.sidebar-open {
     width: 250px;
   }
-  
-  // Quando o sidebar está fechado
+
   &.sidebar-closed {
     width: 0;
   }
@@ -19,8 +17,8 @@
 
 .sidebar-menu {
   width: 250px;
-  min-width: 250px; /* Largura mínima garantida */
-  max-width: 250px; /* Largura máxima para evitar expansão */
+  min-width: 250px;
+  max-width: 250px;
   height: 100vh;
   background-color: $background-primary;
   color: $text-light;
@@ -28,29 +26,27 @@
   flex-direction: column;
   position: relative;
   z-index: 1000;
-  flex-shrink: 0; /* Não permite encolher durante animações */
-  
-  // Configurações específicas do Angular Material
+  flex-shrink: 0;
+
   &.mat-drawer {
     box-shadow: none;
     border-right: none;
   }
-  
-  // Garante transição suave
-  transition: none; // Deixa o Angular Material controlar
+
+  transition: none;
 
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 60px; /* Altura aumentada para ficar proporcional */
-    padding: 0 20px; /* Padding apenas lateral */
+    height: 60px;
+    padding: 0 20px;
     font-weight: bold;
     text-align: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    min-width: 250px; /* Garante largura mínima */
+    min-width: 250px;
     box-sizing: border-box;
-    flex-shrink: 0; /* Não permite encolher */
+    flex-shrink: 0;
   }
 
   &__title {
@@ -61,10 +57,10 @@
     line-height: normal;
     cursor: pointer;
     text-align: left;
-    white-space: nowrap; /* Evita quebra de linha */
-    overflow: hidden; /* Esconde overflow se necessário */
-    text-overflow: ellipsis; /* Adiciona ... se texto for muito longo */
-    min-width: 0; /* Permite que o flex item seja menor que seu conteúdo */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
   }
 
   &__close-btn {
@@ -99,14 +95,12 @@
     border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  // Estilos para mobile
   &.mobile {
     z-index: 1000;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   }
 }
 
-// Overlay para mobile
 .sidebar-overlay {
   position: fixed;
   top: 0;
@@ -118,17 +112,15 @@
   cursor: pointer;
 }
 
-// Media queries para responsividade
 @media (max-width: 768px) {
   .sidebar-menu-container {
-    // Em mobile, o container nunca ocupa espaço no layout
     &.sidebar-open,
     &.sidebar-closed {
       width: 0 !important;
       position: absolute;
     }
   }
-  
+
   .sidebar-menu {
     position: fixed;
     z-index: 1000;
@@ -137,27 +129,24 @@
   }
 }
 
-// Para desktop - comportamento padrão sem transforms conflitantes
 @media (min-width: 769px) {
   .sidebar-menu-container {
     position: relative;
-    
-    // Transição suave apenas para desktop com delay para sincronizar
+
     transition: width 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
-  
+
   .sidebar-menu {
     position: relative;
   }
 }
 
-// Sobrescrevendo estilos do Angular Material para animações mais suaves
 ::ng-deep {
   .mat-drawer-transition {
     transition-duration: 250ms !important;
     transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1) !important;
   }
-  
+
   .mat-drawer-container {
     background-color: transparent !important;
   }

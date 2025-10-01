@@ -1,14 +1,6 @@
 <div class="product-creation">
-
-@if (step === 1) {
   <sm-product-form
-    (save)="nextStep()"
+    (save)="onSave()"
     (cancelForm)="onCancel()"
   ></sm-product-form>
-} @else if (step === 2) {
-  <sm-product-color-size></sm-product-color-size>
-} @else if (step === 3) {
-  <p>Step 3: Finalize Product Creation</p>
-}
-
 </div>

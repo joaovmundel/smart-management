@@ -16,7 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'sm-product-form',
   templateUrl: './product-form.component.html',
-  styleUrl: './product-form.component.scss',
+  styleUrls: ['./product-form.component.scss'],
   standalone: true,
   imports: [
     CommonModule,
@@ -48,9 +48,17 @@ export class ProductFormComponent implements OnInit {
     },
   ];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    // Inicializar o formulário no constructor para garantir que esteja disponível imediatamente
+    this.initializeForm();
+  }
 
   ngOnInit(): void {
+    // Reinicializar no OnInit para considerar os inputs que podem ter mudado
+    this.initializeForm();
+  }
+
+  private initializeForm(): void {
     this.form = this.fb.group({
       name: [this.product?.name || '', [Validators.required]],
       description: [this.product?.description || ''],
@@ -67,7 +75,7 @@ export class ProductFormComponent implements OnInit {
         this.product?.grossValue ?? 0,
         [Validators.required, Validators.min(0)],
       ],
-      category: [this.product?.category || {}, [Validators.required]],
+      categoryId: [this.product?.category?.id || '', [Validators.required]],
     });
   }
 

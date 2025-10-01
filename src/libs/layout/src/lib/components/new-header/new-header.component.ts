@@ -1,8 +1,8 @@
-import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TitleService } from '../../services/title.service';
-import { SidebarService } from '../../services/sidebar.service';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { SidebarService } from '../../services/sidebar.service';
+import { TitleService } from '../../services/title.service';
 
 @Component({
   selector: 'lib-new-header',
@@ -18,7 +18,6 @@ export class NewHeaderComponent implements OnInit, OnDestroy {
   private titleSubscription?: Subscription;
   private readonly sidebarService = inject(SidebarService);
 
-  // Propriedades reativas
   isOpen$ = this.sidebarService.isOpen$;
 
   constructor(private titleService: TitleService) {}
@@ -40,9 +39,6 @@ export class NewHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Alterna o estado do sidebar
-   */
   toggleSidebar(): void {
     this.sidebarService.toggle();
   }

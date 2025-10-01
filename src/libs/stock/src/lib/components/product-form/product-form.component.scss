@@ -6,6 +6,11 @@ input[type='number'] {
   appearance: textfield;
 }
 
+:host {
+  display: block;
+  width: 100%;
+}
+
 .product-form {
   display: flex;
   flex-direction: column;
@@ -15,6 +20,7 @@ input[type='number'] {
   width: 600px;
   min-height: 400px;
   padding: 16px;
+  box-sizing: border-box;
 
   &__title {
     text-align: center;
@@ -41,4 +47,23 @@ input[type='number'] {
     gap: 1rem;
     margin-top: 1.5rem;
   }
+}
+
+// Garantir que os estilos do Material sejam aplicados corretamente
+:host ::ng-deep {
+  .mat-form-field {
+    width: 100%;
+    
+    &.full-width {
+      width: 100%;
+    }
+  }
+  
+  .mat-form-field-wrapper {
+    padding-bottom: 1.25em;
+  }
+}
+
+.full-width {
+  width: 100% !important;
 }

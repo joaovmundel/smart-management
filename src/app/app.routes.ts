@@ -79,7 +79,7 @@ export const appRoutes: Route[] = [
       {
         path: 'products/create',
         loadComponent: () =>
-          import('@smart-management/stock').then((m) => m.ProductColorSizeComponent),
+          import('@smart-management/stock').then((m) => m.ProductCreationComponent),
       },
       // {
       //   path: 'products/create',
