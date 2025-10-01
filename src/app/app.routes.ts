@@ -77,9 +77,9 @@ export const appRoutes: Route[] = [
           import('@smart-management/admin').then((m) => m.UserFormComponent),
       },
       {
-        path: 'products/create',
+        path: 'products',
         loadComponent: () =>
-          import('@smart-management/stock').then((m) => m.ProductCreationComponent),
+          import('@smart-management/stock').then((m) => m.ProductListComponent),
       },
       // {
       //   path: 'products/create',

@@ -1,3 +1,94 @@
+@use 'src/styles/variables' as *;
+
+:host {
+  width: 100%;
+}
+
+.product-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background-color: $background-light;
+  margin: 0 auto;
+  padding: 24px 0 24px 0;
+
+  .product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &__title {
+      font-size: 24px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .full-width {
+      width: 100%;
+    }
+
+    &__fields {
+      display: flex;
+      gap: 16px;
+    }
+
+    &__form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      @media (max-width: 600px) {
+        flex-direction: column;
+      }
+    }
+
+    .category-field-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+
+      .category-select {
+        flex: 1;
+      }
+
+      .manage-categories-button {
+        margin-top: 8px;
+        color: #666;
+
+        &:hover {
+          color: #333;
+          background-color: rgba(0, 0, 0, 0.05);
+        }
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+      justify-content: flex-end;
+
+      button {
+        min-width: 120px;
+      }
+    }
+
+    &__description-area {
+      min-height: 78px;
+      max-height: 125px;
+
+      &__textarea {
+        min-height: 24px;
+        height: 24px;
+        max-height: 125px;
+      }
+    }
+  }
+}
+
+// Remove spinner dos inputs numéricos
 input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
@@ -6,64 +97,28 @@ input[type='number'] {
   appearance: textfield;
 }
 
-:host {
-  display: block;
-  width: 100%;
-}
+// Responsividade
+@media (max-width: 768px) {
+  .product-form-container {
+    padding: 16px;
 
-.product-form {
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  border-radius: 16px;
-  gap: 1rem;
-  width: 600px;
-  min-height: 400px;
-  padding: 16px;
-  box-sizing: border-box;
+    .product-form {
+      .form-actions {
+        flex-direction: column;
 
-  &__title {
-    text-align: center;
-    font-size: 32px;
-    font-weight: 600;
-    margin-bottom: 1rem;
-  }
+        button {
+          width: 100%;
+        }
+      }
 
-  &__field-groups {
-    display: flex;
-    gap: 1rem;
-  }
+      .category-field-container {
+        flex-direction: column;
 
-  &__field-group {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 0.5rem;
-  }
-
-  &__actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 1.5rem;
-  }
-}
-
-// Garantir que os estilos do Material sejam aplicados corretamente
-:host ::ng-deep {
-  .mat-form-field {
-    width: 100%;
-    
-    &.full-width {
-      width: 100%;
+        .manage-categories-button {
+          align-self: flex-start;
+          margin-top: 0;
+        }
+      }
     }
   }
-  
-  .mat-form-field-wrapper {
-    padding-bottom: 1.25em;
-  }
-}
-
-.full-width {
-  width: 100% !important;
 }

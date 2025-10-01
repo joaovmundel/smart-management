@@ -3,13 +3,9 @@ import { DropdownItem, NavItem } from '../models/navigation.model';
 export const navbarRoutes: (NavItem | DropdownItem)[] = [
   { isDropdown: false, label: 'Inicio', route: '/home' },
   {
-    isDropdown: true,
+    isDropdown: false,
     label: 'Produtos',
-    routes: [
-      { label: 'Criar', route: '/products/create' }, //TODO: Remove this route
-      { label: 'Produtos existentes', route: '/products' },
-      { label: 'Categorias', route: '/categories' },
-    ],
+    route: '/products',
   },
   {
     isDropdown: true,

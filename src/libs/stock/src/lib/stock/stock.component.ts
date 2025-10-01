@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'lib-stock',
+  selector: 'sm-stock',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './stock.component.html',

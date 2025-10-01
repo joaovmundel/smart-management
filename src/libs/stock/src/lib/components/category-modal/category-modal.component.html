@@ -1,0 +1,103 @@
+<div class="category-modal-container">
+  <div class="category-modal-container__header">
+    <h2 mat-dialog-title>Gerenciar Categorias</h2>
+    <button mat-icon-button (click)="onCancel()" aria-label="Fechar">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="category-modal-content">
+    <!-- Formulário para criar nova categoria -->
+    <div class="create-category-section">
+      <h3>Criar Nova Categoria</h3>
+      <form [formGroup]="categoryForm" class="category-form">
+        <div class="category-form__fields">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Nome da Categoria</mat-label>
+            <input matInput formControlName="name" required />
+            <mat-error *ngIf="categoryForm.get('name')?.hasError('required')">
+              O nome é obrigatório
+            </mat-error>
+            <mat-error *ngIf="categoryForm.get('name')?.hasError('minlength')">
+              O nome deve ter pelo menos 2 caracteres
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Descrição (Opcional)</mat-label>
+            <textarea
+              class="description-textarea"
+              matInput
+              formControlName="description"
+              rows="2"
+            ></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="category-form__actions">
+          <button
+            mat-raised-button
+            color="primary"
+            type="button"
+            (click)="onCreateCategory()"
+            [disabled]="categoryForm.invalid"
+            class="create-button"
+          >
+            <mat-icon>add</mat-icon>
+            Criar Categoria
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Lista de categorias existentes -->
+    <div class="categories-list-section">
+      <h3>Categorias Existentes</h3>
+      <div class="categories-scroll-container">
+        <mat-list *ngIf="categories.length > 0; else noCategories" dense>
+          <mat-list-item
+            *ngFor="let category of categories; trackBy: trackByCategory"
+            class="category-item"
+          >
+            <div class="category-content" matListItemLine>
+              <div class="category-info">
+                <h4>{{ category.name }}</h4>
+                <p *ngIf="category.description && category.description.trim()">
+                  {{ category.description }}
+                </p>
+                <p
+                  *ngIf="!category.description || !category.description.trim()"
+                  class="no-description"
+                >
+                  Sem descrição
+                </p>
+              </div>
+              <button
+                mat-icon-button
+                (click)="onDeleteCategory(category)"
+                class="delete-button"
+                [attr.aria-label]="'Deletar categoria ' + category.name"
+                matTooltip="Excluir categoria"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+
+        <ng-template #noCategories>
+          <div class="no-categories">
+            <mat-icon>folder_open</mat-icon>
+            <p>Nenhuma categoria cadastrada</p>
+            <span>Crie sua primeira categoria acima</span>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="onSave()">Salvar</button>
+  </mat-dialog-actions>
+</div>
