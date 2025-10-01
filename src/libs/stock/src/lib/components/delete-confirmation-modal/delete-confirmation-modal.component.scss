@@ -1,6 +1,7 @@
 .delete-confirmation-container {
   min-width: 350px;
-  
+  padding: 20px;
+
   h2 {
     display: flex;
     align-items: center;
@@ -9,30 +10,31 @@
     font-size: 20px;
     font-weight: 500;
   }
-  
+
   mat-dialog-content {
     padding: 16px 0;
-    
+
     p {
       margin: 0 0 8px 0;
       line-height: 1.5;
-      
+
       &.warning-text {
         color: #666;
         font-size: 14px;
         font-style: italic;
       }
     }
-    
+
     strong {
       font-weight: 600;
     }
   }
-  
+
   mat-dialog-actions {
     padding: 16px 0 0 0;
     margin: 0;
-    
+    justify-content: space-between;
+
     button {
       display: flex;
       align-items: center;
