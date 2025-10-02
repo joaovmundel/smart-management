@@ -86,7 +86,7 @@
           <button
             mat-icon-button
             color="primary"
-            (click)="editUser(user)"
+            (click)="editUser(user); $event.stopPropagation()"
             matTooltip="Editar"
           >
             <mat-icon>edit</mat-icon>
@@ -94,7 +94,7 @@
           <button
             mat-icon-button
             color="warn"
-            (click)="deleteUser(user)"
+            (click)="deleteUser(user); $event.stopPropagation()"
             matTooltip="Deletar"
           >
             <mat-icon>delete</mat-icon>
@@ -102,7 +102,13 @@
         </mat-cell>
       </ng-container>
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      <mat-row 
+        *matRowDef="let user; columns: displayedColumns"
+        class="clickable-row"
+        (click)="viewUserDetails(user)"
+        matTooltip="Clique para ver detalhes"
+        [matTooltipDisabled]="false"
+      ></mat-row>
     </mat-table>
     <ng-template #empty>
       <div class="users-empty">Nenhum usuário encontrado.</div>

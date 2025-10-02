@@ -1,0 +1,60 @@
+<div class="user-details-modal">
+  <div mat-dialog-title class="modal-header">
+    <div class="modal-title">
+      <h2>Detalhes do Usuário</h2>
+    </div>
+    <button
+      mat-icon-button
+      class="close-button"
+      (click)="onClose()"
+      aria-label="Fechar modal"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div mat-dialog-content class="modal-content">
+    <div class="user-info-grid">
+      <div class="info-item">
+        <label class="info-label">ID:</label>
+        <span class="info-value">{{ user.id }}</span>
+      </div>
+
+      <div class="info-item">
+        <label class="info-label">Nome:</label>
+        <span class="info-value">{{ user.name }}</span>
+      </div>
+
+      <div class="info-item">
+        <label class="info-label">Email:</label>
+        <span class="info-value">{{ user.email }}</span>
+      </div>
+
+      <div class="info-item">
+        <label class="info-label">Telefone:</label>
+        <span class="info-value">{{ user.phone }}</span>
+      </div>
+
+      <div class="info-item full-width">
+        <label class="info-label">Empresa:</label>
+        <span class="info-value">{{
+          user.company?.name || 'Não informado'
+        }}</span>
+      </div>
+
+      <div class="info-item">
+        <label class="info-label">Criado em:</label>
+        <span class="info-value">{{ formatDate(user.createdAt) }}</span>
+      </div>
+
+      <div class="info-item full-width" *ngIf="user.registerToken">
+        <label class="info-label">Token de Registro:</label>
+        <span class="info-value token-value">{{ user.registerToken }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div mat-dialog-actions class="modal-actions">
+    <button mat-button (click)="onClose()" color="primary">Fechar</button>
+  </div>
+</div>

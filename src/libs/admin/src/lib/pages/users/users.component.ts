@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { mockedUsers, User } from '@smart-management/shared';
 import { take } from 'rxjs';
 import { ConfirmationModalComponent } from '../../components/confirmation-modal/confirmation-modal.component';
+import { UserDetailsModalComponent } from '../../components/user-details-modal/user-details-modal.component';
 
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -71,6 +72,16 @@ export class UsersComponent {
       if (confirmed) {
         console.log(`Estamos deletando ${user}`)
       }
+    });
+  }
+
+  viewUserDetails(user: User) {
+    this._dialog.open(UserDetailsModalComponent, {
+      width: '600px',
+      maxWidth: '90vw',
+      data: user,
+      autoFocus: false,
+      restoreFocus: false
     });
   }
 

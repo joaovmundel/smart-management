@@ -7,3 +7,6 @@ export * from './lib/pages/user-form/user-form.component';
 export * from './lib/pages/companies/company.component';
 export * from './lib/pages/company-form/company-form.component';
 export * from './lib/pages/company-details/company-details.component';
+
+//Components
+export * from './lib/components/user-details-modal/user-details-modal.component';
