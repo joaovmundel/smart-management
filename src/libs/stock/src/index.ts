@@ -1,7 +1,7 @@
-export * from './lib/stock/stock.component';
 
 //Pages
 export * from './lib/pages/product-list/product-list.component';
+export * from './lib/pages/stock/stock.component';
 
 //Components
 export * from './lib/components/product-form/product-form.component';
