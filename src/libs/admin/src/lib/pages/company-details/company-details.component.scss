@@ -14,7 +14,7 @@
   flex-direction: column;
   align-items: center;
   background-color: $background-primary;
-  padding: 70px;
+  overflow-x: hidden;
   opacity: 100%;
   min-height: 100vh;
 
@@ -26,10 +26,9 @@
     display: flex;
     gap: 24px;
     background-color: #f2f2f0;
-    border-radius: 16px;
     padding: 16px;
     min-width: 600px;
-    width: 60%;
+    width: 100%;
     min-height: 450px;
     max-height: 550px;
   }
@@ -89,18 +88,19 @@
   }
 
   &__employee-list {
-    min-width: 600px;
-    width: 60%;
+    width: 100%;
+    background-color: $background-light;
+    padding: 12px;
 
     h2 {
-      color: white;
-      margin-top: 24px;
+      color: $text-dark;
       margin-bottom: 0;
       font-size: 24px;
     }
     ::ng-deep {
       .users-container {
         padding: 0;
+        background-color: transparent;
       }
     }
   }

@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, inject, OnDestroy, OnInit } from "@angular/core";
 import { MatIconModule } from "@angular/material/icon";
 import { Company, mockCompany } from "@smart-management/shared";
 import { Subject } from "rxjs";
 import { UsersComponent } from "../users/users.component";
+import { TitleService } from "@smart-management/layout";
 
 @Component({
     selector: 'company-details-page',
@@ -13,10 +14,13 @@ import { UsersComponent } from "../users/users.component";
 })
 export class CompanyDetailsComponent implements OnInit, OnDestroy {
     private readonly _destroy$: Subject<void> = new Subject<void>();
+    private readonly _title = inject(TitleService);
+
     company!: Company;
     isLoading = false;
 
     ngOnInit(): void {
+        this._title.setTitle('Visualizando empresa');
         this.loadCompany();
     }
 
