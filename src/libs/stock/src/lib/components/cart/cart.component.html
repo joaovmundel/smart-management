@@ -1,0 +1,118 @@
+<div class="cart-container">
+  <div class="cart-header">
+    <h2 class="cart-title">
+      <mat-icon>shopping_cart</mat-icon>
+      <span>Carrinho de Vendas</span>
+      <span class="cart-badge" *ngIf="totalItems > 0" [matBadge]="totalItems" matBadgeColor="accent"></span>
+    </h2>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <!-- Lista de itens no carrinho -->
+  <div class="cart-body" *ngIf="!isEmpty; else emptyCart">
+    <div class="cart-items">
+      <mat-card class="cart-item" *ngFor="let item of cartItems">
+        <div class="item-info">
+          <div class="item-image" *ngIf="item.product.photoUrl">
+            <img [src]="item.product.photoUrl" [alt]="item.product.name" />
+          </div>
+          <div class="item-image placeholder" *ngIf="!item.product.photoUrl">
+            <mat-icon>inventory_2</mat-icon>
+          </div>
+          
+          <div class="item-details">
+            <h3 class="item-name">{{ item.product.name }}</h3>
+            <p class="item-category" *ngIf="item.product.category">
+              {{ item.product.category.name }}
+            </p>
+            <p class="item-price">
+              {{ item.product.saleValue | currency: 'BRL' }}
+            </p>
+          </div>
+        </div>
+
+        <div class="item-actions">
+          <div class="quantity-controls">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="decrementQuantity(item.product.id)"
+              [disabled]="item.quantity <= 1"
+            >
+              <mat-icon>remove</mat-icon>
+            </button>
+            <span class="quantity-display">{{ item.quantity }}</span>
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="incrementQuantity(item.product.id)"
+            >
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+
+          <div class="item-subtotal">
+            <span class="subtotal-label">Subtotal:</span>
+            <span class="subtotal-value">{{ item.subtotal | currency: 'BRL' }}</span>
+          </div>
+
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="removeProduct(item.product.id)"
+            class="remove-button"
+            matTooltip="Remover item"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </mat-card>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <!-- Resumo do carrinho -->
+    <div class="cart-summary">
+      <div class="summary-row">
+        <span class="summary-label">Total de itens:</span>
+        <span class="summary-value">{{ totalItems }}</span>
+      </div>
+      <div class="summary-row total">
+        <span class="summary-label">Valor Total:</span>
+        <span class="summary-value">{{ totalValue | currency: 'BRL' }}</span>
+      </div>
+    </div>
+
+    <!-- Ações do carrinho -->
+    <div class="cart-actions">
+      <button
+        mat-stroked-button
+        color="warn"
+        (click)="clearCart()"
+        class="clear-button"
+      >
+        <mat-icon>clear</mat-icon>
+        Limpar Carrinho
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="checkout()"
+        class="checkout-button"
+      >
+        <mat-icon>check_circle</mat-icon>
+        Finalizar Venda
+      </button>
+    </div>
+  </div>
+
+  <!-- Estado vazio -->
+  <ng-template #emptyCart>
+    <div class="empty-cart">
+      <mat-icon class="empty-icon">shopping_cart</mat-icon>
+      <p class="empty-message">O carrinho está vazio</p>
+      <p class="empty-hint">Adicione produtos para iniciar uma venda</p>
+    </div>
+  </ng-template>
+</div>
