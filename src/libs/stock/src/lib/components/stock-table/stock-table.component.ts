@@ -87,10 +87,6 @@ export class StockTableComponent implements OnInit, AfterViewInit, OnChanges {
         stockLevel: level,
         progressColor: this.mapLevelToColor(level),
         progressPercentage: (product.currentAmount * 100) / product.maxAmount,
-        stockedValue: product.currentAmount * product.product.grossValue,
-        potentialProfit:
-          product.currentAmount *
-          (product.product.saleValue - product.product.grossValue),
       };
     });
 

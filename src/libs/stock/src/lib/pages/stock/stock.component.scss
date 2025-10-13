@@ -1,5 +1,11 @@
 @import 'src/styles/variables';
 
+.dashboard-cards {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
 .creation-area {
   padding: 20px;
 }

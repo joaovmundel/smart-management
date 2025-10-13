@@ -57,6 +57,8 @@ export const stockedProductsMock: IStockedProduct[] = [
     maxAmount: 100,
     currentAmount: 50,
     totalSales: 200,
+    stockedValue: 999.5,
+    potentialProfit: 500,
   },
   {
     product: productListMock[1],
@@ -64,6 +66,8 @@ export const stockedProductsMock: IStockedProduct[] = [
     maxAmount: 50,
     currentAmount: 20,
     totalSales: 150,
+    stockedValue: 1000,
+    potentialProfit: 500,
   },
   {
     product: productListMock[2],
@@ -71,5 +75,7 @@ export const stockedProductsMock: IStockedProduct[] = [
     maxAmount: 30,
     currentAmount: 12,
     totalSales: 80,
+    stockedValue: 960,
+    potentialProfit: 480,
   },
 ];

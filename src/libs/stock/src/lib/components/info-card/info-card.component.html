@@ -1,0 +1,22 @@
+<mat-card class="sm-info-card" appearance="outlined" [class]="'card-' + color">
+  <mat-card-header>
+    <div class="card-icon" *ngIf="icon">
+      <mat-icon [class]="'icon-' + color">{{ icon }}</mat-icon>
+    </div>
+    <div class="card-header-text">
+      <mat-card-title *ngIf="title">{{ title }}</mat-card-title>
+      <mat-card-subtitle *ngIf="subtitle">{{ subtitle }}</mat-card-subtitle>
+    </div>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <div class="card-value" *ngIf="value">
+      <span class="value">{{ value }}</span>
+      <span class="trend" *ngIf="trendValue" [class]="'trend-' + trend">
+        <mat-icon>{{ trend === 'up' ? 'trending_up' : trend === 'down' ? 'trending_down' : 'trending_flat' }}</mat-icon>
+        {{ trendValue }}
+      </span>
+    </div>
+    <p *ngIf="content">{{ content }}</p>
+  </mat-card-content>
+</mat-card>

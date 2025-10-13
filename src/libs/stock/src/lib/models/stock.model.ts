@@ -1,17 +1,17 @@
-import { Product } from "./product.model";
+import { Product } from './product.model';
 
 export interface IStockedProduct {
-    product: Product;
-    minAmount: number;
-    maxAmount: number;
-    currentAmount: number;
-    totalSales: number;
+  product: Product;
+  minAmount: number;
+  maxAmount: number;
+  currentAmount: number;
+  totalSales: number;
+  stockedValue?: number;
+  potentialProfit?: number;
 }
 
 export interface IStockedProductWithMetadata extends IStockedProduct {
-    stockLevel?: 'critical' | 'attention' | 'recommended' | 'excess';
-    progressColor?: 'warn' | 'accent' | 'primary';
-    progressPercentage?: number;
-    stockedValue?: number;
-    potentialProfit?: number;
+  stockLevel?: 'critical' | 'attention' | 'recommended' | 'excess';
+  progressColor?: 'warn' | 'accent' | 'primary';
+  progressPercentage?: number;
 }

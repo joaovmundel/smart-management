@@ -1,28 +1,89 @@
 <div class="stock-page">
-    <!-- Painel Expansível para Formulário de Criação -->
-    <div class="creation-area">
+  <div class="dashboard-cards">
+    <sm-info-card
+      title="Valor em Estoque"
+      [value]="stockedValue | currency : 'BRL'"
+      icon="inventory_2"
+      color="primary"
+    >
+    </sm-info-card>
 
-        <mat-expansion-panel [expanded]="isFormExpanded" (expandedChange)="isFormExpanded = $event"
-            class="stock-creation-panel">
+    <sm-info-card
+      title="Lucro Potencial"
+      [value]="potentialProfit | currency : 'BRL'"
+      icon="trending_up"
+      color="success"
+    >
+    </sm-info-card>
 
-            <mat-expansion-panel-header>
-                <mat-panel-title class="stock-creation-panel__title">
-                    <mat-icon>add_circle</mat-icon>
-                    Criar Novo Produto
-                </mat-panel-title>
-                <mat-panel-description>
-                    {{ isFormExpanded ? 'Preencha os dados do produto' : 'Clique para adicionar um novo produto' }}
-                </mat-panel-description>
-            </mat-expansion-panel-header>
+    <sm-info-card
+      title="Produtos Críticos"
+      [value]="criticalProducts"
+      icon="warning"
+      color="warn"
+      subtitle="Reposição urgente"
+    >
+    </sm-info-card>
 
-            <div class="stock-creation">
-                <!-- <sm-stock-form (save)="onSave($event)" (cancelForm)="onCancel()"></sm-stock-form> -->
-            </div>
-        </mat-expansion-panel>
-    </div>
+    <sm-info-card
+      title="Produtos em Atenção"
+      [value]="attentionProducts"
+      icon="error_outline"
+      color="accent"
+      subtitle="Planejar reposição"
+    >
+    </sm-info-card>
 
-    <!-- Tabela de produtos -->
-    <!-- <sm-stock-table [stocks]="stocks" (editstock)="onEditstock($event)" -->
-    <!-- (deletestock)="onDeletestock($event)"></sm-stock-table> -->
-     <sm-stock-table [products]="products" (editProduct)="onEditProduct($event)" (deleteProduct)="onDeleteProduct($event)"></sm-stock-table>
+    <sm-info-card
+      title="Produtos em Excesso"
+      [value]="excessProducts"
+      icon="inventory"
+      color="info"
+      subtitle="Acima do máximo"
+    >
+    </sm-info-card>
+
+    <sm-info-card
+      title="Total de Produtos"
+      [value]="totalProducts"
+      icon="category"
+      color="primary"
+    >
+    </sm-info-card>
+  </div>
+  <!-- Painel Expansível para Formulário de Criação -->
+  <div class="creation-area">
+    <mat-expansion-panel
+      [expanded]="isFormExpanded"
+      (expandedChange)="isFormExpanded = $event"
+      class="stock-creation-panel"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title class="stock-creation-panel__title">
+          <mat-icon>add_circle</mat-icon>
+          Criar Novo Produto
+        </mat-panel-title>
+        <mat-panel-description>
+          {{
+            isFormExpanded
+              ? 'Preencha os dados do produto'
+              : 'Clique para adicionar um novo produto'
+          }}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="stock-creation">
+        <!-- <sm-stock-form (save)="onSave($event)" (cancelForm)="onCancel()"></sm-stock-form> -->
+      </div>
+    </mat-expansion-panel>
+  </div>
+
+  <!-- Tabela de produtos -->
+  <!-- <sm-stock-table [stocks]="stocks" (editstock)="onEditstock($event)" -->
+  <!-- (deletestock)="onDeletestock($event)"></sm-stock-table> -->
+  <sm-stock-table
+    [products]="products"
+    (editProduct)="onEditProduct($event)"
+    (deleteProduct)="onDeleteProduct($event)"
+  ></sm-stock-table>
 </div>
