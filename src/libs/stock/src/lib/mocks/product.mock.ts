@@ -48,6 +48,18 @@ export const productListMock: Product[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
+  {
+    id: '4',
+    name: 'Product 4',
+    description: 'Description for Product 4',
+    photoUrl:
+      'https://images.vexels.com/media/users/3/153096/isolated/preview/9f420eda3be1ce9b846edc9cba4bc84a-icone-de-traco-de-camiseta-com-gola-redonda.png',
+    saleValue: 49.9,
+    grossValue: 29.9,
+    category: categoryMock,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
 ];
 
 export const stockedProductsMock: IStockedProduct[] = [
@@ -55,7 +67,7 @@ export const stockedProductsMock: IStockedProduct[] = [
     product: productMock,
     minAmount: 10,
     maxAmount: 100,
-    currentAmount: 50,
+    currentAmount: 52,
     totalSales: 200,
     stockedValue: 999.5,
     potentialProfit: 500,
@@ -64,7 +76,7 @@ export const stockedProductsMock: IStockedProduct[] = [
     product: productListMock[1],
     minAmount: 5,
     maxAmount: 50,
-    currentAmount: 20,
+    currentAmount: 5,
     totalSales: 150,
     stockedValue: 1000,
     potentialProfit: 500,
@@ -73,9 +85,18 @@ export const stockedProductsMock: IStockedProduct[] = [
     product: productListMock[2],
     minAmount: 10,
     maxAmount: 30,
-    currentAmount: 12,
+    currentAmount: 31,
     totalSales: 80,
     stockedValue: 960,
     potentialProfit: 480,
   },
+  {
+    product: productListMock[3],
+    minAmount: 20,
+    maxAmount: 80,
+    currentAmount: 25,
+    totalSales: 120,
+    stockedValue: 747.5,
+    potentialProfit: 300,
+  }
 ];

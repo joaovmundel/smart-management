@@ -107,7 +107,7 @@ export class StockTableComponent implements OnInit, AfterViewInit, OnChanges {
     } else if (currentAmount <= maxAmount) {
       return 'recommended';
     } else {
-      return 'excess';
+      return 'critical';
     }
   }
 

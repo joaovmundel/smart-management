@@ -38,14 +38,23 @@ export class StockComponent implements OnInit {
 
   calculateTotals(): void {
     for (const stockedProduct of this.products) {
+      const range = stockedProduct.maxAmount - stockedProduct.minAmount;
+      const attentionThreshold = stockedProduct.minAmount + range * 0.3;
+
       this.stockedValue += stockedProduct.stockedValue ?? 0;
       this.potentialProfit += stockedProduct.potentialProfit ?? 0;
 
+      this.totalProducts += stockedProduct.currentAmount;
       if (stockedProduct.currentAmount <= stockedProduct.minAmount) {
         this.criticalProducts++;
       }
-      if (stockedProduct.currentAmount > stockedProduct.minAmount && stockedProduct.currentAmount <= (stockedProduct.minAmount + ((stockedProduct.maxAmount - stockedProduct.minAmount) / 2))) {
+
+      if (stockedProduct.currentAmount <= attentionThreshold && stockedProduct.currentAmount > stockedProduct.minAmount) {
         this.attentionProducts++;
+      }
+
+      if (stockedProduct.currentAmount > stockedProduct.maxAmount) {
+        this.excessProducts++;
       }
     }
   }

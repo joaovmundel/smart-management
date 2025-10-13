@@ -14,7 +14,7 @@ export class InfoCardComponent {
   @Input() title?: string;
   @Input() subtitle?: string;
   @Input() content?: string;
-  @Input() value?: string | number | undefined | null;
+  @Input() value?: string | number;
   @Input() icon?: string;
   @Input() color?: 'primary' | 'accent' | 'warn' | 'success' | 'info';
   @Input() trend?: 'up' | 'down' | 'neutral';

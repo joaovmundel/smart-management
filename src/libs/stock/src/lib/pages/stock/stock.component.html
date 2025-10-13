@@ -2,7 +2,7 @@
   <div class="dashboard-cards">
     <sm-info-card
       title="Valor em Estoque"
-      [value]="stockedValue | currency : 'BRL'"
+      [value]="(stockedValue | currency : 'BRL') || 0"
       icon="inventory_2"
       color="primary"
     >
@@ -10,7 +10,7 @@
 
     <sm-info-card
       title="Lucro Potencial"
-      [value]="potentialProfit | currency : 'BRL'"
+      [value]="(potentialProfit | currency : 'BRL') || 0"
       icon="trending_up"
       color="success"
     >
@@ -18,7 +18,7 @@
 
     <sm-info-card
       title="Produtos Críticos"
-      [value]="criticalProducts"
+      [value]="criticalProducts || 0"
       icon="warning"
       color="warn"
       subtitle="Reposição urgente"
