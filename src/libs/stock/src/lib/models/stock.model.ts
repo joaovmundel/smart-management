@@ -1,10 +1,17 @@
 import { Product } from "./product.model";
 
-export interface IStock {
+export interface IStockedProduct {
     product: Product;
     minAmount: number;
     maxAmount: number;
     currentAmount: number;
     totalSales: number;
-    
+}
+
+export interface IStockedProductWithMetadata extends IStockedProduct {
+    stockLevel?: 'critical' | 'attention' | 'recommended' | 'excess';
+    progressColor?: 'warn' | 'accent' | 'primary';
+    progressPercentage?: number;
+    stockedValue?: number;
+    potentialProfit?: number;
 }

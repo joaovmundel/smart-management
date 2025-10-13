@@ -1,0 +1,166 @@
+<div class="stock-table-container">
+  <!-- Barra de busca -->
+  <div class="search-bar">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Buscar produto</mat-label>
+      <input
+        matInput
+        [(ngModel)]="searchTerm"
+        (input)="onSearch()"
+        placeholder="Digite o nome do produto..."
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- Tabela de produtos -->
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" class="stock-table">
+      <!-- Coluna da Foto -->
+      <ng-container matColumnDef="photo">
+        <th mat-header-cell *matHeaderCellDef>Foto</th>
+        <td mat-cell *matCellDef="let stockedProduct" class="photo-cell">
+          <div class="product-photo">
+            <img
+              *ngIf="stockedProduct?.product?.photoUrl; else noPhoto"
+              [src]="stockedProduct?.product?.photoUrl"
+              [alt]="stockedProduct?.product?.name"
+              class="product-image"
+            />
+            <ng-template #noPhoto>
+              <div class="no-photo">
+                <mat-icon>image</mat-icon>
+              </div>
+            </ng-template>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Coluna do Nome -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <td mat-cell *matCellDef="let stockedProduct" class="name-cell">
+          <div class="product-name">{{ stockedProduct?.product?.name }}</div>
+        </td>
+      </ng-container>
+
+      <!-- Coluna das Vendas Totais -->
+      <ng-container matColumnDef="totalSales">
+        <th mat-header-cell *matHeaderCellDef>Vendas Totais</th>
+        <td mat-cell *matCellDef="let stockedProduct" class="total-sales-cell">
+          <div class="product-total-sales">
+            {{ stockedProduct?.totalSales | number }}
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Coluna do Valor parado em estoque -->
+      <ng-container matColumnDef="stockedValue">
+        <th mat-header-cell *matHeaderCellDef>Valor em Estoque</th>
+        <td
+          mat-cell
+          *matCellDef="let stockedProduct"
+          class="stocked-value-cell"
+        >
+          <div class="product-stocked-value">
+            {{
+              stockedProduct?.stockedValue
+                | currency : 'BRL' : 'symbol' : '1.2-2' : 'pt-BR'
+            }}
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Coluna do Lucro Potencial -->
+      <ng-container matColumnDef="potentialProfit">
+        <th mat-header-cell *matHeaderCellDef>Lucro Potencial</th>
+        <td
+          mat-cell
+          *matCellDef="let stockedProduct"
+          class="stocked-value-cell"
+        >
+          <div class="product-stocked-value">
+            {{
+              stockedProduct?.potentialProfit
+                | currency : 'BRL' : 'symbol' : '1.2-2' : 'pt-BR'
+            }}
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Coluna da Quantidade mínima -->
+      <ng-container matColumnDef="minAmount">
+        <th mat-header-cell *matHeaderCellDef>Quantidade Mínima</th>
+        <td mat-cell *matCellDef="let stockedProduct" class="min-amount-cell">
+          {{ stockedProduct?.minAmount | number }}
+        </td>
+      </ng-container>
+
+      <!-- Coluna da Quantidade Máxima -->
+      <ng-container matColumnDef="maxAmount">
+        <th mat-header-cell *matHeaderCellDef>Quantidade Máxima</th>
+        <td mat-cell *matCellDef="let stockedProduct" class="max-amount-cell">
+          {{ stockedProduct?.maxAmount | number }}
+        </td>
+      </ng-container>
+
+      <!-- Coluna da barrinha de nível do estoque -->
+      <ng-container matColumnDef="currentAmount">
+        <th mat-header-cell *matHeaderCellDef>Nível de Estoque</th>
+        <td mat-cell *matCellDef="let stockedProduct" class="stock-level-cell">
+          <div class="stock-level-cell__progress">
+            <mat-progress-bar
+              mode="determinate"
+              [value]="stockedProduct.progressPercentage"
+              [color]="stockedProduct.progressColor"
+            ></mat-progress-bar>
+            <span class="stock-level-cell__amount">
+              {{ stockedProduct?.currentAmount }} /
+              {{ stockedProduct?.maxAmount }}
+            </span>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Coluna das Ações -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="actions-header">Ações</th>
+        <td mat-cell *matCellDef="let product" class="actions-cell">
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="onEdit(product)"
+            matTooltip="Editar produto"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="onDelete(product)"
+            matTooltip="Excluir produto"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <!-- Mensagem quando não há produtos -->
+    <div *ngIf="dataSource.data.length === 0" class="no-data">
+      <mat-icon>inventory_2</mat-icon>
+      <p>Nenhum produto encontrado</p>
+    </div>
+  </div>
+
+  <!-- Paginação -->
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    aria-label="Selecione a página dos produtos"
+  >
+  </mat-paginator>
+</div>

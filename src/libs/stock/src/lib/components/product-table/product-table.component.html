@@ -65,7 +65,7 @@
       <ng-container matColumnDef="saleValue">
         <th mat-header-cell *matHeaderCellDef>Valor de Venda</th>
         <td mat-cell *matCellDef="let product" class="value-cell">
-          {{ formatCurrency(product.saleValue) }}
+          {{ product.saleValue | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
         </td>
       </ng-container>
 
@@ -73,7 +73,7 @@
       <ng-container matColumnDef="grossValue">
         <th mat-header-cell *matHeaderCellDef>Valor Bruto</th>
         <td mat-cell *matCellDef="let product" class="value-cell">
-          {{ formatCurrency(product.grossValue) }}
+          {{ product.grossValue | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
         </td>
       </ng-container>
 
