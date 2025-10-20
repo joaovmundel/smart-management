@@ -7,13 +7,13 @@
         <input
           matInput
           [(ngModel)]="searchTerm"
-          (input)="onSearch()"
+          (input)="applyFilter()"
           placeholder="Digite o nome do produto..."
         />
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
-    <button mat-flat-button class="toggle-form-button">
+    <button mat-flat-button class="toggle-form-button" (click)="goToStockForm()">
       <mat-icon>{{ 'add' }}</mat-icon>
       <span>{{ 'Adicionar produto' }}</span>
     </button>

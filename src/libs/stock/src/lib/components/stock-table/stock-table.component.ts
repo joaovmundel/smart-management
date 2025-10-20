@@ -22,6 +22,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { IStockedProduct } from '../../models/stock.model';
 import { DeleteConfirmationModalComponent } from '../delete-confirmation-modal/delete-confirmation-modal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sm-stock-table',
@@ -47,6 +48,7 @@ export class StockTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Output() deleteProduct = new EventEmitter<string>();
 
   private readonly _dialog = inject(MatDialog);
+  private readonly _router = inject(Router);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -66,25 +68,28 @@ export class StockTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   searchTerm = '';
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.updateDataSource();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     // Configurar o filtro customizado para buscar apenas no nome do produto
-    this.dataSource.filterPredicate = (data: IStockedProduct, filter: string) => {
+    this.dataSource.filterPredicate = (
+      data: IStockedProduct,
+      filter: string
+    ) => {
       const productName = data.product?.name?.toLowerCase() || '';
       return productName.includes(filter);
     };
   }
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     this.updateDataSource();
     this.applyFilter();
   }
 
-  private updateDataSource() {
+  private updateDataSource(): void {
     const enrichedProducts = this.products.map((product) => {
       const level = this.calculateStockLevel(product);
       return {
@@ -126,19 +131,15 @@ export class StockTableComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  applyFilter() {
+  applyFilter(): void {
     this.dataSource.filter = this.searchTerm.trim().toLowerCase();
   }
 
-  onSearch() {
-    this.applyFilter();
-  }
-
-  onEdit(product: IStockedProduct) {
+  onEdit(product: IStockedProduct): void {
     this.editProduct.emit(product);
   }
 
-  onDelete(stockedProduct: IStockedProduct) {
+  onDelete(stockedProduct: IStockedProduct): void {
     const dialogRef = this._dialog.open(DeleteConfirmationModalComponent, {
       width: '400px',
       data: {
@@ -153,6 +154,10 @@ export class StockTableComponent implements OnInit, AfterViewInit, OnChanges {
         this.deleteProduct.emit(stockedProduct.product.id);
       }
     });
+  }
+
+  goToStockForm(): void {
+    this._router.navigate(['/stock/create']);
   }
 
   formatCurrency(value: number): string {

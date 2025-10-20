@@ -1,0 +1,9 @@
+@use 'src/styles/variables' as *;
+
+.stock-form {
+  width: 100vw;
+  max-width: 100%;
+  min-height: calc(100vh - 61px);
+  max-height: 100%;
+  background-color: $background-light;
+}

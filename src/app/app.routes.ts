@@ -59,7 +59,9 @@ export const appRoutes: Route[] = [
       {
         path: 'admin/companies/:id',
         loadComponent: () =>
-          import('@smart-management/admin').then((m) => m.CompanyDetailsComponent),
+          import('@smart-management/admin').then(
+            (m) => m.CompanyDetailsComponent
+          ),
       },
       {
         path: 'admin/users',
@@ -85,7 +87,12 @@ export const appRoutes: Route[] = [
         path: 'stock',
         loadComponent: () =>
           import('@smart-management/stock').then((m) => m.StockComponent),
-      }
+      },
+      {
+        path: 'stock/create',
+        loadComponent: () =>
+          import('@smart-management/stock').then((m) => m.StockFormComponent),
+      },
     ],
   },
   {
