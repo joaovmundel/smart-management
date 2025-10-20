@@ -1,16 +1,22 @@
 <div class="stock-table-container">
   <!-- Barra de busca -->
-  <div class="search-bar">
-    <mat-form-field appearance="outline" class="search-field">
-      <mat-label>Buscar produto</mat-label>
-      <input
-        matInput
-        [(ngModel)]="searchTerm"
-        (input)="onSearch()"
-        placeholder="Digite o nome do produto..."
-      />
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
+  <div class="table-header__actions">
+    <div class="search-bar">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Buscar produto</mat-label>
+        <input
+          matInput
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+          placeholder="Digite o nome do produto..."
+        />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+    <button mat-flat-button class="toggle-form-button">
+      <mat-icon>{{ 'add' }}</mat-icon>
+      <span>{{ 'Adicionar produto' }}</span>
+    </button>
   </div>
 
   <!-- Tabela de produtos -->

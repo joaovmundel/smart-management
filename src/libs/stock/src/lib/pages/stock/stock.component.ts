@@ -24,6 +24,7 @@ import { IStockedProduct } from '../../models/stock.model';
 })
 export class StockComponent implements OnInit {
   products: IStockedProduct[] = stockedProductsMock;
+  isSmallScreen = false;
 
   stockedValue = 0;
   potentialProfit = 0;
@@ -32,10 +33,11 @@ export class StockComponent implements OnInit {
   excessProducts = 0;
   totalProducts = 0;
 
-  isFormExpanded = false;
+  stockInfo = [];
 
   ngOnInit(): void {
     this.calculateTotals();
+    this.loadStockInfoValues();
   }
 
   calculateTotals(): void {
@@ -51,7 +53,10 @@ export class StockComponent implements OnInit {
         this.criticalProducts++;
       }
 
-      if (stockedProduct.currentAmount <= attentionThreshold && stockedProduct.currentAmount > stockedProduct.minAmount) {
+      if (
+        stockedProduct.currentAmount <= attentionThreshold &&
+        stockedProduct.currentAmount > stockedProduct.minAmount
+      ) {
         this.attentionProducts++;
       }
 
@@ -61,9 +66,31 @@ export class StockComponent implements OnInit {
     }
   }
 
-  onToggleForm(): void {
-    this.isFormExpanded = !this.isFormExpanded;
+  loadStockInfoValues(): void {
+    this.stockInfo = [
+      {
+        label: 'Produtos em estado de atenção',
+        value: this.attentionProducts,
+        color: '#ffc107',
+      },
+      {
+        label: 'Produtos em estado crítico',
+        value: this.criticalProducts,
+        color: '#f44336',
+      },
+      {
+        label: 'Produtos em excesso',
+        value: this.excessProducts,
+        color: '#2196f3',
+      },
+      {
+        label: 'Produtos estocados',
+        value: this.totalProducts,
+        color: 'green',
+      },
+    ] as never;
   }
+
 
   onEditProduct(product: IStockedProduct): void {
     // Lógica para editar o produto

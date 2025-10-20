@@ -1,94 +1,81 @@
 <div class="stock-page">
   <div class="dashboard-cards">
-    <sm-simple-info-card title="Informações do estoque" [items]="
-      [
-        { label: 'Produtos em estado de atenção', value: attentionProducts, color: '#ffc107' },
-        { label: 'Produtos em estado crítico', value: criticalProducts, color: '#f44336' },
-        { label: 'Produtos em excesso', value: excessProducts, color: '#2196f3' },
-        { label: 'Produtos estocados', value: totalProducts, color: 'green' }
-      ]
-    "></sm-simple-info-card>
-    <div class="currency-cards">
+    <ng-container *ngIf="isSmallScreen">
+      <sm-simple-info-card
+        title="Informações do estoque"
+        [items]="stockInfo"
+      ></sm-simple-info-card>
+      <div class="currency-cards">
+        <sm-info-card
+          title="Valor em Estoque"
+          [value]="(stockedValue | currency : 'BRL') || 0"
+          icon="inventory_2"
+          color="primary"
+        >
+        </sm-info-card>
+
+        <sm-info-card
+          title="Lucro Potencial"
+          [value]="(potentialProfit | currency : 'BRL') || 0"
+          icon="trending_up"
+          color="success"
+        >
+        </sm-info-card>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!isSmallScreen">
+      <sm-info-card
+        title="Valor em Estoque"
+        [value]="(stockedValue | currency : 'BRL') || 0"
+        icon="inventory_2"
+        color="primary"
+      >
+      </sm-info-card>
 
       <sm-info-card
-      title="Valor em Estoque"
-      [value]="(stockedValue | currency : 'BRL') || 0"
-      icon="inventory_2"
-      color="primary"
+        title="Lucro Potencial"
+        [value]="(potentialProfit | currency : 'BRL') || 0"
+        icon="trending_up"
+        color="success"
       >
-    </sm-info-card>
-    
-    <sm-info-card
-    title="Lucro Potencial"
-    [value]="(potentialProfit | currency : 'BRL') || 0"
-    icon="trending_up"
-    color="success"
-    >
-  </sm-info-card>
-</div>
-<!-- 
-    <sm-info-card
-      title="Produtos Críticos"
-      [value]="criticalProducts || 0"
-      icon="warning"
-      color="warn"
-      subtitle="Reposição urgente"
-    >
-    </sm-info-card>
+      </sm-info-card>
+      <sm-info-card
+        title="Produtos em estado crítico"
+        [value]="criticalProducts || 0"
+        icon="warning"
+        color="warn"
+      >
+      </sm-info-card>
 
-    <sm-info-card
-      title="Produtos em Atenção"
-      [value]="attentionProducts"
-      icon="error_outline"
-      color="accent"
-      subtitle="Planejar reposição"
-    >
-    </sm-info-card>
+      <sm-info-card
+        title="Produtos em atenção"
+        [value]="attentionProducts"
+        icon="error_outline"
+        color="accent"
+      >
+      </sm-info-card>
+      <sm-info-card
+        title="Produtos com excesso"
+        [value]="excessProducts"
+        icon="inventory"
+        color="info"
+      >
+      </sm-info-card>
 
-    <sm-info-card
-      title="Produtos em Excesso"
-      [value]="excessProducts"
-      icon="inventory"
-      color="info"
-      subtitle="Acima do máximo"
-    >
-    </sm-info-card>
-
-    <sm-info-card
-      title="Total de Produtos"
-      [value]="totalProducts"
-      icon="category"
-      color="primary"
-    >
-    </sm-info-card> -->
-  </div>
-  <!-- Painel Expansível para Formulário de Criação -->
-  <div class="creation-area">
-    <mat-expansion-panel [expanded]="isFormExpanded" (expandedChange)="isFormExpanded = $event"
-      class="stock-creation-panel">
-      <mat-expansion-panel-header>
-        <mat-panel-title class="stock-creation-panel__title">
-          <mat-icon>add_circle</mat-icon>
-          Criar Novo Produto
-        </mat-panel-title>
-        <mat-panel-description>
-          {{
-          isFormExpanded
-          ? 'Preencha os dados do produto'
-          : 'Clique para adicionar um novo produto'
-          }}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-
-      <div class="stock-creation">
-        <!-- <sm-stock-form (save)="onSave($event)" (cancelForm)="onCancel()"></sm-stock-form> -->
-      </div>
-    </mat-expansion-panel>
+      <sm-info-card
+        title="Total de produtos estocados"
+        [value]="totalProducts"
+        icon="category"
+        color="primary"
+      >
+      </sm-info-card>
+    </ng-container>
   </div>
 
-  <!-- Tabela de produtos -->
-  <!-- <sm-stock-table [stocks]="stocks" (editstock)="onEditstock($event)" -->
-  <!-- (deletestock)="onDeletestock($event)"></sm-stock-table> -->
-  <sm-stock-table [products]="products" (editProduct)="onEditProduct($event)"
-    (deleteProduct)="onDeleteProduct($event)"></sm-stock-table>
+  <!-- Tabela de estoque -->
+  <sm-stock-table
+    [products]="products"
+    (editProduct)="onEditProduct($event)"
+    (deleteProduct)="onDeleteProduct($event)"
+  ></sm-stock-table>
 </div>

@@ -72,6 +72,11 @@ export class StockTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    // Configurar o filtro customizado para buscar apenas no nome do produto
+    this.dataSource.filterPredicate = (data: IStockedProduct, filter: string) => {
+      const productName = data.product?.name?.toLowerCase() || '';
+      return productName.includes(filter);
+    };
   }
 
   ngOnChanges() {
