@@ -8,6 +8,12 @@
   margin-bottom: 20px;
 }
 
+.currency-cards{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .creation-area {
   padding: 20px;
 }

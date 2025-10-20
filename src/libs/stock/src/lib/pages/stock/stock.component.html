@@ -1,21 +1,32 @@
 <div class="stock-page">
   <div class="dashboard-cards">
-    <sm-info-card
+    <sm-simple-info-card title="Informações do estoque" [items]="
+      [
+        { label: 'Produtos em estado de atenção', value: attentionProducts, color: '#ffc107' },
+        { label: 'Produtos em estado crítico', value: criticalProducts, color: '#f44336' },
+        { label: 'Produtos em excesso', value: excessProducts, color: '#2196f3' },
+        { label: 'Produtos estocados', value: totalProducts, color: 'green' }
+      ]
+    "></sm-simple-info-card>
+    <div class="currency-cards">
+
+      <sm-info-card
       title="Valor em Estoque"
       [value]="(stockedValue | currency : 'BRL') || 0"
       icon="inventory_2"
       color="primary"
-    >
+      >
     </sm-info-card>
-
+    
     <sm-info-card
-      title="Lucro Potencial"
-      [value]="(potentialProfit | currency : 'BRL') || 0"
-      icon="trending_up"
-      color="success"
+    title="Lucro Potencial"
+    [value]="(potentialProfit | currency : 'BRL') || 0"
+    icon="trending_up"
+    color="success"
     >
-    </sm-info-card>
-
+  </sm-info-card>
+</div>
+<!-- 
     <sm-info-card
       title="Produtos Críticos"
       [value]="criticalProducts || 0"
@@ -49,15 +60,12 @@
       icon="category"
       color="primary"
     >
-    </sm-info-card>
+    </sm-info-card> -->
   </div>
   <!-- Painel Expansível para Formulário de Criação -->
   <div class="creation-area">
-    <mat-expansion-panel
-      [expanded]="isFormExpanded"
-      (expandedChange)="isFormExpanded = $event"
-      class="stock-creation-panel"
-    >
+    <mat-expansion-panel [expanded]="isFormExpanded" (expandedChange)="isFormExpanded = $event"
+      class="stock-creation-panel">
       <mat-expansion-panel-header>
         <mat-panel-title class="stock-creation-panel__title">
           <mat-icon>add_circle</mat-icon>
@@ -65,9 +73,9 @@
         </mat-panel-title>
         <mat-panel-description>
           {{
-            isFormExpanded
-              ? 'Preencha os dados do produto'
-              : 'Clique para adicionar um novo produto'
+          isFormExpanded
+          ? 'Preencha os dados do produto'
+          : 'Clique para adicionar um novo produto'
           }}
         </mat-panel-description>
       </mat-expansion-panel-header>
@@ -81,9 +89,6 @@
   <!-- Tabela de produtos -->
   <!-- <sm-stock-table [stocks]="stocks" (editstock)="onEditstock($event)" -->
   <!-- (deletestock)="onDeletestock($event)"></sm-stock-table> -->
-  <sm-stock-table
-    [products]="products"
-    (editProduct)="onEditProduct($event)"
-    (deleteProduct)="onDeleteProduct($event)"
-  ></sm-stock-table>
+  <sm-stock-table [products]="products" (editProduct)="onEditProduct($event)"
+    (deleteProduct)="onDeleteProduct($event)"></sm-stock-table>
 </div>

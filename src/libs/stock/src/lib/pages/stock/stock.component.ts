@@ -4,6 +4,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { InfoCardComponent } from '../../components/info-card/info-card.component';
 import { StockTableComponent } from '../../components/stock-table/stock-table.component';
+import { SimpleInfoCardComponent } from '../../components/simple-info-card/simple-info-card.component';
 import { stockedProductsMock } from '../../mocks/product.mock';
 import { IStockedProduct } from '../../models/stock.model';
 
@@ -18,6 +19,7 @@ import { IStockedProduct } from '../../models/stock.model';
     MatIconModule,
     StockTableComponent,
     InfoCardComponent,
+    SimpleInfoCardComponent,
   ],
 })
 export class StockComponent implements OnInit {

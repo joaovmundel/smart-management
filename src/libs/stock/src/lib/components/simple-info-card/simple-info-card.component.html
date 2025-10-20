@@ -1,0 +1,17 @@
+<section class="sm-card" [class.compact]="compact">
+	<header class="sm-card__header">
+		<div class="sm-card__title">{{ title }}</div>
+		<div class="sm-card__subtitle" *ngIf="subtitle">{{ subtitle }}</div>
+	</header>
+
+	<div class="sm-card__body">
+		<ul class="sm-card__list">
+			<li *ngFor="let it of items" class="sm-card__item">
+				<span class="dot" [ngStyle]="{'background': (it.color || '#9aa0a6')}" aria-hidden="true"></span>
+				<span class="label">{{ it.label }}</span>
+				<span class="spacer"></span>
+				<span class="value" [class.small]="it.small">{{ it.value ?? '' }}</span>
+			</li>
+		</ul>
+	</div>
+</section>

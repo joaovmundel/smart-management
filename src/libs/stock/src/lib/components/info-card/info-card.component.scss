@@ -1,6 +1,5 @@
 .sm-info-card {
   width: 300px;
-  height: 100%;
 
   mat-card-header {
     display: flex;
@@ -41,7 +40,7 @@
     gap: 0.5rem;
 
     .value {
-      font-size: 2rem;
+      font-size: 1rem;
       font-weight: 700;
       line-height: 1;
     }
