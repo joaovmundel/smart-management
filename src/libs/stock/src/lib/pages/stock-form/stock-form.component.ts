@@ -1,24 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, map, startWith } from 'rxjs';
-import { Product } from '../../models/product.model';
-import { productListMock } from '../../mocks/product.mock';
-import { IStockedProduct } from '../../models/stock.model';
+import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { map, Observable, startWith, Subject, takeUntil } from 'rxjs';
+import { productListMock } from '../../mocks/product.mock';
+import { Product } from '../../models/product.model';
+import { IStockedProduct } from '../../models/stock.model';
 
 @Component({
   selector: 'sm-stock-form',
@@ -37,27 +36,32 @@ import { Router } from '@angular/router';
     MatSnackBarModule,
   ],
 })
-export class StockFormComponent implements OnInit {
+export class StockFormComponent implements OnInit, OnDestroy {
+  private readonly _router = inject(Router);
+  private readonly _destroy$ = new Subject<void>;
   private formBuilder = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
-  private readonly _router = inject(Router);
+
 
   stockForm!: FormGroup;
   products: Product[] = productListMock;
   filteredProducts!: Observable<Product[]>;
+  isInvalidForm = true;
 
   ngOnInit(): void {
     this.initForm();
     this.setupProductFilter();
+    this.listenFormChanges();
   }
+
 
   private initForm(): void {
     this.stockForm = this.formBuilder.group({
-      product: new FormControl('', [Validators.required]),
-      currentAmount: new FormControl(0, [Validators.required, Validators.min(0)]),
-      minAmount: new FormControl(0, [Validators.required, Validators.min(0)]),
-      maxAmount: new FormControl(0, [Validators.required, Validators.min(1)]),
-      totalSales: new FormControl(0, [Validators.min(0)]),
+      product: [null, [Validators.required]],
+      currentAmount: [0, [Validators.required, Validators.min(0)]],
+      minAmount: [0, [Validators.required, Validators.min(0)]],
+      maxAmount: [0, [Validators.required, Validators.min(1)]],
+      totalSales: [0, [Validators.min(0)]],
     }, { validators: this.maxAmountValidator });
   }
 
@@ -128,10 +132,26 @@ export class StockFormComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.stockForm.reset();
-    Object.keys(this.stockForm.controls).forEach(key => {
-      this.stockForm.get(key)?.setErrors(null);
+    this.stockForm.reset({
+      product: null,
+      currentAmount: 0,
+      minAmount: 0,
+      maxAmount: 0,
+      totalSales: 0
     });
+
+    Object.values(this.stockForm.controls).forEach(control => {
+      control.markAsPristine();
+      control.markAsUntouched();
+      control.setErrors(null);
+    });
+    this.isInvalidForm = true;
+  }
+
+  listenFormChanges(): void {
+    this.stockForm.valueChanges.pipe(takeUntil(this._destroy$)).subscribe((change) => {
+      this.isInvalidForm = change?.product === null || this.stockForm.invalid;
+    })
   }
 
   private markFormGroupTouched(): void {
@@ -180,5 +200,10 @@ export class StockFormComponent implements OnInit {
 
   backToStockList(): void {
     this._router.navigate(['/stock']);
+  }
+
+  ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 }

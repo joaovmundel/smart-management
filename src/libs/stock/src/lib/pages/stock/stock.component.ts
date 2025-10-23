@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { InfoCardComponent } from '../../components/info-card/info-card.component';
@@ -7,6 +7,7 @@ import { StockTableComponent } from '../../components/stock-table/stock-table.co
 import { SimpleInfoCardComponent } from '../../components/simple-info-card/simple-info-card.component';
 import { stockedProductsMock } from '../../mocks/product.mock';
 import { IStockedProduct } from '../../models/stock.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sm-stock',
@@ -23,6 +24,8 @@ import { IStockedProduct } from '../../models/stock.model';
   ],
 })
 export class StockComponent implements OnInit {
+  private readonly _router = inject(Router);
+
   products: IStockedProduct[] = stockedProductsMock;
   isSmallScreen = false;
 
@@ -92,9 +95,10 @@ export class StockComponent implements OnInit {
   }
 
 
-  onEditProduct(product: IStockedProduct): void {
+  onEditProduct(stockedProduct: IStockedProduct): void {
     // Lógica para editar o produto
-    console.log('Editar produto:', product);
+    console.log('Editar produto:', stockedProduct);
+    this._router.navigate(['/stock/edit', stockedProduct.product?.id]);
   }
 
   onDeleteProduct(productId: string): void {
