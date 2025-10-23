@@ -1,3 +1,151 @@
-<div class="stock-form">
-    
+<div class="stock-form-container">
+    <mat-card class="stock-form-card">
+        <mat-card-header>
+            <div class="back-button">
+                <button class="back-button__button" mat-icon-button color="light" (click)="backToStockList()">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
+            <div class="card-title">
+                <mat-card-title>
+                    <mat-icon>inventory</mat-icon>
+                    Adicionar Produto ao Estoque
+                </mat-card-title>
+                <mat-card-subtitle>
+                    Preencha os dados para adicionar um produto ao estoque
+                </mat-card-subtitle>
+            </div>
+        </mat-card-header>
+
+        <mat-card-content class="stock-form-card__content">
+            <form [formGroup]="stockForm" (ngSubmit)="onSubmit()" class="stock-form">
+
+                <!-- Autocomplete para Produto -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Produto</mat-label>
+                    <input type="text" matInput formControlName="product" [matAutocomplete]="auto"
+                        placeholder="Digite para buscar um produto...">
+                    <mat-icon matPrefix>search</mat-icon>
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProduct">
+                        <mat-option *ngFor="let product of filteredProducts | async" [value]="product">
+                            <div class="product-option">
+                                <div class="product-info">
+                                    <strong>{{ product.name }}</strong>
+                                    <span class="product-description">{{ product.description }}</span>
+                                </div>
+                                <div class="product-price">
+                                    R$ {{ product.saleValue | number:'1.2-2' }}
+                                </div>
+                            </div>
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error
+                        *ngIf="stockForm.get('product')?.hasError('required') && stockForm.get('product')?.touched">
+                        {{ getErrorMessage('product') }}
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Quantidade Atual -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Quantidade Atual</mat-label>
+                    <input matInput type="number" formControlName="currentAmount" placeholder="Ex: 50" min="0">
+                    <mat-icon matPrefix>inventory_2</mat-icon>
+                    <mat-hint>Quantidade atual em estoque</mat-hint>
+                    <mat-error
+                        *ngIf="stockForm.get('currentAmount')?.hasError('required') && stockForm.get('currentAmount')?.touched">
+                        {{ getErrorMessage('currentAmount') }}
+                    </mat-error>
+                    <mat-error
+                        *ngIf="stockForm.get('currentAmount')?.hasError('min') && stockForm.get('currentAmount')?.touched">
+                        {{ getErrorMessage('currentAmount') }}
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Quantidade Mínima e Máxima -->
+                <div class="form-row">
+                    <mat-form-field appearance="outline" class="half-width">
+                        <mat-label>Quantidade Mínima</mat-label>
+                        <input matInput type="number" formControlName="minAmount" placeholder="Ex: 10" min="0">
+                        <mat-icon matPrefix>trending_down</mat-icon>
+                        <mat-hint>Estoque mínimo</mat-hint>
+                        <mat-error
+                            *ngIf="stockForm.get('minAmount')?.hasError('required') && stockForm.get('minAmount')?.touched">
+                            {{ getErrorMessage('minAmount') }}
+                        </mat-error>
+                        <mat-error
+                            *ngIf="stockForm.get('minAmount')?.hasError('min') && stockForm.get('minAmount')?.touched">
+                            {{ getErrorMessage('minAmount') }}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="half-width">
+                        <mat-label>Quantidade Máxima</mat-label>
+                        <input matInput type="number" formControlName="maxAmount" placeholder="Ex: 100" min="1">
+                        <mat-icon matPrefix>trending_up</mat-icon>
+                        <mat-hint>Estoque máximo</mat-hint>
+                        <mat-error
+                            *ngIf="stockForm.get('maxAmount')?.hasError('required') && stockForm.get('maxAmount')?.touched">
+                            {{ getErrorMessage('maxAmount') }}
+                        </mat-error>
+                        <mat-error
+                            *ngIf="stockForm.get('maxAmount')?.hasError('min') && stockForm.get('maxAmount')?.touched">
+                            {{ getErrorMessage('maxAmount') }}
+                        </mat-error>
+                        <mat-error
+                            *ngIf="stockForm.hasError('maxAmountInvalid') && stockForm.get('maxAmount')?.touched">
+                            {{ getErrorMessage('maxAmount') }}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Total de Vendas -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Total de Vendas (Opcional)</mat-label>
+                    <input matInput type="number" formControlName="totalSales" placeholder="Ex: 200" min="0">
+                    <mat-icon matPrefix>shopping_cart</mat-icon>
+                    <mat-hint>Histórico de vendas do produto</mat-hint>
+                    <mat-error
+                        *ngIf="stockForm.get('totalSales')?.hasError('min') && stockForm.get('totalSales')?.touched">
+                        {{ getErrorMessage('totalSales') }}
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Informações do Produto Selecionado -->
+                <div *ngIf="isProductSelected()" class="product-details">
+                    <h3>Detalhes do Produto</h3>
+                    <div class="product-info-grid">
+                        <div class="info-item">
+                            <strong>Categoria:</strong>
+                            <span>{{ getSelectedProduct()?.category?.name }}</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Valor de Venda:</strong>
+                            <span>R$ {{ getSelectedProduct()?.saleValue | number:'1.2-2' }}</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Valor de Custo:</strong>
+                            <span>R$ {{ getSelectedProduct()?.grossValue | number:'1.2-2' }}</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Margem de Lucro:</strong>
+                            <span>R$ {{ getProductMargin() | number:'1.2-2' }}</span>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+            <button mat-stroked-button type="button" (click)="resetForm()" [disabled]="!stockForm.dirty">
+                <mat-icon>refresh</mat-icon>
+                Limpar
+            </button>
+
+            <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="stockForm.invalid">
+                <mat-icon>add</mat-icon>
+                Adicionar ao Estoque
+            </button>
+        </mat-card-actions>
+    </mat-card>
 </div>

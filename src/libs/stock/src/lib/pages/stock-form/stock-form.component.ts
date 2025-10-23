@@ -1,13 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { Observable, map, startWith } from 'rxjs';
+import { Product } from '../../models/product.model';
+import { productListMock } from '../../mocks/product.mock';
+import { IStockedProduct } from '../../models/stock.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sm-stock-form',
@@ -15,28 +26,159 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrls: ['./stock-form.component.scss'],
   standalone: true,
   imports: [
-    MatFormFieldModule,
-    MatSelectModule,
     CommonModule,
     ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    MatAutocompleteModule,
+    MatIconModule,
+    MatSnackBarModule,
   ],
 })
-export class StockFormComponent {
+export class StockFormComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
+  private snackBar = inject(MatSnackBar);
+  private readonly _router = inject(Router);
 
   stockForm!: FormGroup;
+  products: Product[] = productListMock;
+  filteredProducts!: Observable<Product[]>;
 
-  constructor() {
+  ngOnInit(): void {
+    this.initForm();
+    this.setupProductFilter();
+  }
+
+  private initForm(): void {
     this.stockForm = this.formBuilder.group({
-      product: new FormControl(''),
-      currentAmount: new FormControl(0),
-      minAmount: new FormControl(0),
-      maxAmount: new FormControl(0),
-      totalSales: new FormControl(0),
-    });
+      product: new FormControl('', [Validators.required]),
+      currentAmount: new FormControl(0, [Validators.required, Validators.min(0)]),
+      minAmount: new FormControl(0, [Validators.required, Validators.min(0)]),
+      maxAmount: new FormControl(0, [Validators.required, Validators.min(1)]),
+      totalSales: new FormControl(0, [Validators.min(0)]),
+    }, { validators: this.maxAmountValidator });
+  }
+
+  private maxAmountValidator(form: FormGroup) {
+    const minAmount = form.get('minAmount')?.value;
+    const maxAmount = form.get('maxAmount')?.value;
+
+    if (minAmount && maxAmount && maxAmount <= minAmount) {
+      return { maxAmountInvalid: true };
+    }
+    return null;
+  }
+
+  private setupProductFilter(): void {
+    const productControl = this.stockForm.get('product');
+    if (productControl) {
+      this.filteredProducts = productControl.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterProducts(value || ''))
+      );
+    }
+  }
+
+  private _filterProducts(value: string): Product[] {
+    if (typeof value === 'object') {
+      return this.products;
+    }
+
+    const filterValue = value.toLowerCase();
+    return this.products.filter(product =>
+      product.name.toLowerCase().includes(filterValue) ||
+      product.description?.toLowerCase().includes(filterValue)
+    );
+  }
+
+  displayProduct(product: Product): string {
+    return product ? product.name : '';
   }
 
   onSubmit(): void {
-    console.log(this.stockForm.value);
+    if (this.stockForm.valid) {
+      const formValue = this.stockForm.value;
+      const stockedProduct: IStockedProduct = {
+        product: formValue.product,
+        currentAmount: formValue.currentAmount,
+        minAmount: formValue.minAmount,
+        maxAmount: formValue.maxAmount,
+        totalSales: formValue.totalSales || 0,
+        stockedValue: formValue.currentAmount * formValue.product.grossValue,
+        potentialProfit: formValue.currentAmount * (formValue.product.saleValue - formValue.product.grossValue)
+      };
+
+      console.log('Produto adicionado ao estoque:', stockedProduct);
+
+      this.snackBar.open('Produto adicionado ao estoque com sucesso!', 'Fechar', {
+        duration: 3000,
+        panelClass: ['success-snackbar']
+      });
+
+      this.resetForm();
+    } else {
+      this.markFormGroupTouched();
+      this.snackBar.open('Por favor, preencha todos os campos obrigatórios.', 'Fechar', {
+        duration: 3000,
+        panelClass: ['error-snackbar']
+      });
+    }
+  }
+
+  resetForm(): void {
+    this.stockForm.reset();
+    Object.keys(this.stockForm.controls).forEach(key => {
+      this.stockForm.get(key)?.setErrors(null);
+    });
+  }
+
+  private markFormGroupTouched(): void {
+    Object.keys(this.stockForm.controls).forEach(key => {
+      const control = this.stockForm.get(key);
+      control?.markAsTouched();
+    });
+  }
+
+  isProductSelected(): boolean {
+    const product = this.stockForm.get('product')?.value;
+    return product && typeof product === 'object' && product.id;
+  }
+
+  getSelectedProduct(): Product | null {
+    const product = this.stockForm.get('product')?.value;
+    return this.isProductSelected() ? product : null;
+  }
+
+  getProductMargin(): number {
+    const product = this.getSelectedProduct();
+    if (product) {
+      return product.saleValue - product.grossValue;
+    }
+    return 0;
+  }
+
+  getErrorMessage(controlName: string): string {
+    const control = this.stockForm.get(controlName);
+
+    if (control?.hasError('required')) {
+      return 'Este campo é obrigatório';
+    }
+
+    if (control?.hasError('min')) {
+      const minValue = control.getError('min').min;
+      return `O valor mínimo é ${minValue}`;
+    }
+
+    if (controlName === 'maxAmount' && this.stockForm.hasError('maxAmountInvalid')) {
+      return 'A quantidade máxima deve ser maior que a mínima';
+    }
+
+    return '';
+  }
+
+  backToStockList(): void {
+    this._router.navigate(['/stock']);
   }
 }

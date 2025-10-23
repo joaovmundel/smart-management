@@ -93,6 +93,11 @@ export const appRoutes: Route[] = [
         loadComponent: () =>
           import('@smart-management/stock').then((m) => m.StockFormComponent),
       },
+      {
+        path: 'stock/edit/:id',
+        loadComponent: () =>
+          import('@smart-management/stock').then((m) => m.StockFormComponent),
+      },
     ],
   },
   {
