@@ -84,9 +84,34 @@ export const appRoutes: Route[] = [
           import('@smart-management/stock').then((m) => m.ProductListComponent),
       },
       {
+        path: 'products/new',
+        loadComponent: () =>
+          import('@smart-management/stock').then((m) => m.ProductFormPageComponent),
+      },
+      {
+        path: 'products/edit/:id',
+        loadComponent: () =>
+          import('@smart-management/stock').then((m) => m.ProductFormPageComponent),
+      },
+      {
         path: 'stock',
         loadComponent: () =>
           import('@smart-management/stock').then((m) => m.StockComponent),
+      },
+      {
+        path: 'stock/products',
+        loadComponent: () =>
+          import('@smart-management/stock').then((m) => m.ProductListComponent),
+      },
+      {
+        path: 'stock/products/new',
+        loadComponent: () =>
+          import('@smart-management/stock').then((m) => m.ProductFormPageComponent),
+      },
+      {
+        path: 'stock/products/edit/:id',
+        loadComponent: () =>
+          import('@smart-management/stock').then((m) => m.ProductFormPageComponent),
       },
       {
         path: 'stock/create',

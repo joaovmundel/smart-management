@@ -1,6 +1,7 @@
 
 //Pages
 export * from './lib/pages/product-list/product-list.component';
+export * from './lib/pages/product-form-page/product-form-page.component';
 export * from './lib/pages/stock/stock.component';
 export * from './lib/pages/stock-form/stock-form.component';
 

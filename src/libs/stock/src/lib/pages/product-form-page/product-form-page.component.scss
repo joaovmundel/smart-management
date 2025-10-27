@@ -1,0 +1,215 @@
+@use 'src/styles/variables' as *;
+
+.product-form-container {
+  background-color: $background-light;
+  box-sizing: border-box;
+  min-height: 100vh;
+  max-height: 100%;
+}
+
+.product-form-card {
+  min-height: 100vh;
+  max-height: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+  mat-card-header {
+    background: linear-gradient(135deg, #43a047 0%, #388e3c 100%);
+    margin-bottom: 20px;
+    color: white;
+    padding: 24px;
+    align-items: center;
+
+    .back-button {
+      margin-right: 24px;
+      &__button {
+        background-color: $background-light;
+      }
+    }
+
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.5rem;
+      font-weight: 600;
+
+      mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+      }
+    }
+
+    mat-card-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 8px;
+      font-size: 0.95rem;
+    }
+  }
+
+  &__content {
+    box-sizing: border-box;
+    padding: 12px;
+  }
+}
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+.half-width {
+  flex: 1;
+}
+
+.margin-details {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #43a047;
+
+  h3 {
+    margin: 0 0 16px 0;
+    color: #333;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &:before {
+      content: '📊';
+      font-size: 1.2rem;
+    }
+  }
+}
+
+.margin-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    strong {
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    span {
+      font-size: 1.1rem;
+      font-weight: 600;
+
+      &.positive {
+        color: #43a047;
+      }
+
+      &.negative {
+        color: #e53935;
+      }
+    }
+  }
+}
+
+// Form field customizations
+.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    .mat-mdc-form-field-flex {
+      .mat-mdc-form-field-infix {
+        .mat-mdc-input-element {
+          &::placeholder {
+            color: #999;
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+
+  &.mat-form-field-appearance-outline {
+    .mat-mdc-form-field-outline {
+      color: #ddd;
+    }
+
+    &.mat-focused .mat-mdc-form-field-outline {
+      color: #43a047;
+    }
+  }
+}
+
+// Button customizations
+mat-card-actions {
+  padding: 24px;
+  gap: 12px;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 120px;
+    height: 40px;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .product-form-card {
+    mat-card-header {
+      flex-direction: column;
+      text-align: center;
+      gap: 16px;
+
+      .back-button {
+        margin: 0;
+        align-self: flex-start;
+      }
+
+      .card-title {
+        width: 100%;
+      }
+    }
+  }
+
+  .margin-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  mat-card-actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+// Success and error snackbar styles
+.success-snackbar {
+  background-color: #43a047 !important;
+  color: white !important;
+}
+
+.error-snackbar {
+  background-color: #e53935 !important;
+  color: white !important;
+}

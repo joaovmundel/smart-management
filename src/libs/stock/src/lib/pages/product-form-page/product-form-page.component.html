@@ -1,0 +1,149 @@
+<div class="product-form-container">
+    <mat-card class="product-form-card">
+        <mat-card-header>
+            <div class="back-button">
+                <button class="back-button__button" mat-icon-button color="light" (click)="backToProductList()">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </div>
+            <div class="card-title">
+                <mat-card-title>
+                    <mat-icon>add_shopping_cart</mat-icon>
+                    Criar Novo Produto
+                </mat-card-title>
+                <mat-card-subtitle>
+                    Preencha os dados para criar um novo produto
+                </mat-card-subtitle>
+            </div>
+        </mat-card-header>
+
+        <mat-card-content class="product-form-card__content">
+            <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="product-form">
+
+                <!-- Nome do Produto -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Nome do Produto</mat-label>
+                    <input matInput formControlName="name" placeholder="Ex: Smartphone XYZ">
+                    <mat-icon matPrefix>label</mat-icon>
+                    <mat-hint>Nome que identifica o produto</mat-hint>
+                    <mat-error *ngIf="productForm.get('name')?.hasError('required') && productForm.get('name')?.touched">
+                        {{ getErrorMessage('name') }}
+                    </mat-error>
+                    <mat-error *ngIf="productForm.get('name')?.hasError('minlength') && productForm.get('name')?.touched">
+                        {{ getErrorMessage('name') }}
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Descrição -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Descrição (Opcional)</mat-label>
+                    <textarea matInput formControlName="description" 
+                              placeholder="Descreva as características do produto..." 
+                              rows="3"></textarea>
+                    <mat-icon matPrefix>description</mat-icon>
+                    <mat-hint>Informações adicionais sobre o produto</mat-hint>
+                </mat-form-field>
+
+                <!-- URL da Foto -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>URL da Foto (Opcional)</mat-label>
+                    <input matInput formControlName="photoUrl" placeholder="https://exemplo.com/foto.jpg">
+                    <mat-icon matPrefix>image</mat-icon>
+                    <mat-hint>Link para a imagem do produto</mat-hint>
+                </mat-form-field>
+
+                <!-- Categoria -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Categoria</mat-label>
+                    <mat-select formControlName="categoryId">
+                        <mat-option *ngFor="let category of categories" [value]="category.id">
+                            {{ category.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matPrefix>category</mat-icon>
+                    <mat-hint>Selecione a categoria do produto</mat-hint>
+                    <mat-error *ngIf="productForm.get('categoryId')?.hasError('required') && productForm.get('categoryId')?.touched">
+                        {{ getErrorMessage('categoryId') }}
+                    </mat-error>
+                </mat-form-field>
+
+                <!-- Preços -->
+                <div class="form-row">
+                    <mat-form-field appearance="outline" class="half-width">
+                        <mat-label>Preço de Custo</mat-label>
+                        <input matInput type="number" formControlName="grossValue" 
+                               placeholder="0,00" min="0" step="0.01">
+                        <mat-icon matPrefix>attach_money</mat-icon>
+                        <span matPrefix>R$&nbsp;</span>
+                        <mat-hint>Valor pago pelo produto</mat-hint>
+                        <mat-error *ngIf="productForm.get('grossValue')?.hasError('required') && productForm.get('grossValue')?.touched">
+                            {{ getErrorMessage('grossValue') }}
+                        </mat-error>
+                        <mat-error *ngIf="productForm.get('grossValue')?.hasError('min') && productForm.get('grossValue')?.touched">
+                            {{ getErrorMessage('grossValue') }}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="half-width">
+                        <mat-label>Preço de Venda</mat-label>
+                        <input matInput type="number" formControlName="saleValue" 
+                               placeholder="0,00" min="0" step="0.01">
+                        <mat-icon matPrefix>sell</mat-icon>
+                        <span matPrefix>R$&nbsp;</span>
+                        <mat-hint>Valor de venda do produto</mat-hint>
+                        <mat-error *ngIf="productForm.get('saleValue')?.hasError('required') && productForm.get('saleValue')?.touched">
+                            {{ getErrorMessage('saleValue') }}
+                        </mat-error>
+                        <mat-error *ngIf="productForm.get('saleValue')?.hasError('min') && productForm.get('saleValue')?.touched">
+                            {{ getErrorMessage('saleValue') }}
+                        </mat-error>
+                        <mat-error *ngIf="productForm.hasError('saleValueInvalid') && productForm.get('saleValue')?.touched">
+                            {{ getErrorMessage('saleValue') }}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Informações de Margem -->
+                <div *ngIf="productForm.get('grossValue')?.value > 0 && productForm.get('saleValue')?.value > 0" 
+                     class="margin-details">
+                    <h3>Análise de Margem</h3>
+                    <div class="margin-info-grid">
+                        <div class="info-item">
+                            <strong>Margem de Lucro:</strong>
+                            <span [class.positive]="getProductMargin() > 0" [class.negative]="getProductMargin() <= 0">
+                                R$ {{ getProductMargin() | number:'1.2-2' }}
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Margem Percentual:</strong>
+                            <span [class.positive]="getMarginPercentage() > 0" [class.negative]="getMarginPercentage() <= 0">
+                                {{ getMarginPercentage() | number:'1.1-1' }}%
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Preço de Custo:</strong>
+                            <span>R$ {{ productForm.get('grossValue')?.value | number:'1.2-2' }}</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Preço de Venda:</strong>
+                            <span>R$ {{ productForm.get('saleValue')?.value | number:'1.2-2' }}</span>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </mat-card-content>
+
+        <mat-card-actions align="end">
+            <button mat-stroked-button type="button" (click)="resetForm()" [disabled]="!productForm.dirty">
+                <mat-icon>refresh</mat-icon>
+                Limpar
+            </button>
+
+            <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="isInvalidForm">
+                <mat-icon>save</mat-icon>
+                Criar Produto
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>
