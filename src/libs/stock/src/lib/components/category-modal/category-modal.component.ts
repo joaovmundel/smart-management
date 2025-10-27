@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Category } from '../../models/category.model';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DeleteConfirmationModalComponent } from '../delete-confirmation-modal/delete-confirmation-modal.component';
 
 @Component({
   selector: 'sm-category-modal',
@@ -33,6 +34,7 @@ export class CategoryModalComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private dialog: MatDialog,
     public dialogRef: MatDialogRef<CategoryModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { categories: Category[] }
   ) {
@@ -64,8 +66,23 @@ export class CategoryModalComponent implements OnInit {
   }
 
   onDeleteCategory(category: Category): void {
-    // Emit event to parent to handle confirmation dialog
-    this.dialogRef.close({ action: 'delete', category });
+    const dialogRef = this.dialog.open(DeleteConfirmationModalComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirmar Exclusão',
+        message: `Tem certeza que deseja excluir a categoria "${category.name}"?`,
+        item: category
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        const index = this.categories.findIndex(c => c.id === category.id);
+        if (index !== -1) {
+          this.categories.splice(index, 1);
+        }
+      }
+    });
   }
 
   onSave(): void {

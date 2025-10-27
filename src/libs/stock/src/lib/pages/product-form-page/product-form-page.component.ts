@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -16,6 +17,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { TitleService } from '@smart-management/layout';
+import { CategoryModalComponent } from '../../components/category-modal/category-modal.component';
 import { Category } from '../../models/category.model';
 import { Product } from '../../models/product.model';
 
@@ -34,6 +36,7 @@ import { Product } from '../../models/product.model';
     MatCardModule,
     MatIconModule,
     MatSnackBarModule,
+    MatDialogModule,
   ],
 })
 export class ProductFormPageComponent implements OnInit, OnDestroy {
@@ -42,6 +45,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   private readonly _formBuilder = inject(FormBuilder);
   private readonly _snackBar = inject(MatSnackBar);
   private readonly _title = inject(TitleService);
+  private readonly _dialog = inject(MatDialog);
 
   productForm!: FormGroup;
   isInvalidForm = true;
@@ -209,6 +213,32 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
 
   backToProductList(): void {
     this._router.navigate(['/stock/products']);
+  }
+
+  openCategoryModal(): void {
+    const dialogRef = this._dialog.open(CategoryModalComponent, {
+      width: '600px',
+      maxWidth: '90vw',
+      data: { categories: this.categories },
+      disableClose: false,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.action === 'save') {
+        const currentCategoryId = this.productForm.get('categoryId')?.value;
+        this.categories = result.categories;
+        
+        // Se a categoria selecionada foi deletada, limpar o campo
+        if (currentCategoryId && !this.categories.find(c => c.id === currentCategoryId)) {
+          this.productForm.patchValue({ categoryId: '' });
+        }
+
+        this._snackBar.open('Categorias atualizadas com sucesso!', 'Fechar', {
+          duration: 3000,
+          panelClass: ['success-snackbar']
+        });
+      }
+    });
   }
 
   ngOnDestroy(): void {

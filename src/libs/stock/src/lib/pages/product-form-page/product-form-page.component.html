@@ -53,19 +53,30 @@
                 </mat-form-field>
 
                 <!-- Categoria -->
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Categoria</mat-label>
-                    <mat-select formControlName="categoryId">
-                        <mat-option *ngFor="let category of categories" [value]="category.id">
-                            {{ category.name }}
-                        </mat-option>
-                    </mat-select>
-                    <mat-icon matPrefix>category</mat-icon>
-                    <mat-hint>Selecione a categoria do produto</mat-hint>
-                    <mat-error *ngIf="productForm.get('categoryId')?.hasError('required') && productForm.get('categoryId')?.touched">
-                        {{ getErrorMessage('categoryId') }}
-                    </mat-error>
-                </mat-form-field>
+                <div class="category-field-wrapper">
+                    <mat-form-field appearance="outline" class="category-field">
+                        <mat-label>Categoria</mat-label>
+                        <mat-select formControlName="categoryId">
+                            <mat-option *ngFor="let category of categories" [value]="category.id">
+                                {{ category.name }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-icon matPrefix>category</mat-icon>
+                        <mat-hint>Selecione a categoria do produto</mat-hint>
+                        <mat-error *ngIf="productForm.get('categoryId')?.hasError('required') && productForm.get('categoryId')?.touched">
+                            {{ getErrorMessage('categoryId') }}
+                        </mat-error>
+                    </mat-form-field>
+                    <button 
+                        mat-mini-fab 
+                        color="primary" 
+                        type="button"
+                        (click)="openCategoryModal()"
+                        class="manage-categories-btn"
+                        aria-label="Gerenciar categorias">
+                        <mat-icon>settings</mat-icon>
+                    </button>
+                </div>
 
                 <!-- Preços -->
                 <div class="form-row">
