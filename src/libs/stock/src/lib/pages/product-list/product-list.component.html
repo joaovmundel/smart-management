@@ -1,17 +1,5 @@
 <div class="product-page">
-  <!-- Header com botão para criar produto -->
-  <div class="page-header">
-    <div class="page-title">
-      <h1>Produtos</h1>
-      <p>Gerencie o catálogo de produtos</p>
-    </div>
-    <button mat-raised-button color="primary" (click)="goToCreateProduct()">
-      <mat-icon>add</mat-icon>
-      Criar Novo Produto
-    </button>
-  </div>
-
   <!-- Tabela de produtos -->
-  <sm-product-table [products]="products" (editProduct)="onEditProduct($event)"
+  <sm-product-table [products]="products" (editProduct)="onEditProduct($event)" (createProduct)="goToCreateProduct()"
     (deleteProduct)="onDeleteProduct($event)"></sm-product-table>
 </div>

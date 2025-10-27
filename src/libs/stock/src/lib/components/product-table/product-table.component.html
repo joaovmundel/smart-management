@@ -1,31 +1,42 @@
 <div class="product-table-container">
   <!-- Barra de busca -->
-  <div class="search-bar">
-    <mat-form-field appearance="outline" class="search-field">
-      <mat-label>Buscar produto</mat-label>
-      <input 
-        matInput 
-        [(ngModel)]="searchTerm" 
-        (input)="onSearch()" 
-        placeholder="Digite o nome do produto...">
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
+  <div class="table-header__actions">
+    <div class="search-bar">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Buscar produto</mat-label>
+        <input
+          matInput
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+          placeholder="Digite o nome do produto..."
+        />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+    <button
+      mat-flat-button
+      class="toggle-form-button"
+      (click)="onCreate()"
+    >
+      <mat-icon>{{ 'add' }}</mat-icon>
+      <span>{{ 'Adicionar produto' }}</span>
+    </button>
   </div>
 
   <!-- Tabela de produtos -->
   <div class="table-container">
     <table mat-table [dataSource]="dataSource" class="product-table">
-      
       <!-- Coluna da Foto -->
       <ng-container matColumnDef="photo">
         <th mat-header-cell *matHeaderCellDef>Foto</th>
         <td mat-cell *matCellDef="let product" class="photo-cell">
           <div class="product-photo">
-            <img 
-              *ngIf="product.photoUrl; else noPhoto" 
-              [src]="product.photoUrl" 
+            <img
+              *ngIf="product.photoUrl; else noPhoto"
+              [src]="product.photoUrl"
               [alt]="product.name"
-              class="product-image">
+              class="product-image"
+            />
             <ng-template #noPhoto>
               <div class="no-photo">
                 <mat-icon>image</mat-icon>
@@ -47,7 +58,10 @@
       <ng-container matColumnDef="description">
         <th mat-header-cell *matHeaderCellDef>Descrição</th>
         <td mat-cell *matCellDef="let product" class="description-cell">
-          <div class="product-description" [title]="product.description || 'Sem descrição'">
+          <div
+            class="product-description"
+            [title]="product.description || 'Sem descrição'"
+          >
             {{ product.description || 'Sem descrição' }}
           </div>
         </td>
@@ -65,7 +79,9 @@
       <ng-container matColumnDef="saleValue">
         <th mat-header-cell *matHeaderCellDef>Valor de Venda</th>
         <td mat-cell *matCellDef="let product" class="value-cell">
-          {{ product.saleValue | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+          {{
+            product.saleValue | currency : 'BRL' : 'symbol' : '1.2-2' : 'pt-BR'
+          }}
         </td>
       </ng-container>
 
@@ -73,7 +89,9 @@
       <ng-container matColumnDef="grossValue">
         <th mat-header-cell *matHeaderCellDef>Valor Bruto</th>
         <td mat-cell *matCellDef="let product" class="value-cell">
-          {{ product.grossValue | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+          {{
+            product.grossValue | currency : 'BRL' : 'symbol' : '1.2-2' : 'pt-BR'
+          }}
         </td>
       </ng-container>
 
@@ -81,25 +99,27 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef class="actions-header">Ações</th>
         <td mat-cell *matCellDef="let product" class="actions-cell">
-          <button 
-            mat-icon-button 
-            color="primary" 
+          <button
+            mat-icon-button
+            color="primary"
             (click)="onEdit(product)"
-            matTooltip="Editar produto">
+            matTooltip="Editar produto"
+          >
             <mat-icon>edit</mat-icon>
           </button>
-          <button 
-            mat-icon-button 
-            color="warn" 
+          <button
+            mat-icon-button
+            color="warn"
             (click)="onDelete(product)"
-            matTooltip="Excluir produto">
+            matTooltip="Excluir produto"
+          >
             <mat-icon>delete</mat-icon>
           </button>
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
 
     <!-- Mensagem quando não há produtos -->
@@ -110,9 +130,10 @@
   </div>
 
   <!-- Paginação -->
-  <mat-paginator 
+  <mat-paginator
     [pageSizeOptions]="[5, 10, 20]"
     showFirstLastButtons
-    aria-label="Selecione a página dos produtos">
+    aria-label="Selecione a página dos produtos"
+  >
   </mat-paginator>
 </div>

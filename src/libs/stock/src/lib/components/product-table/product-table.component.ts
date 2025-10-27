@@ -43,6 +43,7 @@ export class ProductTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() products: Product[] = [];
   @Output() editProduct = new EventEmitter<Product>();
   @Output() deleteProduct = new EventEmitter<string>();
+  @Output() createProduct = new EventEmitter<void>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -73,19 +74,23 @@ export class ProductTableComponent implements OnInit, AfterViewInit, OnChanges {
     this.applyFilter();
   }
 
-  applyFilter() {
+  applyFilter(): void {
     this.dataSource.filter = this.searchTerm.trim().toLowerCase();
   }
 
-  onSearch() {
+  onSearch(): void {
     this.applyFilter();
   }
 
-  onEdit(product: Product) {
+  onCreate(): void {
+    this.createProduct.emit();
+  }
+
+  onEdit(product: Product): void {
     this.editProduct.emit(product);
   }
 
-  onDelete(product: Product) {
+  onDelete(product: Product): void {
     const dialogRef = this._dialog.open(DeleteConfirmationModalComponent, {
       width: '400px',
       data: {
