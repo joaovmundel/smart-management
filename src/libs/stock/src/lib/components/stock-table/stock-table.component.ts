@@ -23,6 +23,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { IStockedProduct } from '../../models/stock.model';
 import { DeleteConfirmationModalComponent } from '../delete-confirmation-modal/delete-confirmation-modal.component';
 import { Router } from '@angular/router';
+import { TitleService } from '@smart-management/layout';
 
 @Component({
   selector: 'sm-stock-table',
@@ -49,6 +50,7 @@ export class StockTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   private readonly _dialog = inject(MatDialog);
   private readonly _router = inject(Router);
+  private readonly _titleService = inject(TitleService);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -70,6 +72,7 @@ export class StockTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnInit(): void {
     this.updateDataSource();
+    this._titleService.setTitle('Estoque')
   }
 
   ngAfterViewInit(): void {

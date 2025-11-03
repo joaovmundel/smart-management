@@ -6,7 +6,6 @@ export * from './lib/pages/stock/stock.component';
 export * from './lib/pages/stock-form/stock-form.component';
 
 //Components
-export * from './lib/components/product-form/product-form.component';
 export * from './lib/components/product-table/product-table.component';
 export * from './lib/components/category-modal/category-modal.component';
 export * from './lib/components/delete-confirmation-modal/delete-confirmation-modal.component';

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TitleService } from '@smart-management/layout';
 
 @Component({
   selector: 'lib-home',
@@ -8,4 +9,10 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
 })
-export class HomeComponent {}
+export class HomeComponent implements OnInit {
+  private readonly _titleService = inject(TitleService); 
+
+  ngOnInit(): void {
+    this._titleService.setTitle('Página Inicial');
+  }
+}

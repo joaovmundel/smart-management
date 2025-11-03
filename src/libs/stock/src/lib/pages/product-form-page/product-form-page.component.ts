@@ -79,7 +79,7 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit(): void {
-    this._title.setTitle('Novo Produto');
+    this._title.setTitle('Formulário de produto');
     this.initForm();
     this.listenFormChanges();
   }

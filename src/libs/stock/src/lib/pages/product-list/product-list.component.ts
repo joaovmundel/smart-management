@@ -31,8 +31,7 @@ export class ProductListComponent implements OnInit {
   }
 
   onEditProduct(product: Product) {
-    console.log('Editing product:', product);
-    // Implementar lógica de edição
+    this._router.navigate([`/stock/products/edit/${product.id}`]);
   }
 
   onDeleteProduct(productId: string) {
