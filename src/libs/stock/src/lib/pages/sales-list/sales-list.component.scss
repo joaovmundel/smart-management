@@ -1,0 +1,42 @@
+@use 'src/styles/variables' as *;
+
+.sales-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  background-color: $background-light;
+  box-sizing: border-box;
+  padding: 20px;
+  gap: 20px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.page-header__title h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.page-header__title p {
+  margin: 4px 0 0;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.page-header__actions {
+  display: flex;
+  gap: 12px;
+}
+
+.page-header__actions button mat-icon {
+  margin-right: 8px;
+}

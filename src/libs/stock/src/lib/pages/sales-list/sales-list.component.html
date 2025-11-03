@@ -1,0 +1,22 @@
+<div class="sales-page">
+  <div class="page-header">
+    <div class="page-header__title">
+      <h1>Vendas</h1>
+      <p>Acompanhe e gerencie as vendas realizadas</p>
+    </div>
+    <div class="page-header__actions">
+      <button mat-stroked-button type="button" (click)="goToDashboard()">
+        <mat-icon>query_stats</mat-icon>
+        Dashboard
+      </button>
+    </div>
+  </div>
+
+  <sm-sales-table
+    [sales]="sales"
+    (createSale)="goToCreateSale()"
+    (editSale)="onEditSale($event)"
+    (deleteSale)="onDeleteSale($event)"
+    (viewSale)="onViewSale($event)"
+  ></sm-sales-table>
+</div>

@@ -123,6 +123,26 @@ export const appRoutes: Route[] = [
         loadComponent: () =>
           import('@smart-management/stock').then((m) => m.StockFormComponent),
       },
+      {
+        path: 'sales',
+        loadComponent: () =>
+          import('@smart-management/stock').then((m) => m.SalesListComponent),
+      },
+      {
+        path: 'sales/new',
+        loadComponent: () =>
+          import('@smart-management/stock').then((m) => m.SalesFormComponent),
+      },
+      {
+        path: 'sales/edit/:id',
+        loadComponent: () =>
+          import('@smart-management/stock').then((m) => m.SalesFormComponent),
+      },
+      {
+        path: 'sales/dashboard',
+        loadComponent: () =>
+          import('@smart-management/stock').then((m) => m.SalesDashboardComponent),
+      },
     ],
   },
   {

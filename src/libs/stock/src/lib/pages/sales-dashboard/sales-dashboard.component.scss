@@ -1,0 +1,90 @@
+@use 'src/styles/variables' as *;
+
+.sales-dashboard {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 2rem;
+  background-color: $background-light;
+}
+
+.page-title h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.page-title p {
+  margin: 0.5rem 0 0;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.breakdown-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(33, 150, 243, 0.12);
+  color: #1976d2;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-chip.completed {
+  background-color: rgba(76, 175, 80, 0.12);
+  color: #2e7d32;
+}
+
+.status-chip.pending {
+  background-color: rgba(255, 193, 7, 0.15);
+  color: #b28704;
+}
+
+.status-chip.cancelled {
+  background-color: rgba(244, 67, 54, 0.12);
+  color: #c62828;
+}
+
+.empty-state {
+  text-align: center;
+  font-size: 0.95rem;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+@media (max-width: 768px) {
+  .summary-cards,
+  .breakdown-cards,
+  .data-grid {
+    grid-template-columns: 1fr;
+  }
+}

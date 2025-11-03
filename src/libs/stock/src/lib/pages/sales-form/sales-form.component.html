@@ -1,0 +1,185 @@
+<form class="sales-form-page" [formGroup]="saleForm" (ngSubmit)="onSubmit()">
+  <div class="page-header">
+    <div class="page-title">
+      <h1>Registrar venda</h1>
+      <p>Informe os dados da venda e adicione os itens comercializados</p>
+    </div>
+    <div class="header-actions">
+      <button mat-stroked-button type="button" (click)="addNewProduct()">
+        <mat-icon>add_box</mat-icon>
+        Novo produto
+      </button>
+    </div>
+  </div>
+
+  <div class="form-sections">
+    <mat-card class="section-card">
+      <mat-card-header>
+        <div mat-card-avatar class="section-icon">
+          <mat-icon>person</mat-icon>
+        </div>
+        <mat-card-title>Informações gerais</mat-card-title>
+        <mat-card-subtitle>Dados básicos da venda</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="form-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Cliente</mat-label>
+            <input matInput formControlName="customerName" placeholder="Nome do cliente" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Data da venda</mat-label>
+            <input matInput [matDatepicker]="saleDatePicker" formControlName="saleDate" />
+            <mat-datepicker-toggle matSuffix [for]="saleDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #saleDatePicker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Método de pagamento</mat-label>
+            <mat-select formControlName="paymentMethod">
+              <mat-option *ngFor="let method of paymentMethods" [value]="method.value">
+                {{ method.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option *ngFor="let status of statuses" [value]="status.value">
+                {{ status.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="notes-field">
+            <mat-label>Observações</mat-label>
+            <textarea matInput rows="3" formControlName="notes" placeholder="Detalhes adicionais"></textarea>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="section-card">
+      <mat-card-header>
+        <div mat-card-avatar class="section-icon">
+          <mat-icon>shopping_cart</mat-icon>
+        </div>
+        <mat-card-title>Itens da venda</mat-card-title>
+        <mat-card-subtitle>Selecione os produtos e configure quantidades</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content formArrayName="items">
+        <div
+          class="item-row"
+          *ngFor="let item of items.controls; let i = index"
+          [formGroupName]="i"
+        >
+          <mat-form-field appearance="outline">
+            <mat-label>Produto</mat-label>
+            <mat-select formControlName="productId" (selectionChange)="onProductSelected(i)">
+              <mat-option value="" disabled>Selecione um produto</mat-option>
+              <mat-option *ngFor="let product of products" [value]="product.id">
+                {{ product.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Quantidade</mat-label>
+            <input
+              matInput
+              type="number"
+              min="1"
+              formControlName="quantity"
+              placeholder="Qtd"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Valor unitário</mat-label>
+            <input
+              matInput
+              type="number"
+              min="0"
+              step="0.01"
+              formControlName="unitPrice"
+              placeholder="R$"
+              readonly
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Desconto</mat-label>
+            <input
+              matInput
+              type="number"
+              min="0"
+              step="0.01"
+              formControlName="discount"
+              placeholder="R$"
+            />
+          </mat-form-field>
+
+          <button
+            mat-icon-button
+            color="warn"
+            type="button"
+            (click)="removeItem(i)"
+            [disabled]="items.length === 1"
+            matTooltip="Remover item"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+
+        <button mat-stroked-button color="primary" type="button" class="add-item" (click)="addItem()">
+          <mat-icon>add</mat-icon>
+          Adicionar item
+        </button>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="section-card">
+      <mat-card-header>
+        <div mat-card-avatar class="section-icon">
+          <mat-icon>insights</mat-icon>
+        </div>
+        <mat-card-title>Resumo financeiro</mat-card-title>
+        <mat-card-subtitle>Acompanhe o resultado da venda</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="totals-grid">
+          <div class="total-item">
+            <span>Total bruto</span>
+            <strong>{{ formatCurrency(totals.totalGross) }}</strong>
+          </div>
+          <div class="total-item">
+            <span>Descontos</span>
+            <strong>{{ formatCurrency(totals.totalDiscount) }}</strong>
+          </div>
+          <div class="total-item">
+            <span>Total líquido</span>
+            <strong>{{ formatCurrency(totals.totalNet) }}</strong>
+          </div>
+          <div class="total-item">
+            <span>Itens vendidos</span>
+            <strong>{{ totals.totalUnits }}</strong>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="form-actions">
+    <button mat-stroked-button type="button" (click)="backToSalesList()">
+      Cancelar
+    </button>
+    <button mat-stroked-button type="button" (click)="resetForm()">
+      Limpar
+    </button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="saleForm.invalid">
+      Salvar venda
+    </button>
+  </div>
+</form>

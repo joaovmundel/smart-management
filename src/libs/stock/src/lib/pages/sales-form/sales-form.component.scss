@@ -1,0 +1,126 @@
+@use 'src/styles/variables' as *;
+
+.sales-form-page {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 24px;
+  background-color: $background-light;
+  gap: 2rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.page-title h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.page-title p {
+  margin: 0.5rem 0 0;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.header-actions button mat-icon {
+  margin-right: 0.5rem;
+}
+
+.form-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.section-card mat-card-header {
+  align-items: center;
+}
+
+.section-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(33, 150, 243, 0.12);
+  color: #1976d2;
+}
+
+.form-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.notes-field {
+  grid-column: 1 / -1;
+}
+
+.item-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.item-row:last-of-type {
+  border-bottom: none;
+}
+
+.add-item {
+  margin-top: 1rem;
+  width: fit-content;
+}
+
+.totals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.5rem;
+}
+
+.total-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.total-item span {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.9rem;
+}
+
+.total-item strong {
+  font-size: 1.2rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .item-row {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}
