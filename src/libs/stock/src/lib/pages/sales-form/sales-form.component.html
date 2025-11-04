@@ -1,8 +1,13 @@
 <form class="sales-form-page" [formGroup]="saleForm" (ngSubmit)="onSubmit()">
   <div class="page-header">
     <div class="page-title">
-      <h1>Registrar venda</h1>
-      <p>Informe os dados da venda e adicione os itens comercializados</p>
+      <button mat-icon-button class="back-button" (click)="backToSalesList()" matTooltip="Voltar para lista de vendas">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="title-content">
+        <h1>{{ isEditMode ? 'Editar venda' : 'Registrar venda' }}</h1>
+        <p>{{ isEditMode ? 'Altere os dados da venda conforme necessário' : 'Informe os dados da venda e adicione os itens comercializados' }}</p>
+      </div>
     </div>
     <div class="header-actions">
       <button mat-stroked-button type="button" (click)="addNewProduct()">
@@ -173,13 +178,16 @@
 
   <div class="form-actions">
     <button mat-stroked-button type="button" (click)="backToSalesList()">
-      Cancelar
+      <mat-icon>arrow_back</mat-icon>
+      Voltar
     </button>
     <button mat-stroked-button type="button" (click)="resetForm()">
+      <mat-icon>refresh</mat-icon>
       Limpar
     </button>
     <button mat-flat-button color="primary" type="submit" [disabled]="saleForm.invalid">
-      Salvar venda
+      <mat-icon>save</mat-icon>
+      {{ isEditMode ? 'Atualizar venda' : 'Salvar venda' }}
     </button>
   </div>
 </form>

@@ -17,7 +17,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { TitleService } from '@smart-management/layout';
 import { PaymentMethod, Sale, SaleItem, SaleStatus } from '../../models/sale.model';
@@ -54,9 +54,13 @@ type SaleItemFormValue = {
 export class SalesFormComponent implements OnInit, OnDestroy {
   private readonly _fb = inject(FormBuilder);
   private readonly _router = inject(Router);
+  private readonly _route = inject(ActivatedRoute);
   private readonly _snackBar = inject(MatSnackBar);
   private readonly _title = inject(TitleService);
   private readonly _destroy$ = new Subject<void>();
+
+  isEditMode = false;
+  saleId: string | null = null;
 
   products: Product[] = productListMock;
   paymentMethods: { value: PaymentMethod; label: string }[] = [
@@ -81,10 +85,22 @@ export class SalesFormComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit(): void {
-    this._title.setTitle('Registrar venda');
+    // Detectar se estamos no modo de edição
+    this.saleId = this._route.snapshot.paramMap.get('id');
+    this.isEditMode = !!this.saleId;
+    
+    // Definir título da página baseado no modo
+    const title = this.isEditMode ? 'Editar venda' : 'Registrar venda';
+    this._title.setTitle(title);
+    
     this.initForm();
     this.listenChanges();
     this.calculateTotals();
+    
+    // Se estiver no modo de edição, carregar dados da venda
+    if (this.isEditMode) {
+      this.loadSaleData();
+    }
   }
 
   ngOnDestroy(): void {
@@ -130,9 +146,10 @@ export class SalesFormComponent implements OnInit, OnDestroy {
 
     const sale = this.buildSale();
 
-    console.log('Venda registrada:', sale);
+    console.log(this.isEditMode ? 'Venda atualizada:' : 'Venda registrada:', sale);
 
-    this._snackBar.open('Venda registrada com sucesso!', 'Fechar', {
+    const successMessage = this.isEditMode ? 'Venda atualizada com sucesso!' : 'Venda registrada com sucesso!';
+    this._snackBar.open(successMessage, 'Fechar', {
       duration: 3000,
       panelClass: ['success-snackbar'],
     });
@@ -146,6 +163,12 @@ export class SalesFormComponent implements OnInit, OnDestroy {
 
   addNewProduct(): void {
     this._router.navigate(['/stock/products/new']);
+  }
+
+  private loadSaleData(): void {
+    // TODO: Implementar carregamento de dados da venda para edição
+    // Por enquanto, apenas um mock
+    console.log('Carregando dados da venda:', this.saleId);
   }
 
   resetForm(): void {
