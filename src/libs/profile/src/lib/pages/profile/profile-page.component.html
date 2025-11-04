@@ -1,0 +1,86 @@
+<div class="profile-container">
+  <mat-card class="profile-card">
+    <mat-card-header>
+      <mat-card-title>Perfil do Usuário</mat-card-title>
+      <mat-card-subtitle>Gerencie suas informações pessoais</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+        <!-- Name Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nome</mat-label>
+          <input
+            matInput
+            formControlName="name"
+            [readonly]="!editing"
+            placeholder="Digite seu nome completo">
+          <mat-icon matSuffix>person</mat-icon>
+          <mat-error *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched">
+            {{ getErrorMessage('name') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Email Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            formControlName="email"
+            type="email"
+            [readonly]="!editing"
+            placeholder="Digite seu email">
+          <mat-icon matSuffix>email</mat-icon>
+          <mat-error *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+            {{ getErrorMessage('email') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Phone Field -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Telefone</mat-label>
+          <input
+            matInput
+            formControlName="phone"
+            [readonly]="!editing"
+            placeholder="Digite seu telefone">
+          <mat-icon matSuffix>phone</mat-icon>
+          <mat-error *ngIf="profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched">
+            {{ getErrorMessage('phone') }}
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Company Info (Read-only) -->
+        <div *ngIf="user?.company" class="company-info">
+          <h3>Empresa</h3>
+          <p><strong>{{ user?.company?.name }}</strong></p>
+          <p *ngIf="user?.company?.description">{{ user?.company?.description }}</p>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions class="profile-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="toggleEdit()"
+        [disabled]="loading">
+        <mat-icon>{{ editing ? 'cancel' : 'edit' }}</mat-icon>
+        {{ editing ? 'Cancelar' : 'Editar' }}
+      </button>
+
+      <button
+        *ngIf="editing"
+        mat-raised-button
+        color="accent"
+        type="submit"
+        (click)="onSubmit()"
+        [disabled]="profileForm.invalid || loading">
+        <mat-icon *ngIf="!loading">save</mat-icon>
+        <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+        Salvar
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

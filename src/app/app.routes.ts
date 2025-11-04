@@ -34,7 +34,7 @@ export const appRoutes: Route[] = [
       {
         path: 'home',
         loadComponent: () =>
-          import('@smart-management/home').then((m) => m.HomeComponent),
+          import('@smart-management/stock').then((m) => m.SalesDashboardComponent),
       },
       {
         path: 'admin/tokens',
@@ -142,6 +142,11 @@ export const appRoutes: Route[] = [
         path: 'sales/dashboard',
         loadComponent: () =>
           import('@smart-management/stock').then((m) => m.SalesDashboardComponent),
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('@smart-management/profile').then((m) => m.ProfilePageComponent),
       },
     ],
   },

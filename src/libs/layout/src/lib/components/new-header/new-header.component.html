@@ -1,6 +1,6 @@
 <div class="new-header">
-  <button 
-    class="new-header__menu-toggle" 
+  <button
+    class="new-header__menu-toggle"
     (click)="toggleSidebar()"
     [class.active]="isOpen$ | async"
     aria-label="Toggle menu">
@@ -12,4 +12,47 @@
   <h1 class="new-header__title">
     {{ currentTitle }}
   </h1>
+
+  <div class="new-header__profile">
+    <button
+      class="profile-button"
+      (click)="toggleProfileDropdown()"
+      [class.active]="isProfileDropdownOpen"
+      aria-label="Perfil do usuário">
+      <img
+        [src]="user?.photo || defaultAvatar"
+        [alt]="user?.name || 'Usuário'"
+        class="profile-avatar"
+        onerror="this.src=defaultAvatar">
+      <span class="profile-name">{{ user?.name || 'Usuário' }}</span>
+      <mat-icon class="profile-arrow" [class.rotated]="isProfileDropdownOpen">expand_more</mat-icon>
+    </button>
+
+    <div class="profile-dropdown" [style.display]="isProfileDropdownOpen ? 'block' : 'none'">
+      <div class="profile-dropdown__header">
+        <img
+          [src]="user?.photo || defaultAvatar"
+          [alt]="user?.name || 'Usuário'"
+          class="profile-dropdown__avatar"
+          onerror="this.src=defaultAvatar">
+        <div class="profile-dropdown__info">
+          <div class="profile-dropdown__name">{{ user?.name || 'Usuário' }}</div>
+          <div class="profile-dropdown__email">{{ user?.email || 'email@exemplo.com' }}</div>
+        </div>
+      </div>
+
+      <div class="profile-dropdown__divider"></div>
+
+      <div class="profile-dropdown__menu">
+        <button class="profile-dropdown__item" (click)="navigateToProfile()">
+          <mat-icon>person</mat-icon>
+          <span>Meu Perfil</span>
+        </button>
+        <button class="profile-dropdown__item" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Sair</span>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
