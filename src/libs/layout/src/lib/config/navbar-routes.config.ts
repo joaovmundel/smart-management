@@ -8,13 +8,8 @@ export const navbarRoutes: (NavItem | DropdownItem)[] = [
     route: '/stock',
   },
   {
-    isDropdown: true,
     label: 'Vendas',
-    routes: [
-      { label: 'Dashboard', route: '/sales/dashboard' },
-      { label: 'Listagem', route: '/sales' },
-      { label: 'Nova venda', route: '/sales/new' },
-    ],
+    route: '/sales',
   },
   {
     isDropdown: true,

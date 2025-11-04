@@ -1,28 +1,104 @@
 .profile-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
   min-height: 100vh;
   padding: 2rem;
   background-color: #f5f5f5;
 }
 
-.profile-card {
+// Card de informações do usuário
+.user-info-card {
+  height: fit-content;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+
+  .user-info-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 1.5rem;
+  }
+}
+
+.user-avatar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .avatar-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #e0e0e0;
+    transition: border-color 0.3s ease;
+
+    &:hover {
+      border-color: #1976d2;
+    }
+  }
+
+  .upload-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translate(25%, 25%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.user-details {
+  text-align: center;
   width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
+
+  .user-name {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #333;
+    margin: 0 0 1.5rem 0;
+  }
+}
+
+.user-info-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  color: #666;
+
+  mat-icon {
+    color: #1976d2;
+    font-size: 1.2rem;
+  }
+
+  span {
+    font-size: 0.95rem;
+  }
+}
+
+// Card do formulário de edição
+.edit-form-card {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-sizing: border-box;
+  padding: 16px;
 
   mat-card-header {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 
     mat-card-title {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 500;
       color: #1976d2;
     }
 
     mat-card-subtitle {
       color: #666;
+      margin-top: 0.5rem;
     }
   }
 }
@@ -43,25 +119,32 @@
   }
 }
 
-.company-info {
+.password-section {
   margin-top: 1rem;
-  padding: 1rem;
+  padding: 1.5rem;
   background-color: #f8f9fa;
-  border-radius: 8px;
+  border-radius: 12px;
   border-left: 4px solid #1976d2;
 
-  h3 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.1rem;
+  h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
     color: #1976d2;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    mat-icon {
+      font-size: 1.2rem;
+    }
   }
 
-  p {
-    margin: 0.25rem 0;
-    color: #666;
+  mat-form-field {
+    margin-bottom: 1rem;
 
-    strong {
-      color: #333;
+    &:last-child {
+      margin-bottom: 0;
     }
   }
 }
@@ -70,7 +153,8 @@
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
-  padding: 1rem 0;
+  box-sizing: border-box;
+  padding: 16px;
   margin-top: 1rem;
 
   button {
@@ -87,9 +171,39 @@
 }
 
 // Responsive design
+@media (max-width: 1024px) {
+  .profile-container {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .user-info-card {
+    order: 1;
+  }
+
+  .edit-form-card {
+    order: 2;
+  }
+}
+
 @media (max-width: 768px) {
   .profile-container {
-    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .user-avatar .avatar-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .user-details .user-name {
+    font-size: 1.3rem;
+  }
+
+  .user-info-item {
+    flex-direction: column;
+    gap: 0.25rem;
+    text-align: center;
   }
 
   .profile-actions {

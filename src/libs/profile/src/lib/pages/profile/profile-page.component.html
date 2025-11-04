@@ -1,19 +1,70 @@
 <div class="profile-container">
-  <mat-card class="profile-card">
+  <!-- Seção de Informações do Usuário -->
+  <mat-card class="user-info-card">
+    <mat-card-content class="user-info-content">
+      <div class="user-avatar">
+        <img 
+          [src]="user?.photo || 'default-avatar.svg'" 
+          [alt]="user?.name"
+          class="avatar-image"
+          (error)="onImageError($event)">
+        <button 
+          mat-mini-fab 
+          color="primary" 
+          class="upload-btn"
+          (click)="uploadPhoto()"
+          matTooltip="Alterar foto">
+          <mat-icon>camera_alt</mat-icon>
+        </button>
+        <input 
+          #fileInput 
+          type="file" 
+          accept="image/*" 
+          style="display: none"
+          (change)="onFileSelected($event)">
+      </div>
+      
+      <div class="user-details">
+        <h2 class="user-name">{{ user?.name || 'Nome não informado' }}</h2>
+        
+        <div class="user-info-item">
+          <mat-icon>email</mat-icon>
+          <span>{{ user?.email || 'Email não informado' }}</span>
+        </div>
+        
+        <div class="user-info-item">
+          <mat-icon>phone</mat-icon>
+          <span>{{ user?.phone || 'Telefone não informado' }}</span>
+        </div>
+        
+        <div *ngIf="user?.company" class="user-info-item">
+          <mat-icon>business</mat-icon>
+          <span>{{ user?.company?.name }}</span>
+        </div>
+        
+        <div *ngIf="user?.createdAt" class="user-info-item">
+          <mat-icon>event</mat-icon>
+          <span>Membro desde {{ user?.createdAt | date:'MMM yyyy':'pt-BR' }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Formulário de Edição -->
+  <mat-card class="edit-form-card">
     <mat-card-header>
-      <mat-card-title>Perfil do Usuário</mat-card-title>
-      <mat-card-subtitle>Gerencie suas informações pessoais</mat-card-subtitle>
+      <mat-card-title>Editar Informações Pessoais</mat-card-title>
+      <mat-card-subtitle>Atualize seus dados pessoais abaixo</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
       <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
         <!-- Name Field -->
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Nome</mat-label>
+          <mat-label>Nome Completo</mat-label>
           <input
             matInput
             formControlName="name"
-            [readonly]="!editing"
             placeholder="Digite seu nome completo">
           <mat-icon matSuffix>person</mat-icon>
           <mat-error *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched">
@@ -28,7 +79,6 @@
             matInput
             formControlName="email"
             type="email"
-            [readonly]="!editing"
             placeholder="Digite seu email">
           <mat-icon matSuffix>email</mat-icon>
           <mat-error *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
@@ -42,7 +92,6 @@
           <input
             matInput
             formControlName="phone"
-            [readonly]="!editing"
             placeholder="Digite seu telefone">
           <mat-icon matSuffix>phone</mat-icon>
           <mat-error *ngIf="profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched">
@@ -50,36 +99,73 @@
           </mat-error>
         </mat-form-field>
 
-        <!-- Company Info (Read-only) -->
-        <div *ngIf="user?.company" class="company-info">
-          <h3>Empresa</h3>
-          <p><strong>{{ user?.company?.name }}</strong></p>
-          <p *ngIf="user?.company?.description">{{ user?.company?.description }}</p>
+        <!-- Password Fields -->
+        <div class="password-section">
+          <h4>
+            <mat-icon>lock</mat-icon>
+            Alterar Senha (opcional)
+          </h4>
+          
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nova Senha</mat-label>
+            <input
+              matInput
+              formControlName="newPassword"
+              [type]="hidePassword ? 'password' : 'text'"
+              placeholder="Digite uma nova senha">
+            <button 
+              mat-icon-button 
+              matSuffix 
+              type="button"
+              (click)="hidePassword = !hidePassword">
+              <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </button>
+            <mat-error *ngIf="profileForm.get('newPassword')?.invalid && profileForm.get('newPassword')?.touched">
+              {{ getErrorMessage('newPassword') }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Confirmar Nova Senha</mat-label>
+            <input
+              matInput
+              formControlName="confirmPassword"
+              [type]="hideConfirmPassword ? 'password' : 'text'"
+              placeholder="Confirme a nova senha">
+            <button 
+              mat-icon-button 
+              matSuffix 
+              type="button"
+              (click)="hideConfirmPassword = !hideConfirmPassword">
+              <mat-icon>{{ hideConfirmPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </button>
+            <mat-error *ngIf="profileForm.get('confirmPassword')?.invalid && profileForm.get('confirmPassword')?.touched">
+              {{ getErrorMessage('confirmPassword') }}
+            </mat-error>
+          </mat-form-field>
         </div>
       </form>
     </mat-card-content>
 
     <mat-card-actions class="profile-actions">
       <button
-        mat-raised-button
-        color="primary"
+        mat-stroked-button
         type="button"
-        (click)="toggleEdit()"
+        (click)="resetForm()"
         [disabled]="loading">
-        <mat-icon>{{ editing ? 'cancel' : 'edit' }}</mat-icon>
-        {{ editing ? 'Cancelar' : 'Editar' }}
+        <mat-icon>refresh</mat-icon>
+        Resetar
       </button>
 
       <button
-        *ngIf="editing"
         mat-raised-button
-        color="accent"
+        color="primary"
         type="submit"
         (click)="onSubmit()"
-        [disabled]="profileForm.invalid || loading">
+        [disabled]="profileForm.invalid || loading || !profileForm.dirty">
         <mat-icon *ngIf="!loading">save</mat-icon>
         <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
-        Salvar
+        {{ loading ? 'Salvando...' : 'Salvar Alterações' }}
       </button>
     </mat-card-actions>
   </mat-card>

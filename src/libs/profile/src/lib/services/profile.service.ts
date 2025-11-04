@@ -19,6 +19,7 @@ export class ProfileService {
       name: 'João Silva',
       email: 'joao.silva@example.com',
       phone: '+5511999999999',
+      photo: undefined, // Will use default avatar
       company: {
         id: '1',
         name: 'Empresa Exemplo Ltda',
@@ -42,6 +43,7 @@ export class ProfileService {
       name: userData.name || 'João Silva',
       email: userData.email || 'joao.silva@example.com',
       phone: userData.phone || '+5511999999999',
+      photo: userData.photo || undefined,
       company: {
         id: '1',
         name: 'Empresa Exemplo Ltda',
