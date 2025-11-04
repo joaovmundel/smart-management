@@ -1,12 +1,14 @@
 export interface RegisterData {
-  name?: string;
+  name: string;
   email: string;
   password: string;
-  registrationKey: string;
+  phone?: string;
+  companyId?: number;
 }
 
 export interface ILoginResponse {
   token: string;
+  type: string;
 }
 
 export interface LoginData {

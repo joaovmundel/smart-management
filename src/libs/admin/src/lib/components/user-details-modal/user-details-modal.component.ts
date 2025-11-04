@@ -29,7 +29,7 @@ export class UserDetailsModalComponent {
     this.dialogRef.close();
   }
 
-  formatDate(date: Date | undefined): string {
+  formatDate(date: string | undefined): string {
     if (!date) return 'N/A';
     return new Date(date).toLocaleDateString('pt-BR', {
       day: '2-digit',

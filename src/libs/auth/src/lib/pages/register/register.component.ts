@@ -45,7 +45,7 @@ export class RegisterComponent {
 			email: ['', [Validators.required, Validators.email]],
 			password: ['', [Validators.required, Validators.minLength(6)]],
 			confirmPassword: ['', [Validators.required]],
-			token: ['', [Validators.required]]
+			phone: ['']
 		}, { validators: this.passwordMatchValidator });
 	}
 
@@ -59,8 +59,8 @@ export class RegisterComponent {
 			onSubmit() {
 				if (this.registerForm.valid) {
 					this.loading = true;
-					const { name, email, password, token } = this.registerForm.value;
-					const registerData: RegisterData = { name, email, password, registrationKey: token };
+					const { name, email, password, phone } = this.registerForm.value;
+					const registerData: RegisterData = { name, email, password, phone };
 					this.authService.register(registerData).subscribe({
 						next: () => {
 							this.snackBar.open('Registro realizado com sucesso!', 'Fechar', { duration: 3500, panelClass: 'snackbar-success' });

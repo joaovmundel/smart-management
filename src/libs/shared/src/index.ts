@@ -5,6 +5,17 @@ export * from './lib/models/company.model';
 export * from './lib/models/token.model';
 export * from './lib/models/user.model';
 
+//Services
+export * from './lib/services/api.service';
+export * from './lib/services/user.service';
+export * from './lib/services/company.service';
+
+//Interceptors
+export * from './lib/interceptors/jwt.interceptor';
+
+//Guards
+export * from './lib/guards/auth.guard';
+
 //Mocks
 export * from './lib/mocks/empresa.mock';
 export * from './lib/mocks/token.mock';

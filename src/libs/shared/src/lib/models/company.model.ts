@@ -1,18 +1,19 @@
 export interface Company {
-  id: string;
+  id: number;
   name: string;
+  email?: string;
+  cnpj?: string;
+  phone?: string;
+  address?: string;
+  // Campos opcionais para expansão futura
   description?: string;
   logoUrl?: string;
   websiteUrl?: string;
-  cnpj?: string;
-  phone?: string;
-  email?: string;
-  address?: string;
   city?: string;
   state?: string;
   zipCode?: string;
   country?: string;
   isActive?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: string;
+  updatedAt?: string;
 }

@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import { LayoutComponent } from '@smart-management/layout';
+import { authGuard } from '@smart-management/shared';
 
 export const appRoutes: Route[] = [
   {
@@ -30,6 +31,7 @@ export const appRoutes: Route[] = [
   {
     path: '',
     component: LayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: 'home',

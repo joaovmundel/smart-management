@@ -1,7 +1,7 @@
 import { Company } from "../models/company.model";
 
 export const mockCompany: Company = {
-    id: '1',
+    id: 1,
     name: 'Smart Solutions Ltda',
     description: 'Empresa de tecnologia focada em soluções inteligentes.',
     logoUrl: 'https://static.vecteezy.com/system/resources/thumbnails/024/553/534/small_2x/lion-head-logo-mascot-wildlife-animal-illustration-generative-ai-png.png',
@@ -15,14 +15,14 @@ export const mockCompany: Company = {
     zipCode: '01234-567',
     country: 'Brasil',
     isActive: true,
-    createdAt: new Date('2022-01-01T10:00:00Z'),
-    updatedAt: new Date('2023-01-01T10:00:00Z')
+    createdAt: '2022-01-01T10:00:00Z',
+    updatedAt: '2023-01-01T10:00:00Z'
 }
 
 export const mockCompanyList: Company[] = [
     mockCompany,
     {
-        id: '2',
+        id: 2,
         name: 'Tech Innovations Inc.',
         description: 'Empresa de tecnologia focada em inovações.',
         logoUrl: 'https://diariodocomercio.com.br/mix/wp-content/uploads/2025/08/nubank-1200x900.png',
@@ -36,11 +36,11 @@ export const mockCompanyList: Company[] = [
         zipCode: '98765-432',
         country: 'Brasil',
         isActive: true,
-        createdAt: new Date('2022-02-01T10:00:00Z'),
-        updatedAt: new Date('2023-02-01T10:00:00Z')
+        createdAt: '2022-02-01T10:00:00Z',
+        updatedAt: '2023-02-01T10:00:00Z'
     },
     {
-        id: '3',
+        id: 3,
         name: 'Innovative Tech Solutions',
         description: 'Empresa de tecnologia focada em soluções inovadoras.',
         logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/5e/PicPay_Logogrande.png',
@@ -54,7 +54,7 @@ export const mockCompanyList: Company[] = [
         zipCode: '01234-567',
         country: 'Brasil',
         isActive: true,
-        createdAt: new Date('2022-01-01T10:00:00Z'),
-        updatedAt: new Date('2023-01-01T10:00:00Z')
+        createdAt: '2022-01-01T10:00:00Z',
+        updatedAt: '2023-01-01T10:00:00Z'
     }
 ];
