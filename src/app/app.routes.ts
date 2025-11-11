@@ -30,6 +30,11 @@ export const appRoutes: Route[] = [
   },
   {
     path: '',
+    redirectTo: '/home',
+    pathMatch: 'full',
+  },
+  {
+    path: '',
     component: LayoutComponent,
     canActivate: [authGuard],
     children: [
@@ -154,7 +159,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: '**',
-    redirectTo: 'home',
+    redirectTo: '/home',
     pathMatch: 'full',
   },
 ];
