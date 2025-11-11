@@ -49,8 +49,8 @@
 			</mat-form-field>
 		</div>
 		<mat-form-field appearance="fill" class="register-field full">
-			<mat-label>Telefone (opcional)</mat-label>
-			<input matInput type="tel" formControlName="phone" />
+			<mat-label>Token de registro</mat-label>
+			<input matInput type="text" formControlName="token" required/>
 		</mat-form-field>
 		<div class="register-actions">
 			<button mat-button color="accent" class="login-btn" type="button" (click)="goToLogin()" [disabled]="loading">Voltar ao login</button>

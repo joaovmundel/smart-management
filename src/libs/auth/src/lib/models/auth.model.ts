@@ -2,7 +2,7 @@ export interface RegisterData {
   name: string;
   email: string;
   password: string;
-  phone?: string;
+  token: string;
   companyId?: number;
 }
 
