@@ -18,6 +18,7 @@ import { map, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import { productListMock } from '../../mocks/product.mock';
 import { Product } from '../../models/product.model';
 import { IStockedProduct } from '../../models/stock.model';
+import { TitleService } from '@smart-management/layout';
 
 @Component({
   selector: 'sm-stock-form',
@@ -38,7 +39,8 @@ import { IStockedProduct } from '../../models/stock.model';
 })
 export class StockFormComponent implements OnInit, OnDestroy {
   private readonly _router = inject(Router);
-  private readonly _destroy$ = new Subject<void>;
+  private readonly _destroy$ = new Subject<void>();
+  private readonly _titleService = inject(TitleService);
   private formBuilder = inject(FormBuilder);
   private snackBar = inject(MatSnackBar);
 
@@ -52,6 +54,7 @@ export class StockFormComponent implements OnInit, OnDestroy {
     this.initForm();
     this.setupProductFilter();
     this.listenFormChanges();
+    this._titleService.setTitle('Adicionar Produto ao Estoque');
   }
 
 

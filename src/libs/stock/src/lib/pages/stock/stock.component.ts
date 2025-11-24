@@ -8,6 +8,7 @@ import { SimpleInfoCardComponent } from '../../components/simple-info-card/simpl
 import { stockedProductsMock } from '../../mocks/product.mock';
 import { IStockedProduct } from '../../models/stock.model';
 import { Router } from '@angular/router';
+import { TitleService } from '@smart-management/layout';
 
 @Component({
   selector: 'sm-stock',
@@ -25,6 +26,7 @@ import { Router } from '@angular/router';
 })
 export class StockComponent implements OnInit {
   private readonly _router = inject(Router);
+  private readonly _titleService = inject(TitleService);
 
   products: IStockedProduct[] = stockedProductsMock;
   isSmallScreen = false;
@@ -41,6 +43,7 @@ export class StockComponent implements OnInit {
   ngOnInit(): void {
     this.calculateTotals();
     this.loadStockInfoValues();
+    this._titleService.setTitle('Estoque');
   }
 
   calculateTotals(): void {

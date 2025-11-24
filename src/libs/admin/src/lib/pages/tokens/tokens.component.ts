@@ -10,6 +10,7 @@ import { ConfirmationModalComponent } from '../../components/confirmation-modal/
 import { Subject, takeUntil } from 'rxjs';
 import { mockedTokens, Token } from '@smart-management/shared';
 import { TokenCreationComponent } from '../../components/token-creation/token-creation.component';
+import { TitleService } from '@smart-management/layout';
 
 @Component({
   selector: 'lib-tokens',
@@ -28,11 +29,14 @@ import { TokenCreationComponent } from '../../components/token-creation/token-cr
 export class TokensComponent implements OnDestroy {
   private dialog = inject(MatDialog);
   private destroy$ = new Subject<void>();
+  private readonly _titleService = inject(TitleService);
 
   tokens: Token[] = mockedTokens;
   displayedColumns = ['token', 'empresa', 'createdAt', 'actions'];
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar) {
+    this._titleService.setTitle('Tokens');
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

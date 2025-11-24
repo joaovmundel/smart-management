@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -16,6 +16,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { User } from '@smart-management/shared';
+import { TitleService } from '@smart-management/layout';
 import { ProfileService } from '../../services/profile.service';
 
 @Component({
@@ -37,8 +38,9 @@ import { ProfileService } from '../../services/profile.service';
   styleUrls: ['./profile-page.component.scss'],
 })
 export class ProfilePageComponent implements OnInit {
+  private readonly _titleService = inject(TitleService);
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-  
+
   profileForm: FormGroup;
   loading = false;
   user: User | null = null;
@@ -50,13 +52,20 @@ export class ProfilePageComponent implements OnInit {
     private snackBar: MatSnackBar,
     private profileService: ProfileService
   ) {
-    this.profileForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern(/^[+]?[1-9][\d]{0,15}$/)]],
-      newPassword: [''],
-      confirmPassword: [''],
-    }, { validators: [this.passwordMatchValidator] });
+    this._titleService.setTitle('Meu Perfil');
+    this.profileForm = this.fb.group(
+      {
+        name: ['', [Validators.required, Validators.minLength(2)]],
+        email: ['', [Validators.required, Validators.email]],
+        phone: [
+          '',
+          [Validators.required, Validators.pattern(/^[+]?[1-9][\d]{0,15}$/)],
+        ],
+        newPassword: [''],
+        confirmPassword: [''],
+      },
+      { validators: [this.passwordMatchValidator] }
+    );
   }
 
   ngOnInit(): void {
@@ -68,7 +77,7 @@ export class ProfilePageComponent implements OnInit {
   passwordMatchValidator = (control: AbstractControl) => {
     const newPassword = control.get('newPassword')?.value;
     const confirmPassword = control.get('confirmPassword')?.value;
-    
+
     if (newPassword && confirmPassword && newPassword !== confirmPassword) {
       return { passwordMismatch: true };
     }
@@ -107,7 +116,7 @@ export class ProfilePageComponent implements OnInit {
           duration: 3000,
         });
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -115,7 +124,7 @@ export class ProfilePageComponent implements OnInit {
     if (this.profileForm.valid) {
       this.loading = true;
       const formData = { ...this.profileForm.value };
-      
+
       // Remove empty password fields
       if (!formData.newPassword) {
         delete formData.newPassword;
@@ -137,7 +146,7 @@ export class ProfilePageComponent implements OnInit {
             duration: 3000,
           });
           this.loading = false;
-        }
+        },
       });
     } else {
       this.markFormGroupTouched();
@@ -157,12 +166,16 @@ export class ProfilePageComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
-      
+
       // Validate file type
       if (!file.type.startsWith('image/')) {
-        this.snackBar.open('Por favor, selecione apenas arquivos de imagem', 'Fechar', {
-          duration: 3000,
-        });
+        this.snackBar.open(
+          'Por favor, selecione apenas arquivos de imagem',
+          'Fechar',
+          {
+            duration: 3000,
+          }
+        );
         return;
       }
 
@@ -179,9 +192,13 @@ export class ProfilePageComponent implements OnInit {
         if (this.user && e.target?.result) {
           this.user.photo = e.target.result as string;
           // TODO: Implementar upload real da foto
-          this.snackBar.open('Foto atualizada! Clique em "Salvar Alterações" para confirmar.', 'Fechar', {
-            duration: 3000,
-          });
+          this.snackBar.open(
+            'Foto atualizada! Clique em "Salvar Alterações" para confirmar.',
+            'Fechar',
+            {
+              duration: 3000,
+            }
+          );
         }
       };
       reader.readAsDataURL(file);
@@ -194,7 +211,7 @@ export class ProfilePageComponent implements OnInit {
   }
 
   private markFormGroupTouched(): void {
-    Object.keys(this.profileForm.controls).forEach(key => {
+    Object.keys(this.profileForm.controls).forEach((key) => {
       const control = this.profileForm.get(key);
       control?.markAsTouched();
     });
@@ -202,7 +219,7 @@ export class ProfilePageComponent implements OnInit {
 
   getErrorMessage(fieldName: string): string {
     const control = this.profileForm.get(fieldName);
-    
+
     if (control?.hasError('required')) {
       return 'Este campo é obrigatório';
     }
@@ -216,12 +233,15 @@ export class ProfilePageComponent implements OnInit {
     if (control?.hasError('pattern')) {
       return 'Telefone inválido';
     }
-    
+
     // Validação específica para senha
-    if (fieldName === 'confirmPassword' && this.profileForm.hasError('passwordMismatch')) {
+    if (
+      fieldName === 'confirmPassword' &&
+      this.profileForm.hasError('passwordMismatch')
+    ) {
       return 'As senhas não coincidem';
     }
-    
+
     return '';
   }
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -23,6 +23,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Company, empresasMock, User } from '@smart-management/shared';
 import { mockedUsers } from '@smart-management/shared';
+import { TitleService } from '@smart-management/layout';
 
 @Component({
   selector: 'admin-user-form',
@@ -44,15 +45,7 @@ import { mockedUsers } from '@smart-management/shared';
   styleUrls: ['./user-form.component.scss'],
 })
 export class UserFormComponent implements OnInit, OnDestroy {
-  // Validador para garantir que password e confirmPassword sejam iguais
-  passwordMatchValidator(form: FormGroup): { [key: string]: boolean } | null {
-    const password = form.get('password')?.value;
-    const confirmPassword = form.get('confirmPassword')?.value;
-    if (password && confirmPassword && password !== confirmPassword) {
-      return { passwordMismatch: true };
-    }
-    return null;
-  }
+  private readonly _titleService = inject(TitleService);
   companies: Company[] = empresasMock;
   companyFilterCtrl: FormControl = new FormControl('');
   filteredCompanies: Company[] = this.companies.slice();
@@ -64,44 +57,13 @@ export class UserFormComponent implements OnInit, OnDestroy {
   isEdit = false;
   userId?: string;
 
-  private setupCompanySearch(): void {
-    this.companyFilterCtrl.valueChanges.subscribe((search: string) => {
-      const s = (search || '').trim().toLowerCase();
-      if (!s) {
-        this.filteredCompanies = this.companies.slice();
-      } else {
-        this.filteredCompanies = this.companies.filter((e: Company) =>
-          e.name.toLowerCase().includes(s)
-        );
-      }
-    });
-  }
-
-  onCompanySelected(event: MatAutocompleteSelectedEvent): void {
-    const name = event.option.value;
-    const company = this.companies.find((e) => e.name === name) || null;
-    this.userForm.get('company')?.setValue(company);
-  }
-
-  onCompanyBlur(): void {
-    const name = this.companyFilterCtrl.value;
-    const company = this.companies.find((e) => e.name === name) || null;
-    this.userForm.get('company')?.setValue(company);
-    if (!company) {
-      this.userForm.get('company')?.setErrors({ required: true });
-    }
-  }
-
-  compareCompanies(companyA: Company, companyB: Company): boolean {
-    return !!companyA && !!companyB && companyA.id === companyB.id;
-  }
-
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
     private router: Router,
     private route: ActivatedRoute
   ) {
+    this._titleService.setTitle(this.isEdit ? 'Editar Usuário' : 'Criar Usuário');
     this.userForm = this.fb.group(
       {
         nome: ['', [Validators.required]],
@@ -123,16 +85,19 @@ export class UserFormComponent implements OnInit, OnDestroy {
         if (params['id']) {
           this.isEdit = true;
           this.userId = params['id'];
-          const user: User | undefined = mockedUsers.find((u: User) => u.id === parseInt(this.userId || '0'));
+          const user: User | undefined = mockedUsers.find(
+            (u: User) => u.id === parseInt(this.userId || '0')
+          );
           if (user) {
             this.userForm.patchValue({
               nome: user.name,
               email: user.email,
               phone: user.phone,
-              company: this.companies.find(e => e.id === user.company?.id) || null,
+              company:
+                this.companies.find((e) => e.id === user.company?.id) || null,
               tokenRegistro: user.registerToken || '',
               password: '',
-              confirmPassword: ''
+              confirmPassword: '',
             });
             if (user.company && user.company.name) {
               this.companyFilterCtrl.setValue(user.company.name);
@@ -146,6 +111,48 @@ export class UserFormComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+  private setupCompanySearch(): void {
+    this.companyFilterCtrl.valueChanges.subscribe((search: string) => {
+      const s = (search || '').trim().toLowerCase();
+      if (!s) {
+        this.filteredCompanies = this.companies.slice();
+      } else {
+        this.filteredCompanies = this.companies.filter((e: Company) =>
+          e.name.toLowerCase().includes(s)
+        );
+      }
+    });
+  }
+
+  passwordMatchValidator(form: FormGroup): { [key: string]: boolean } | null {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+    if (password && confirmPassword && password !== confirmPassword) {
+      return { passwordMismatch: true };
+    }
+    return null;
+  }
+
+  onCompanySelected(event: MatAutocompleteSelectedEvent): void {
+    const name = event.option.value;
+    const company = this.companies.find((e) => e.name === name) || null;
+    this.userForm.get('company')?.setValue(company);
+  }
+
+  onCompanyBlur(): void {
+    const name = this.companyFilterCtrl.value;
+    const company = this.companies.find((e) => e.name === name) || null;
+    this.userForm.get('company')?.setValue(company);
+    if (!company) {
+      this.userForm.get('company')?.setErrors({ required: true });
+    }
+  }
+
+  compareCompanies(companyA: Company, companyB: Company): boolean {
+    return !!companyA && !!companyB && companyA.id === companyB.id;
+  }
+
   onSubmit(): void {
     if (this.userForm.valid) {
       const value: User = { ...this.userForm.value };

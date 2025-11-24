@@ -15,6 +15,7 @@ import { UserDetailsModalComponent } from '../../components/user-details-modal/u
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { TitleService } from 'src/libs/layout/src/lib/services/title.service';
 
 @Component({
   selector: 'users-list',
@@ -38,6 +39,7 @@ export class UsersComponent {
 
   private readonly _dialog: MatDialog = inject(MatDialog);
   private readonly _router: Router = inject(Router);
+  private readonly _titleService = inject(TitleService);
 
   users: User[] = mockedUsers;
   filteredUsers: User[] = [];
@@ -56,6 +58,7 @@ export class UsersComponent {
 
   constructor() {
     this.filteredUsers = this.users;
+    this._titleService.setTitle('Usuários');
   }
 
   redirectToCreateUser() {

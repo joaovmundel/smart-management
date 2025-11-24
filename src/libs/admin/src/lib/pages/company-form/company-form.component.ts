@@ -1,6 +1,6 @@
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -9,6 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Company } from '@smart-management/shared';
+import { TitleService } from '@smart-management/layout';
 
 @Component({
   selector: 'app-company-form',
@@ -26,6 +27,7 @@ import { Company } from '@smart-management/shared';
   ],
 })
 export class CompanyFormComponent implements OnInit {
+  private readonly _titleService = inject(TitleService);
   companyForm: FormGroup;
   loading = false;
   isEdit = false;
@@ -54,6 +56,7 @@ export class CompanyFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._titleService.setTitle(this.isEdit ? 'Editar Empresa' : 'Criar Empresa');
     this.route.params.subscribe((params: { id?: string }) => {
       if (params['id']) {
         this.isEdit = true;
