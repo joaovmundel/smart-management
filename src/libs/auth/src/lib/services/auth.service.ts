@@ -23,6 +23,7 @@ export class AuthService {
     );
     if (account) {
       localStorage.setItem('token', this.DEFAULT_TOKEN);
+      localStorage.setItem('currentUser', JSON.stringify(account));
       return true;
     }
     throw Error('Credenciais inválidas.');
@@ -45,8 +46,16 @@ export class AuthService {
     localStorage.setItem('accounts', JSON.stringify(this.accountsStorage));
   }
 
+  forgotPassword(email: string): void {
+    if (!this.isRegistred(email)) {
+      throw Error('Email não registrado.');
+    }
+
+  }
+
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('currentUser');
     this._router.navigate(['/login']);
   }
 }
