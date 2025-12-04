@@ -32,13 +32,13 @@
 
       <div class="info-item">
         <label class="info-label">Telefone:</label>
-        <span class="info-value">{{ user.phone }}</span>
+        <span class="info-value">{{ user.phone || 'Não informado' }}</span>
       </div>
 
       <div class="info-item full-width">
         <label class="info-label">Empresa:</label>
         <span class="info-value">{{
-          user.company?.name || 'Não informado'
+          user.companyName || 'Não informado'
         }}</span>
       </div>
 

@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
-import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
-import { mockedUsers, User } from '@smart-management/shared';
+import { User, UserService } from '@smart-management/shared';
 import { take } from 'rxjs';
 import { ConfirmationModalComponent } from '../../components/confirmation-modal/confirmation-modal.component';
 import { UserDetailsModalComponent } from '../../components/user-details-modal/user-details-modal.component';
@@ -40,8 +40,9 @@ export class UsersComponent {
   private readonly _dialog: MatDialog = inject(MatDialog);
   private readonly _router: Router = inject(Router);
   private readonly _titleService = inject(TitleService);
+  private readonly _userService = inject(UserService);
 
-  users: User[] = mockedUsers;
+  users: User[] = [];
   filteredUsers: User[] = [];
   searchTerm = '';
 
@@ -57,8 +58,13 @@ export class UsersComponent {
   ];
 
   constructor() {
-    this.filteredUsers = this.users;
+    this.loadUsers();
     this._titleService.setTitle('Usuários');
+  }
+
+  loadUsers(): void {
+    this.users = this._userService.listUsers();
+    this.filteredUsers = this.users;
   }
 
   redirectToCreateUser() {
@@ -71,11 +77,15 @@ export class UsersComponent {
 
   deleteUser(user: unknown) {
     //TODO: Implementar a logica real de deleção
-    this._dialog.open(ConfirmationModalComponent).afterClosed().pipe(take(1)).subscribe((confirmed) => {
-      if (confirmed) {
-        console.log(`Estamos deletando ${user}`)
-      }
-    });
+    this._dialog
+      .open(ConfirmationModalComponent)
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((confirmed) => {
+        if (confirmed) {
+          console.log(`Estamos deletando ${user}`);
+        }
+      });
   }
 
   viewUserDetails(user: User) {
@@ -84,16 +94,17 @@ export class UsersComponent {
       maxWidth: '90vw',
       data: user,
       autoFocus: false,
-      restoreFocus: false
+      restoreFocus: false,
     });
   }
 
   applyFilter() {
     const term = this.searchTerm?.toLowerCase() || '';
-    this.filteredUsers = this.users.filter(user =>
-      user.name?.toLowerCase().includes(term) ||
-      user.email?.toLowerCase().includes(term) ||
-      user.phone?.toLowerCase().includes(term)
+    this.filteredUsers = this.users.filter(
+      (user) =>
+        user.name?.toLowerCase().includes(term) ||
+        user.email?.toLowerCase().includes(term) ||
+        user.phone?.toLowerCase().includes(term)
     );
   }
 

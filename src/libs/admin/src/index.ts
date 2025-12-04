@@ -10,3 +10,6 @@ export * from './lib/pages/company-details/company-details.component';
 
 //Components
 export * from './lib/components/user-details-modal/user-details-modal.component';
+
+//Services
+export * from './lib/services/token.service';

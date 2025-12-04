@@ -63,7 +63,9 @@ export class UserFormComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this._titleService.setTitle(this.isEdit ? 'Editar Usuário' : 'Criar Usuário');
+    this._titleService.setTitle(
+      this.isEdit ? 'Editar Usuário' : 'Criar Usuário'
+    );
     this.userForm = this.fb.group(
       {
         nome: ['', [Validators.required]],
@@ -93,14 +95,13 @@ export class UserFormComponent implements OnInit, OnDestroy {
               nome: user.name,
               email: user.email,
               phone: user.phone,
-              company:
-                this.companies.find((e) => e.id === user.company?.id) || null,
+              companyId: user.companyId,
               tokenRegistro: user.registerToken || '',
               password: '',
               confirmPassword: '',
             });
-            if (user.company && user.company.name) {
-              this.companyFilterCtrl.setValue(user.company.name);
+            if (user.companyId && user.companyName) {
+              this.companyFilterCtrl.setValue(user.companyName);
             }
           }
           this.userForm.get('password')?.clearValidators();

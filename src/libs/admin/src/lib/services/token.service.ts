@@ -25,6 +25,10 @@ export class TokenService {
     return this.registrationTokenStorage.find((t) => t.token === token);
   }
 
+  tokenExists(token: string): boolean {
+    return this.registrationTokenStorage.some((t) => t.token === token);
+  }
+
   deleteToken(token: string): void {
     this.registrationTokenStorage = this.registrationTokenStorage.filter(
       (t) => t.token !== token

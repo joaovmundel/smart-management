@@ -55,7 +55,7 @@
       </ng-container>
       <ng-container matColumnDef="telefone">
         <mat-header-cell *matHeaderCellDef class="col-telefone">Telefone</mat-header-cell>
-        <mat-cell *matCellDef="let user" class="col-telefone" title="{{ user.phone }}">{{ user.phone }}</mat-cell>
+        <mat-cell *matCellDef="let user" class="col-telefone" title="{{ user.phone || 'Não informado' }}">{{ user.phone || 'Não informado' }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="email">
         <mat-header-cell *matHeaderCellDef class="col-email">Email</mat-header-cell>
@@ -63,7 +63,7 @@
       </ng-container>
       <ng-container matColumnDef="empresa">
         <mat-header-cell *matHeaderCellDef class="col-empresa">Empresa</mat-header-cell>
-        <mat-cell *matCellDef="let user" class="col-empresa" title="{{ user.company?.name }}">{{ user.company?.name }}</mat-cell>
+        <mat-cell *matCellDef="let user" class="col-empresa" title="{{ user.company?.name || 'Não informado' }}">{{ user.company?.name || 'Não informado' }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="criadoEm">
         <mat-header-cell *matHeaderCellDef>Criado em</mat-header-cell>
@@ -73,7 +73,7 @@
       </ng-container>
       <ng-container matColumnDef="tokenRegistro">
         <mat-header-cell *matHeaderCellDef class="col-token">Token de Registro</mat-header-cell>
-        <mat-cell *matCellDef="let user" class="col-token" title="{{ user.registerToken }}">{{ user.registerToken }}</mat-cell>
+        <mat-cell *matCellDef="let user" class="col-token" title="{{ user.registerToken || 'Não informado' }}">{{ user.registerToken || 'Não informado' }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef class="table-cell--actions"

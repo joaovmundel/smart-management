@@ -1,11 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit, inject, HostListener } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  inject,
+  HostListener,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MatIconModule } from '@angular/material/icon';
 import { SidebarService } from '../../services/sidebar.service';
 import { TitleService } from '../../services/title.service';
-import { User } from '@smart-management/shared';
+import { User, UserService } from '@smart-management/shared';
 
 @Component({
   selector: 'lib-new-header',
@@ -20,10 +27,12 @@ export class NewHeaderComponent implements OnInit, OnDestroy {
   public currentTitle = '';
   public user: User | null = null;
   public isProfileDropdownOpen = false;
-  public defaultAvatar = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM2MzY2ZjEiLz4KPHBhdGggZD0iTTIwIDIwQzIyLjc2MTQgMjAgMjUgMTcuNzYxNCAyNSAxNUMyNSAxMi4yMzg2IDIyLjc2MTQgMTAgMjAgMTBDMTcuMjM4NiAxMCAxNSAxMi4yMzg2IDE1IDE1QzE1IDE3Ljc2MTQgMTcgMjAgMjAiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTMwIDI4QzMwIDI0LjY4NjMgMjYuNDI3MSAyMiAyMiAyMkgxOEMxMy41NzI5IDIyIDEwIDI0LjY4NjMgMTAgMjhWMzBIMzBWMjhaIiBmaWxsPSIjZmZmZmZmIi8+Cjwvc3ZnPgo=';
+  public defaultAvatar =
+    'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM2MzY2ZjEiLz4KPHBhdGggZD0iTTIwIDIwQzIyLjc2MTQgMjAgMjUgMTcuNzYxNCAyNSAxNUMyNSAxMi4yMzg2IDIyLjc2MTQgMTAgMjAgMTBDMTcuMjM4NiAxMCAxNSAxMi4yMzg2IDE1IDE1QzE1IDE3Ljc2MTQgMTcgMjAgMjAiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPHBhdGggZD0iTTMwIDI4QzMwIDI0LjY4NjMgMjYuNDI3MSAyMiAyMiAyMkgxOEMxMy41NzI5IDIyIDEwIDI0LjY4NjMgMTAgMjhWMzBIMzBWMjhaIiBmaWxsPSIjZmZmZmZmIi8+Cjwvc3ZnPgo=';
 
   private titleSubscription?: Subscription;
   private readonly sidebarService = inject(SidebarService);
+  private readonly _userService = inject(UserService);
 
   isOpen$ = this.sidebarService.isOpen$;
 
@@ -82,15 +91,6 @@ export class NewHeaderComponent implements OnInit, OnDestroy {
   private loadUserProfile(): void {
     // TODO: Load user profile from service
     // For now, using mock data
-    this.user = {
-      id: "1",
-      name: 'João Silva',
-      email: 'joao.silva@example.com',
-      phone: '+5511999999999',
-      role: 'USER',
-      createdAt: '2023-01-01T10:00:00Z',
-      company: null,
-      // photo: 'https://example.com/photo.jpg', // Uncomment to test with photo
-    };
+    this.user = this._userService.getCurrentUser();
   }
 }

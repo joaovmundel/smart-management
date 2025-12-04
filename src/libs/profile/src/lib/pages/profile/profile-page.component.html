@@ -37,9 +37,9 @@
           <span>{{ user?.phone || 'Telefone não informado' }}</span>
         </div>
         
-        <div *ngIf="user?.company" class="user-info-item">
+        <div *ngIf="user?.companyId" class="user-info-item">
           <mat-icon>business</mat-icon>
-          <span>{{ user?.company?.name }}</span>
+          <span>{{ user?.companyName }}</span>
         </div>
         
         <div *ngIf="user?.createdAt" class="user-info-item">

@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiService } from './api.service';
-import { Company } from '../models/company.model';
 
 export interface CreateCompanyRequest {
+  id: string;
   name: string;
   email?: string;
   cnpj?: string;
@@ -20,44 +18,49 @@ export interface UpdateCompanyRequest {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CompanyService {
+  private companyStorage: CreateCompanyRequest[] = JSON.parse(
+    localStorage.getItem('companies') || '[]'
+  );
 
-  constructor(private apiService: ApiService) {}
-
-  /**
-   * Listar todas as empresas
-   */
-  getCompanies(): Observable<Company[]> {
-    return this.apiService.get<Company[]>('/companies');
+  listCompanies(): CreateCompanyRequest[] {
+    return this.companyStorage;
   }
 
-  /**
-   * Obter empresa por ID
-   */
-  getCompany(id: number): Observable<Company> {
-    return this.apiService.get<Company>(`/companies/${id}`);
+  createCompany(company: CreateCompanyRequest): void {
+    this.companyStorage.push(company);
+    localStorage.setItem('companies', JSON.stringify(this.companyStorage));
   }
 
-  /**
-   * Criar nova empresa
-   */
-  createCompany(companyData: CreateCompanyRequest): Observable<Company> {
-    return this.apiService.post<Company>('/companies', companyData);
+  updateCompany(index: number, updatedCompany: CreateCompanyRequest): void {
+    if (this.companyStorage[index]) {
+      this.companyStorage[index] = updatedCompany;
+      localStorage.setItem('companies', JSON.stringify(this.companyStorage));
+    }
   }
 
-  /**
-   * Atualizar empresa
-   */
-  updateCompany(id: number, companyData: UpdateCompanyRequest): Observable<Company> {
-    return this.apiService.put<Company>(`/companies/${id}`, companyData);
+  deleteCompany(index: number): void {
+    if (this.companyStorage[index]) {
+      this.companyStorage.splice(index, 1);
+      localStorage.setItem('companies', JSON.stringify(this.companyStorage));
+    }
   }
 
-  /**
-   * Deletar empresa
-   */
-  deleteCompany(id: number): Observable<void> {
-    return this.apiService.delete<void>(`/companies/${id}`);
+  getCompanyById(id: string): CreateCompanyRequest | undefined {
+    return this.companyStorage.find((company) => company.id === id);
+  }
+
+  existsById(id: string): boolean {
+    return this.companyStorage.some((company) => company.id === id);
+  }
+
+  existsByCnpj(cnpj: string): boolean {
+    return this.companyStorage.some((company) => company.cnpj === cnpj);
+  }
+
+  getCompanyByCnpj(cnpj: string): CreateCompanyRequest | undefined {
+    return this.companyStorage.find((company) => company.cnpj === cnpj);
   }
 }
