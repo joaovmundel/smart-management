@@ -67,6 +67,28 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       this.loading = true;
       const { name, email, password, token } = this.registerForm.value;
+      try {
+        this.authService.register({
+          name,
+          email,
+          password,
+          token,
+        } as RegisterData);
+        this.snackBar.open('Registro realizado com sucesso!', 'X', {
+          duration: 3000,
+        });
+        this.router.navigate(['/login']);
+      } catch (error) {
+        console.log(error);
+        this.snackBar.open(
+          (error as Error).message || 'Erro ao registrar usuário.',
+          'X',
+          { duration: 3000 }
+        );
+        this.registerForm.reset();
+      } finally {
+        this.loading = false;
+      }
     } else {
       this.registerForm.markAllAsTouched();
     }

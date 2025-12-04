@@ -83,7 +83,7 @@ export class NewHeaderComponent implements OnInit, OnDestroy {
     // TODO: Load user profile from service
     // For now, using mock data
     this.user = {
-      id: 1,
+      id: "1",
       name: 'João Silva',
       email: 'joao.silva@example.com',
       phone: '+5511999999999',

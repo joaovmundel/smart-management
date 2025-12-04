@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { User } from 'src/libs/shared/src/lib/models/user.model';
 
 @Component({
   standalone: true,
@@ -9,6 +10,37 @@ import { RouterModule } from '@angular/router';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  
   title = 'smart-management';
+  private isAdminRegistered = false;
+  accountsStorage: User[] = JSON.parse(
+    localStorage.getItem('accounts') || '[]'
+  );
+
+  constructor() {
+    if (!this.isAdminRegistered) {
+      this.registerAdmin();
+      this.isAdminRegistered = true;
+    }
+  }
+
+  registerAdmin(): void {
+    if (
+      this.accountsStorage.some(
+        (account) => account.email === 'admin@example.com'
+      )
+    ) {
+      return;
+    }
+    const adminUser: User = {
+      id: crypto.randomUUID().toString(),
+      name: 'Admin User',
+      email: 'admin@example.com',
+      password: 'adminpassword',
+      phone: '',
+      role: 'ADMIN',
+      createdAt: new Date().toISOString(),
+    };
+    this.accountsStorage.push(adminUser);
+    localStorage.setItem('accounts', JSON.stringify(this.accountsStorage));
+  }
 }

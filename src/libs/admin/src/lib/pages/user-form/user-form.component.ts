@@ -86,7 +86,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
           this.isEdit = true;
           this.userId = params['id'];
           const user: User | undefined = mockedUsers.find(
-            (u: User) => u.id === parseInt(this.userId || '0')
+            (u: User) => u.id === this.userId
           );
           if (user) {
             this.userForm.patchValue({

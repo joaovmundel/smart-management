@@ -55,9 +55,15 @@ export class LoginComponent {
       const { email, password } = this.loginForm.value;
       try {
         this.authService.login(email, password);
+        this.snackBar.open('Login realizado com sucesso!', 'X', {
+          duration: 3000,
+        });
+        this.router.navigate(['/dashboard']);
       } catch (error) {
-        console.log(error)
-
+        console.log(error);
+        this.snackBar.open('Credenciais inválidas.', 'X', { duration: 3000 });
+        this.loginForm.reset();
+        return;
       } finally {
         this.loading = false;
       }

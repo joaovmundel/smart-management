@@ -2,7 +2,7 @@ import { User } from "../models/user.model";
 
 export const mockedUsers: User[] = [
   {
-    id: 1,
+    id: "1",
     name: 'User One',
     email: 'user1@example.com',
     phone: '123456789',
@@ -15,7 +15,7 @@ export const mockedUsers: User[] = [
   },
 
   {
-    id: 2,
+    id: "2",
     name: 'User Two',
     email: 'user2@example.com',
     phone: '987654321',
