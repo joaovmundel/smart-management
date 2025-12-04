@@ -22,7 +22,8 @@
       "@smart-management/profile": ["src/libs/profile/src/index.ts"],
       "@smart-management/shared": ["src/libs/shared/src/index.ts"],
       "@smart-management/stock": ["src/libs/stock/src/index.ts"],
-      "@smart-management/ui": ["src/libs/ui/src/index.ts"]
+      "@smart-management/ui": ["src/libs/ui/src/index.ts"],
+      "@smart-management/environments": ["src/environments/environment.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

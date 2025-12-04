@@ -1,6 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  Validators,
+  FormGroup,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { RecoverPassCodeData } from '../../models/auth.model';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'lib-forgot-password',
@@ -23,12 +28,13 @@ import { RecoverPassCodeData } from '../../models/auth.model';
     MatSnackBarModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    RouterModule
+    RouterModule,
   ],
   templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.scss']
+  styleUrls: ['./forgot-password.component.scss'],
 })
 export class ForgotPasswordComponent {
+  private readonly _authService = inject(AuthService);
   forgotForm: FormGroup;
   loading = false;
 
@@ -39,7 +45,7 @@ export class ForgotPasswordComponent {
     private snackBar: MatSnackBar
   ) {
     this.forgotForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
     });
   }
 
@@ -47,6 +53,25 @@ export class ForgotPasswordComponent {
     if (this.forgotForm.valid) {
       this.loading = true;
       const { email } = this.forgotForm.value;
+      this._authService
+        .forgotPassword(email)
+        .pipe(finalize(() => (this.loading = false)))
+        .subscribe({
+          next: (response) => {
+            localStorage.setItem('resetCode', response.code);
+            localStorage.setItem('resetEmail', email);
+            this.snackBar.open(
+              'Um email com as instruções para recuperação de senha foi enviado.',
+              'Fechar',
+              { duration: 5000 }
+            );
+            this.router.navigate(['/recover-password']);
+          },
+          error: (error) => {
+            this.loading = false;
+            this.snackBar.open(error.message, 'Fechar', { duration: 5000 });
+          },
+        });
     } else {
       this.forgotForm.markAllAsTouched();
     }

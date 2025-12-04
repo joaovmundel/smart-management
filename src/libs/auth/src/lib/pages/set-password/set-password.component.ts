@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -13,6 +14,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'lib-set-password',
@@ -32,6 +34,7 @@ import { Router, RouterModule } from '@angular/router';
   styleUrls: ['./set-password.component.scss'],
 })
 export class SetPasswordComponent {
+  private readonly _authService = inject(AuthService);
   setPasswordForm: FormGroup;
   hidePassword = true;
   hideConfirmPassword = true;
@@ -60,15 +63,29 @@ export class SetPasswordComponent {
   onSubmit() {
     if (this.setPasswordForm.valid) {
       this.loading = true;
-      // Aqui você pode integrar com o AuthService para salvar a nova senha
-      setTimeout(() => {
+      try {
+        const { password, confirmPassword } = this.setPasswordForm.value;
+        this._authService.changePassword(
+          localStorage.getItem('resetEmail') || '',
+          password,
+          confirmPassword
+        );
         this.snackBar.open('Senha definida com sucesso!', 'Fechar', {
-          duration: 3500,
-          panelClass: 'snackbar-success',
+          duration: 5000,
         });
-        this.loading = false;
         this.router.navigate(['/login']);
-      }, 1200);
+      } catch (error: any) {
+        this.snackBar.open(
+          error.message || 'Erro ao definir a senha.',
+          'Fechar',
+          {
+            duration: 5000,
+          }
+        );
+        this.loading = false;
+      } finally {
+        this.loading = false;
+      }
     } else {
       this.setPasswordForm.markAllAsTouched();
     }

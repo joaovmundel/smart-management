@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -22,10 +23,10 @@ import { AuthService } from '../../services/auth.service';
     MatSnackBarModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    RouterModule
+    RouterModule,
   ],
   templateUrl: './recover-password.component.html',
-  styleUrls: ['./recover-password.component.scss']
+  styleUrls: ['./recover-password.component.scss'],
 })
 export class RecoverPasswordComponent {
   codeControls: FormControl[] = [];
@@ -37,7 +38,12 @@ export class RecoverPasswordComponent {
     private snackBar: MatSnackBar
   ) {
     for (let i = 0; i < 6; i++) {
-      this.codeControls.push(new FormControl('', [Validators.required, Validators.pattern(/^[0-9a-zA-Z]$/)]));
+      this.codeControls.push(
+        new FormControl('', [
+          Validators.required,
+          Validators.pattern(/^[0-9a-zA-Z]$/),
+        ])
+      );
     }
   }
 
@@ -49,29 +55,47 @@ export class RecoverPasswordComponent {
       this.codeControls[idx].setValue(value.charAt(0));
     }
     if (value && idx < 5) {
-      const next = document.querySelectorAll('.code-box')[idx + 1] as HTMLInputElement;
+      const next = document.querySelectorAll('.code-box')[
+        idx + 1
+      ] as HTMLInputElement;
       if (next) next.focus();
     }
   }
 
   onCodeKeydown(event: KeyboardEvent, idx: number) {
     if (event.key === 'Backspace' && !this.codeControls[idx].value && idx > 0) {
-      const prev = document.querySelectorAll('.code-box')[idx - 1] as HTMLInputElement;
+      const prev = document.querySelectorAll('.code-box')[
+        idx - 1
+      ] as HTMLInputElement;
       if (prev) prev.focus();
     }
   }
 
-  onSubmit() {
-    if (this.codeControls.every(ctrl => ctrl.valid && ctrl.value)) {
+  onSubmit(event: Event) {
+    event.preventDefault();
+    if (this.codeControls.every((ctrl) => ctrl.valid && ctrl.value)) {
       this.loading = true;
-      const code = this.codeControls.map(ctrl => ctrl.value).join('');
+      const code = this.codeControls.map((ctrl) => ctrl.value).join('');
       // Aqui você pode chamar o AuthService para verificar o código, ou emitir um evento, conforme a lógica desejada
       // Exemplo de feedback:
-      this.snackBar.open('Código enviado: ' + code, 'Fechar', { duration: 3500, panelClass: 'snackbar-success' });
+      if (code == localStorage.getItem('resetCode')) {
+        localStorage.removeItem('resetCode');
+        this.snackBar.open('Código enviado: ' + code, 'Fechar', {
+          duration: 3500,
+          panelClass: 'snackbar-success',
+        });
+        this.router.navigate(['/reset-password']);
+      } else {
+        this.codeControls.forEach(ctrl => ctrl.setValue(''));
+        this.snackBar.open('Código inválido. Tente novamente.', 'Fechar', {
+          duration: 5000,
+          panelClass: 'snackbar-error',
+        });
+      }
       this.loading = false;
       // Redirecionar ou avançar para próxima etapa se necessário
     } else {
-      this.codeControls.forEach(ctrl => ctrl.markAsTouched());
+      this.codeControls.forEach((ctrl) => ctrl.markAsTouched());
     }
   }
 

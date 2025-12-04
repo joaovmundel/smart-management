@@ -24,7 +24,7 @@ export const appRoutes: Route[] = [
       import('@smart-management/auth').then((m) => m.RecoverPasswordComponent),
   },
   {
-    path: 'set-password',
+    path: 'reset-password',
     loadComponent: () =>
       import('@smart-management/auth').then((m) => m.SetPasswordComponent),
   },
