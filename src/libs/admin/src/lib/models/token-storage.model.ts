@@ -1,6 +1,6 @@
-export interface Token {
+export interface TokenStorage {
   token: string;
-  companyId: string;
   createdAt: Date;
+  companyId: string;
   companyName?: string;
 }

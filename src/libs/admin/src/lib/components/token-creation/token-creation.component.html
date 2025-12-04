@@ -19,8 +19,14 @@
         [required]="true"
         (blur)="onCompanyBlur()"
       />
-      <mat-autocomplete #autoCompany="matAutocomplete" (optionSelected)="onCompanySelected($event)">
-        <mat-option *ngFor="let company of filteredCompanies" [value]="company.name">
+      <mat-autocomplete
+        #autoCompany="matAutocomplete"
+        (optionSelected)="onCompanySelected($event)"
+      >
+        <mat-option
+          *ngFor="let company of filteredCompanies"
+          [value]="company.name"
+        >
           {{ company.name }}
         </mat-option>
       </mat-autocomplete>
@@ -30,6 +36,7 @@
       color="primary"
       type="submit"
       [disabled]="form.invalid"
+      (click)="close(true)"
     >
       Criar Token
     </button>

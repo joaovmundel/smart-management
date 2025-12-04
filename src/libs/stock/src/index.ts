@@ -13,6 +13,7 @@ export * from './lib/components/product-table/product-table.component';
 export * from './lib/components/category-modal/category-modal.component';
 export * from './lib/components/delete-confirmation-modal/delete-confirmation-modal.component';
 export * from './lib/components/sales-table/sales-table.component';
+export * from './lib/components/sale-details-modal/sale-details-modal.component';
 
 //Models
 export * from './lib/models/product.model';

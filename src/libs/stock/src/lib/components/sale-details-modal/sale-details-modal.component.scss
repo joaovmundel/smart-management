@@ -1,0 +1,244 @@
+@import '../../../../../../styles/variables';
+
+.sale-details-modal {
+  width: 100%;
+  max-width: 800px;
+  min-width: 600px;
+  padding: 20px;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    min-width: 300px;
+    max-width: 100%;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 1.5rem;
+
+  .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    h2 {
+      margin: 0;
+      color: #333;
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
+
+    .status-badge {
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      
+      &.status-completed {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+      }
+
+      &.status-pending {
+        background-color: #fff3e0;
+        color: #f57c00;
+      }
+
+      &.status-cancelled {
+        background-color: #ffebee;
+        color: #c62828;
+      }
+    }
+  }
+
+  .close-button {
+    color: #666;
+    
+    &:hover {
+      color: #333;
+    }
+  }
+}
+
+.modal-content {
+  padding: 0;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+// Seção de Informações
+.info-section {
+  margin-bottom: 2rem;
+
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #1976d2;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    &.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .info-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      font-size: 1rem;
+      color: #333;
+
+      &.notes {
+        margin-top: 0.5rem;
+        padding: 0.75rem;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+        line-height: 1.5;
+      }
+    }
+  }
+}
+
+// Seção de Itens
+.items-section {
+  margin-bottom: 2rem;
+
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #1976d2;
+  }
+
+  .items-table {
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+
+    th {
+      background-color: #f5f5f5;
+      font-weight: 600;
+      color: #333;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+    }
+
+    td {
+      font-size: 0.875rem;
+      color: #666;
+    }
+
+    .subtotal-cell {
+      font-weight: 600;
+      color: #333;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 0.75rem;
+      
+      th, td {
+        padding: 8px 4px;
+      }
+    }
+  }
+}
+
+// Seção de Totais
+.totals-section {
+  background-color: #f5f5f5;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+
+  .total-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    font-size: 1rem;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .total-label {
+      font-weight: 500;
+      color: #666;
+    }
+
+    .total-value {
+      font-weight: 600;
+      color: #333;
+    }
+
+    &.discount {
+      .total-value {
+        color: #f57c00;
+      }
+    }
+
+    &.final {
+      padding-top: 1rem;
+      font-size: 1.25rem;
+
+      .total-label {
+        color: #333;
+        font-weight: 600;
+      }
+
+      .total-value {
+        color: #2e7d32;
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
+
+// Ações do Modal
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 1rem 0 0;
+  border-top: 1px solid #e0e0e0;
+
+  button {
+    mat-icon {
+      margin-right: 0.25rem;
+      font-size: 1.25rem;
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+}

@@ -11,7 +11,7 @@
       </ng-container>
       <ng-container matColumnDef="empresa">
         <mat-header-cell *matHeaderCellDef>Empresa</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{ element.companyId }}</mat-cell>
+        <mat-cell *matCellDef="let element">{{ element.companyName || element.companyId }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="createdAt">
         <mat-header-cell *matHeaderCellDef>Criado em</mat-header-cell>
