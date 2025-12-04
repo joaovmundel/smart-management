@@ -13,7 +13,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
-import { LoginData } from '../../models/auth.model';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -54,26 +53,14 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.loading = true;
       const { email, password } = this.loginForm.value;
-      const loginData: LoginData = { email, password };
-      this.authService.login(loginData).subscribe({
-        next: () => {
-          this.snackBar.open('Login realizado com sucesso!', 'Fechar', {
-            duration: 3500,
-            panelClass: 'snackbar-success',
-          });
-          this.loading = false;
-          // Redirecionar para dashboard ou home
-          this.router.navigate(['/']);
-        },
-        error: (err) => {
-          this.snackBar.open(
-            err?.error?.message || 'Erro ao fazer login.',
-            'Fechar',
-            { duration: 4000, panelClass: 'snackbar-error' }
-          );
-          this.loading = false;
-        },
-      });
+      try {
+        this.authService.login(email, password);
+      } catch (error) {
+        console.log(error)
+
+      } finally {
+        this.loading = false;
+      }
     } else {
       this.loginForm.markAllAsTouched();
     }

@@ -47,18 +47,6 @@ export class ForgotPasswordComponent {
     if (this.forgotForm.valid) {
       this.loading = true;
       const { email } = this.forgotForm.value;
-      const data: RecoverPassCodeData = { email };
-      this.authService.sendRecoverPassCode(data).subscribe({
-        next: () => {
-          this.snackBar.open('Código de recuperação enviado!', 'Fechar', { duration: 3500, panelClass: 'snackbar-success' });
-          this.loading = false;
-          // Redirecionar para página de inserir código ou informar usuário
-        },
-        error: (err) => {
-          this.snackBar.open(err?.error?.message || 'Erro ao enviar código.', 'Fechar', { duration: 4000, panelClass: 'snackbar-error' });
-          this.loading = false;
-        }
-      });
     } else {
       this.forgotForm.markAllAsTouched();
     }
