@@ -45,7 +45,7 @@
     <div class="user-form-row">
       <mat-form-field appearance="fill" class="user-form-field half">
         <mat-label>Telefone</mat-label>
-        <input matInput type="text" formControlName="phone" required />
+        <input matInput type="text" formControlName="phone" />
         <mat-error
           *ngIf="
             userForm.get('phone')?.hasError('required') &&
@@ -55,7 +55,11 @@
           Telefone é obrigatório
         </mat-error>
       </mat-form-field>
-      <mat-form-field appearance="fill" class="user-form-field half" floatLabel="always">
+      <mat-form-field
+        appearance="fill"
+        class="user-form-field half"
+        floatLabel="always"
+      >
         <mat-label>Empresa</mat-label>
         <input
           type="text"
@@ -66,17 +70,28 @@
           [required]="true"
           (blur)="onCompanyBlur()"
         />
-        <mat-autocomplete #autoCompany="matAutocomplete" (optionSelected)="onCompanySelected($event)">
-          <mat-option *ngFor="let company of filteredCompanies" [value]="company.name">
+        <mat-autocomplete
+          #autoCompany="matAutocomplete"
+          (optionSelected)="onCompanySelected($event)"
+        >
+          <mat-option
+            *ngFor="let company of filteredCompanies"
+            [value]="company.name"
+          >
             {{ company.name }}
           </mat-option>
         </mat-autocomplete>
-        <mat-error *ngIf="userForm.get('company')?.hasError('required') && userForm.get('company')?.touched">
+        <mat-error
+          *ngIf="
+            userForm.get('company')?.hasError('required') &&
+            userForm.get('company')?.touched
+          "
+        >
           Empresa é obrigatória
         </mat-error>
       </mat-form-field>
     </div>
-    <div class="user-form-row" *ngIf="!isEdit">
+    <div class="user-form-row">
       <mat-form-field appearance="fill" class="user-form-field half">
         <mat-label>Senha</mat-label>
         <input
@@ -132,10 +147,6 @@
         </mat-error>
       </mat-form-field>
     </div>
-    <mat-form-field appearance="fill" class="user-form-field full">
-      <mat-label>Token de Registro</mat-label>
-      <input matInput type="text" formControlName="tokenRegistro" />
-    </mat-form-field>
     <div class="user-form-actions">
       <button
         mat-button

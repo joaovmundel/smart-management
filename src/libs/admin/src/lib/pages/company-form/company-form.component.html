@@ -1,5 +1,5 @@
 <div class="company-form-container">
-  <form class="company-form" [formGroup]="companyForm" (ngSubmit)="onSubmit()" autocomplete="off">
+  <form class="company-form" [formGroup]="companyForm" (ngSubmit)="onSubmit($event)" autocomplete="off">
     <h2 class="company-form-title">
       {{ isEdit ? 'Editar Empresa' : 'Adicionar Empresa' }}
     </h2>
@@ -47,7 +47,11 @@
         <div class="company-form-row">
           <mat-form-field appearance="fill" class="company-form-field half">
             <mat-label>CEP</mat-label>
-            <input matInput type="text" formControlName="zipCode" />
+            <input matInput type="text" formControlName="zipCode" maxlength="9" placeholder="12345-678" />
+            <mat-icon matSuffix *ngIf="loadingCep" class="loading-icon">
+              <mat-spinner diameter="20"></mat-spinner>
+            </mat-icon>
+            <mat-hint>Preencha para buscar endereço automaticamente</mat-hint>
           </mat-form-field>
           <mat-form-field appearance="fill" class="company-form-field half">
             <mat-label>Cidade</mat-label>

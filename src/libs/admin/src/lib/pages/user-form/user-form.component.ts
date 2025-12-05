@@ -20,10 +20,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { Company, empresasMock, User } from '@smart-management/shared';
-import { mockedUsers } from '@smart-management/shared';
 import { TitleService } from '@smart-management/layout';
+import {
+  Company,
+  CompanyService,
+  CreateCompanyRequest,
+  mockedUsers,
+  User,
+} from '@smart-management/shared';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'admin-user-form',
@@ -46,9 +51,10 @@ import { TitleService } from '@smart-management/layout';
 })
 export class UserFormComponent implements OnInit, OnDestroy {
   private readonly _titleService = inject(TitleService);
-  companies: Company[] = empresasMock;
+  private readonly _companyService = inject(CompanyService);
+  companies: CreateCompanyRequest[] = [];
   companyFilterCtrl: FormControl = new FormControl('');
-  filteredCompanies: Company[] = this.companies.slice();
+  filteredCompanies: CreateCompanyRequest[] = this.companies.slice();
   private routeSub?: Subscription;
   userForm: FormGroup;
   hidePassword = true;
@@ -70,17 +76,31 @@ export class UserFormComponent implements OnInit, OnDestroy {
       {
         nome: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
-        phone: ['', [Validators.required]],
+        phone: [''],
         empresa: [null, [Validators.required]],
-        password: ['', [Validators.minLength(6)]],
-        confirmPassword: [''],
-        tokenRegistro: [''],
+        password: [
+          '',
+          [
+            Validators.minLength(6),
+            Validators.maxLength(20),
+            Validators.required,
+          ],
+        ],
+        confirmPassword: [
+          '',
+          [
+            Validators.minLength(6),
+            Validators.maxLength(20),
+            Validators.required,
+          ],
+        ],
       },
       { validators: this.passwordMatchValidator }
     );
   }
 
   ngOnInit(): void {
+    this.companies = this._companyService.companyStorage;
     this.setupCompanySearch();
     this.routeSub = this.route.params.subscribe(
       (params: { id?: string }): void => {
@@ -96,7 +116,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
               email: user.email,
               phone: user.phone,
               companyId: user.companyId,
-              tokenRegistro: user.registerToken || '',
               password: '',
               confirmPassword: '',
             });
@@ -119,8 +138,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
       if (!s) {
         this.filteredCompanies = this.companies.slice();
       } else {
-        this.filteredCompanies = this.companies.filter((e: Company) =>
-          e.name.toLowerCase().includes(s)
+        this.filteredCompanies = this.companies.filter(
+          (e: CreateCompanyRequest) => e.name.toLowerCase().includes(s)
         );
       }
     });

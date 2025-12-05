@@ -32,10 +32,47 @@
           <mat-spinner diameter="50"></mat-spinner>
         </div>
       </ng-container>
-      <ng-container *ngIf="!isLoading && paginatedCompanies.length === 0">
-        <p class="company__empty-list">Nenhuma empresa encontrada.</p>
+      
+      <ng-container *ngIf="!isLoading && !hasError && paginatedCompanies.length === 0">
+        <div class="company__empty-state">
+          <mat-icon class="company__empty-icon">business</mat-icon>
+          <p class="company__empty-message">Nenhuma empresa encontrada</p>
+          <p class="company__empty-hint">
+            {{ search ? 'Tente ajustar sua busca' : 'Comece adicionando uma nova empresa' }}
+          </p>
+          <button
+            mat-raised-button
+            color="primary"
+            class="company__empty-action"
+            (click)="goToCreatePage()"
+            *ngIf="!search"
+          >
+            <mat-icon>add</mat-icon>
+            Adicionar Empresa
+          </button>
+        </div>
       </ng-container>
-      <ng-container *ngIf="!isLoading && paginatedCompanies.length > 0">
+      
+      <ng-container *ngIf="!isLoading && hasError">
+        <div class="company__error-state">
+          <mat-icon class="company__error-icon">error_outline</mat-icon>
+          <p class="company__error-message">Erro ao carregar empresas</p>
+          <p class="company__error-hint">
+            Não foi possível carregar a lista de empresas. Verifique sua conexão e tente novamente.
+          </p>
+          <button
+            mat-raised-button
+            color="primary"
+            class="company__error-action"
+            (click)="loadCompanies()"
+          >
+            <mat-icon>refresh</mat-icon>
+            Tentar Novamente
+          </button>
+        </div>
+      </ng-container>
+      
+      <ng-container *ngIf="!isLoading && !hasError && paginatedCompanies.length > 0">
         <ng-container *ngFor="let company of paginatedCompanies">
           <company-card
             [company]="company"

@@ -39,3 +39,11 @@
 .text-area--max-height {
   max-height: 150px;
 }
+
+.loading-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}

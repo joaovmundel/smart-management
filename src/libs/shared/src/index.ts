@@ -9,6 +9,7 @@ export * from './lib/models/user.model';
 export * from './lib/services/api.service';
 export * from './lib/services/user.service';
 export * from './lib/services/company.service';
+export * from './lib/services/viacep.service';
 
 //Interceptors
 export * from './lib/interceptors/jwt.interceptor';

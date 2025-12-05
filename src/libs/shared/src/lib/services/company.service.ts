@@ -3,10 +3,21 @@ import { Injectable } from '@angular/core';
 export interface CreateCompanyRequest {
   id: string;
   name: string;
-  email?: string;
-  cnpj?: string;
-  phone?: string;
+  cnpj: string;
+  email: string;
+  phone: string;
   address?: string;
+  // Campos opcionais para expansão futura
+  description?: string;
+  logoUrl?: string;
+  websiteUrl?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  country?: string;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface UpdateCompanyRequest {
@@ -21,17 +32,18 @@ export interface UpdateCompanyRequest {
   providedIn: 'root',
 })
 export class CompanyService {
-  private get companyStorage(): CreateCompanyRequest[] {
+  get companyStorage(): CreateCompanyRequest[] {
     return JSON.parse(localStorage.getItem('companies') || '[]');
   }
 
-  listCompanies(): CreateCompanyRequest[] {
-    return this.companyStorage;
-  }
-
   createCompany(company: CreateCompanyRequest): void {
-    this.companyStorage.push(company);
-    localStorage.setItem('companies', JSON.stringify(this.companyStorage));
+    const companies = this.companyStorage;
+    if (this.existsByCnpj(company.cnpj)) {
+      throw new Error('CNPJ já cadastrado.');
+    } else {
+      companies.push(company);
+      localStorage.setItem('companies', JSON.stringify(companies));
+    }
   }
 
   updateCompany(index: number, updatedCompany: CreateCompanyRequest): void {
