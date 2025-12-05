@@ -112,8 +112,8 @@ export class CompanyComponent {
       .subscribe((result) => {
         if (result === true) {
           try {
-            //TODO: Implements delete method
-            console.log(`Deletando a empresa ${company.id}`);
+            this._companyService.deleteCompany(company.id);
+            this.loadCompanies();
             this._snackBar.open('Empresa excluída com sucesso!', 'Fechar', {
               duration: 3000,
               panelClass: ['snackbar-success'],

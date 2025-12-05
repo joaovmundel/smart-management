@@ -19,7 +19,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Company, empresasMock } from '@smart-management/shared';
+import { Company, CompanyService, CreateCompanyRequest } from '@smart-management/shared';
 
 @Component({
   selector: 'token-creation',
@@ -38,9 +38,10 @@ import { Company, empresasMock } from '@smart-management/shared';
 })
 export class TokenCreationComponent implements OnInit, OnDestroy {
   private readonly _dialogRef = inject(MatDialogRef<TokenCreationComponent>);
+  private readonly _companyService = inject(CompanyService);
   form: FormGroup;
-  companies: Company[] = empresasMock;
-  filteredCompanies: Company[] = [...this.companies];
+  companies: CreateCompanyRequest[] = [];
+  filteredCompanies: CreateCompanyRequest[] = [];
   companyFilterCtrl = new FormControl('');
   private destroy$ = new Subject<void>();
 
@@ -52,6 +53,10 @@ export class TokenCreationComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // Carrega as empresas do serviço
+    this.companies = this._companyService.companyStorage;
+    this.filteredCompanies = [...this.companies];
+
     this.companyFilterCtrl.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((search: string | null) => {

@@ -1,24 +1,31 @@
-<mat-card class="company-card" [class.company-card--inactive]="!isActive()" (click)="onView()">
-  <div class="company-card__header">
+<mat-card class="company-card" [class.company-card--inactive]="!isActive()">
+  <div class="company-card__header" (click)="onView()">
     <div class="company-card__logo-wrapper">
-      <img 
-        class="company-card__logo" 
-        [src]="company?.logoUrl || '/default-company-logo.png'" 
+      <img
+        class="company-card__logo"
+        [src]="company?.logoUrl || '/default-company-logo.png'"
         [alt]="'Logo da ' + company?.name"
         (error)="onImageError($event)"
       />
     </div>
     <div class="company-card__status" *ngIf="isActive() !== null">
-      <mat-chip [class.company-card__status--active]="isActive()" [class.company-card__status--inactive]="!isActive()">
+      <mat-chip
+        [class.company-card__status--active]="isActive()"
+        [class.company-card__status--inactive]="!isActive()"
+      >
         {{ isActive() ? 'Ativo' : 'Inativo' }}
       </mat-chip>
     </div>
   </div>
 
-  <mat-card-content class="company-card__content">
+  <mat-card-content class="company-card__content" (click)="onView()">
     <div class="company-card__title-section">
-      <h3 class="company-card__name" [title]="company?.name">{{ company?.name }}</h3>
-      <p class="company-card__cnpj" *ngIf="getCnpj()">{{ formatCnpj(getCnpj()!) }}</p>
+      <h3 class="company-card__name" [title]="company?.name">
+        {{ company?.name }}
+      </h3>
+      <p class="company-card__cnpj" *ngIf="getCnpj()">
+        {{ formatCnpj(getCnpj()!) }}
+      </p>
     </div>
 
     <div class="company-card__description" *ngIf="company?.description">
@@ -28,27 +35,48 @@
     <div class="company-card__info" *ngIf="hasContactInfo()">
       <div class="company-card__info-item" *ngIf="getEmail()">
         <mat-icon class="company-card__info-icon">email</mat-icon>
-        <span class="company-card__info-text" [title]="getEmail()">{{ getEmail() }}</span>
+        <span class="company-card__info-text" [title]="getEmail()">{{
+          getEmail()
+        }}</span>
       </div>
       <div class="company-card__info-item" *ngIf="getPhone()">
         <mat-icon class="company-card__info-icon">phone</mat-icon>
-        <span class="company-card__info-text">{{ formatPhone(getPhone()!) }}</span>
+        <span class="company-card__info-text">{{
+          formatPhone(getPhone()!)
+        }}</span>
       </div>
       <div class="company-card__info-item" *ngIf="getLocation()">
         <mat-icon class="company-card__info-icon">location_on</mat-icon>
-        <span class="company-card__info-text" [title]="getLocation()">{{ getLocation() }}</span>
+        <span class="company-card__info-text" [title]="getLocation()">{{
+          getLocation()
+        }}</span>
       </div>
     </div>
   </mat-card-content>
 
   <mat-card-actions class="company-card__actions">
-    <button mat-icon-button color="primary" matTooltip="Ver detalhes" (click)="onView()">
+    <button
+      mat-icon-button
+      color="primary"
+      matTooltip="Ver detalhes"
+      (click)="onView()"
+    >
       <mat-icon>visibility</mat-icon>
     </button>
-    <button mat-icon-button color="primary" matTooltip="Editar empresa" (click)="onEdit()">
+    <button
+      mat-icon-button
+      color="primary"
+      matTooltip="Editar empresa"
+      (click)="onEdit()"
+    >
       <mat-icon>edit</mat-icon>
     </button>
-    <button mat-icon-button color="warn" matTooltip="Excluir empresa" (click)="onDelete()">
+    <button
+      mat-icon-button
+      color="warn"
+      matTooltip="Excluir empresa"
+      (click)="onDelete()"
+    >
       <mat-icon>delete</mat-icon>
     </button>
   </mat-card-actions>

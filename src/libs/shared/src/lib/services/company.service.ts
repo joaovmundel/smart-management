@@ -60,10 +60,12 @@ export class CompanyService {
     }
   }
 
-  deleteCompany(index: number): void {
-    if (this.companyStorage[index]) {
-      this.companyStorage.splice(index, 1);
-      localStorage.setItem('companies', JSON.stringify(this.companyStorage));
+  deleteCompany(id: string): void {
+    const companies = this.companyStorage;
+    const index = companies.findIndex((company) => company.id === id);
+    if (index !== -1) {
+      companies.splice(index, 1);
+      localStorage.setItem('companies', JSON.stringify(companies));
     }
   }
 

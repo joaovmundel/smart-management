@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   height: 100vh;
-  background: $background-primary;
+  background: $background-secondary;
   padding: 2rem;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .tokens-title {
-  color: $background-primary;
+  color: $text-light;
   font-weight: 600;
   letter-spacing: 1px;
 }
