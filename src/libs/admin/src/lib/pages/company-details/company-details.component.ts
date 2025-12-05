@@ -42,6 +42,9 @@ export class CompanyDetailsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        // Reseta o scroll para o topo da página
+        window.scrollTo(0, 0);
+        
         this._route.params.subscribe((params: { id?: string }) => {
             if (params['id']) {
                 this.companyId = params['id'];
