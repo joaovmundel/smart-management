@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
@@ -35,8 +35,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatInputModule,
   ],
 })
-export class UsersComponent {
+export class UsersComponent implements OnInit, OnChanges {
   @Input() tableOnly = false;
+  @Input() companyId?: string;
 
   private readonly _dialog: MatDialog = inject(MatDialog);
   private readonly _router: Router = inject(Router);
@@ -60,13 +61,30 @@ export class UsersComponent {
     'actions',
   ];
 
-  constructor() {
+  ngOnInit(): void {
+    if (!this.tableOnly) {
+      this._titleService.setTitle('Usuários');
+    }
     this.loadUsers();
-    this._titleService.setTitle('Usuários');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Recarrega usuários quando companyId muda
+    if (changes['companyId'] && !changes['companyId'].firstChange) {
+      this.loadUsers();
+    }
   }
 
   loadUsers(): void {
-    this.users = this._userService.listUsers();
+    const allUsers = this._userService.listUsers();
+    
+    // Se companyId foi fornecido, filtrar apenas usuários dessa empresa
+    if (this.companyId) {
+      this.users = allUsers.filter(user => user.companyId === this.companyId);
+    } else {
+      this.users = allUsers;
+    }
+    
     this.filteredUsers = this.users;
   }
 

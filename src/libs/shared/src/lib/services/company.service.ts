@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Company } from '../models/company.model';
 
-export interface CreateCompanyRequest {
+export interface CreateCompanyRequest extends Company {
   id: string;
   name: string;
   cnpj: string;
@@ -66,7 +67,7 @@ export class CompanyService {
     }
   }
 
-  getCompanyById(id: string): CreateCompanyRequest | undefined {
+  getCompanyById(id: string): Company | undefined {
     return this.companyStorage.find((company) => company.id === id);
   }
 

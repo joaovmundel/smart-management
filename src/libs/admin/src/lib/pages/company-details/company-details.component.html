@@ -1,43 +1,132 @@
 <div class="company-details">
-    <div class="company-details__card">
-        <div class="company-details__info-area">
-            <div class="company-details__profile-photo">
-                <img [src]="company.logoUrl" alt="Logo da empresa" />
-            </div>
-            <div class="company-details__info">
-                <h2 class="company-details__name">{{ company.name }}</h2>
-                <hr class="divider"/>
-                <span class="company-details__info-group">
-                    <mat-icon>badge</mat-icon>
-                    <p class="company-details__cnpj">{{ company.cnpj }}</p>
-                </span>
-                <span class="company-details__info-group">
-                    <mat-icon>email</mat-icon>
-                    <p class="company-details__email">{{ company.email }}</p>
-                </span>
-                <span class="company-details__info-group">
-                    <mat-icon>phone</mat-icon>
-                    <p class="company-details__phone">{{ company.phone }}</p>
-                </span>
-                <span class="company-details__info-group">
-                    <mat-icon>location_on</mat-icon>
-                    <p class="company-details__location">{{ company.city }}, {{ company.state }}, {{ company.country }}</p>
-                </span>
-                <span class="company-details__info-group">
-                    <mat-icon>public</mat-icon>
-                    <a class="company-details__website" [href]="company.websiteUrl" target="_blank">{{ company.websiteUrl }}</a>
-                </span>
-            </div>
-        </div>
-        <div class="company-details__description">
-            <h1>Descrição da empresa</h1>
-            <p>
-                {{ company.description }}
-            </p>
-        </div>
+    <!-- Header com ações -->
+    <div class="company-details__header">
+        <button mat-icon-button class="back-button" routerLink="/admin/companies" matTooltip="Voltar">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h1 class="page-title">
+            <mat-icon class="title-icon">business</mat-icon>
+            Detalhes da Empresa
+        </h1>
+        <button mat-raised-button color="primary" class="edit-button" matTooltip="Editar empresa" [routerLink]="['/admin/companies/edit', companyId]">
+            <mat-icon>edit</mat-icon>
+            Editar
+        </button>
     </div>
-    <div class="company-details__employee-list">
-        <h2>Usuários vinculados</h2>
-        <users-list [tableOnly]="true"></users-list>
+
+    <div class="company-details__container">
+        <!-- Card Principal: Informações da Empresa -->
+        <div class="company-details__main-card">
+            <!-- Seção do Logo e Nome -->
+            <div class="company-details__hero">
+                <div class="company-details__logo-wrapper">
+                    <img [src]="company.logoUrl || '/default-company-logo.png'" alt="Logo da {{ company.name }}" class="company-details__logo" />
+                </div>
+                <div class="company-details__hero-info">
+                    <h2 class="company-details__name">{{ company.name }}</h2>
+                    <p class="company-details__cnpj">
+                        <mat-icon>badge</mat-icon>
+                        CNPJ: {{ company.cnpj }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Grid de Informações -->
+            <div class="company-details__info-grid">
+                <!-- Seção: Contato -->
+                <div class="info-section">
+                    <h3 class="info-section__title">
+                        <mat-icon>contact_mail</mat-icon>
+                        Contato
+                    </h3>
+                    <div class="info-section__content">
+                        <div class="info-item">
+                            <mat-icon class="info-item__icon">email</mat-icon>
+                            <div class="info-item__content">
+                                <span class="info-item__label">Email</span>
+                                <a [href]="'mailto:' + company.email" class="info-item__value link">{{ company.email }}</a>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <mat-icon class="info-item__icon">phone</mat-icon>
+                            <div class="info-item__content">
+                                <span class="info-item__label">Telefone</span>
+                                <a [href]="'tel:' + company.phone" class="info-item__value link">{{ company.phone }}</a>
+                            </div>
+                        </div>
+                        <div class="info-item" *ngIf="company.websiteUrl">
+                            <mat-icon class="info-item__icon">language</mat-icon>
+                            <div class="info-item__content">
+                                <span class="info-item__label">Website</span>
+                                <a [href]="company.websiteUrl" target="_blank" class="info-item__value link">
+                                    {{ company.websiteUrl }}
+                                    <mat-icon class="external-link-icon">open_in_new</mat-icon>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção: Localização -->
+                <div class="info-section">
+                    <h3 class="info-section__title">
+                        <mat-icon>location_on</mat-icon>
+                        Localização
+                    </h3>
+                    <div class="info-section__content">
+                        <div class="info-item">
+                            <mat-icon class="info-item__icon">place</mat-icon>
+                            <div class="info-item__content">
+                                <span class="info-item__label">Endereço</span>
+                                <span class="info-item__value">{{ company.address || 'Não informado' }}</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <mat-icon class="info-item__icon">location_city</mat-icon>
+                            <div class="info-item__content">
+                                <span class="info-item__label">Cidade/Estado</span>
+                                <span class="info-item__value">{{ company.city }}, {{ company.state }}</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <mat-icon class="info-item__icon">public</mat-icon>
+                            <div class="info-item__content">
+                                <span class="info-item__label">País</span>
+                                <span class="info-item__value">{{ company.country }}</span>
+                            </div>
+                        </div>
+                        <div class="info-item" *ngIf="company.zipCode">
+                            <mat-icon class="info-item__icon">pin_drop</mat-icon>
+                            <div class="info-item__content">
+                                <span class="info-item__label">CEP</span>
+                                <span class="info-item__value">{{ company.zipCode }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção: Descrição -->
+            <div class="company-details__description" *ngIf="company.description">
+                <h3 class="description__title">
+                    <mat-icon>description</mat-icon>
+                    Sobre a Empresa
+                </h3>
+                <p class="description__text">{{ company.description }}</p>
+            </div>
+        </div>
+
+        <!-- Card: Lista de Usuários -->
+        <div class="company-details__users-card">
+            <div class="users-card__header">
+                <h3 class="users-card__title">
+                    <mat-icon>people</mat-icon>
+                    Usuários Vinculados
+                </h3>
+            </div>
+            <div class="users-card__content">
+                <users-list [tableOnly]="true" [companyId]="getCompanyId"></users-list>
+            </div>
+        </div>
     </div>
 </div>
