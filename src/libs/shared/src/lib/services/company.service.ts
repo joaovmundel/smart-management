@@ -48,9 +48,14 @@ export class CompanyService {
   }
 
   updateCompany(index: number, updatedCompany: CreateCompanyRequest): void {
-    if (this.companyStorage[index]) {
-      this.companyStorage[index] = updatedCompany;
-      localStorage.setItem('companies', JSON.stringify(this.companyStorage));
+    if (this.existsByCnpjExcludingId(updatedCompany.cnpj, updatedCompany.id)) {
+      throw new Error('CNPJ já cadastrado.');
+    } else {
+      if (this.companyStorage[index]) {
+        const companies = this.companyStorage;
+        companies[index] = updatedCompany;
+        localStorage.setItem('companies', JSON.stringify(companies));
+      }
     }
   }
 
@@ -71,6 +76,12 @@ export class CompanyService {
 
   existsByCnpj(cnpj: string): boolean {
     return this.companyStorage.some((company) => company.cnpj === cnpj);
+  }
+
+  existsByCnpjExcludingId(cnpj: string, excludeId: string): boolean {
+    return this.companyStorage.some(
+      (company) => company.cnpj === cnpj && company.id !== excludeId
+    );
   }
 
   getCompanyByCnpj(cnpj: string): CreateCompanyRequest | undefined {

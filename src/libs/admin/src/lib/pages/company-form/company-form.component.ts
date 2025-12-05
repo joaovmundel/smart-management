@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TitleService } from '@smart-management/layout';
 import {
@@ -35,6 +36,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatIconModule,
+    MatTooltipModule,
   ],
 })
 export class CompanyFormComponent implements OnInit {
@@ -70,18 +72,16 @@ export class CompanyFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._titleService.setTitle(
-      this.isEdit ? 'Editar Empresa' : 'Criar Empresa'
-    );
     this.route.params.subscribe((params: { id?: string }) => {
       if (params['id']) {
         this.isEdit = true;
         this.companyId = params['id'];
-        // TODO: Buscar empresa por id e preencher o formulário
-        // Exemplo:
-        // const company: Company = ...
-        // this.companyForm.patchValue(company);
+        this.loadCompanyForEdit();
       }
+      
+      this._titleService.setTitle(
+        this.isEdit ? 'Editar Empresa' : 'Criar Empresa'
+      );
     });
 
     // Listener para mudanças no campo CEP
@@ -93,6 +93,41 @@ export class CompanyFormComponent implements OnInit {
           this.searchCep(cep);
         }
       });
+  }
+
+  loadCompanyForEdit(): void {
+    if (!this.companyId) return;
+
+    const company = this._companyService.getCompanyById(this.companyId);
+    
+    if (company) {
+      this.companyForm.patchValue({
+        name: company.name,
+        email: company.email,
+        cnpj: company.cnpj,
+        phone: company.phone,
+        description: company.description,
+        websiteUrl: company.websiteUrl,
+        logoUrl: company.logoUrl,
+        city: company.city,
+        state: company.state,
+        zipCode: company.zipCode,
+        country: company.country,
+        address: company.address,
+      });
+
+      // Formatar o telefone se existir
+      if (company.phone) {
+        const formattedPhone = this.formatPhone(company.phone);
+        this.companyForm.patchValue({ phone: formattedPhone });
+      }
+    } else {
+      this.snackBar.open('Empresa não encontrada.', 'Fechar', {
+        duration: 3000,
+        panelClass: 'snackbar-error',
+      });
+      this.router.navigate(['/admin/companies']);
+    }
   }
 
   searchCep(cep: string): void {
@@ -141,7 +176,23 @@ export class CompanyFormComponent implements OnInit {
     const value: CreateCompanyRequest = { ...this.companyForm.value };
     this.loading = true;
     try {
-      this._companyService.createCompany(value);
+      if (this.isEdit && this.companyId) {
+        // Encontrar o índice da empresa
+        const index = this._companyService.companyStorage.findIndex(
+          (company) => company.id === this.companyId
+        );
+        
+        if (index !== -1) {
+          // Manter o ID original ao atualizar
+          value.id = this.companyId;
+          this._companyService.updateCompany(index, value);
+        } else {
+          throw new Error('Empresa não encontrada para atualização.');
+        }
+      } else {
+        this._companyService.createCompany(value);
+      }
+      
       this.notify(
         this.isEdit
           ? 'Empresa atualizada com sucesso!'
@@ -151,7 +202,7 @@ export class CompanyFormComponent implements OnInit {
       this.router.navigate(['/admin/companies']);
     } catch (error) {
       this.notify(
-        'Erro ao criar empresa: ' + (error as Error).message,
+        'Erro ao ' + (this.isEdit ? 'atualizar' : 'criar') + ' empresa: ' + (error as Error).message,
         'error'
       );
       return;
@@ -181,5 +232,46 @@ export class CompanyFormComponent implements OnInit {
 
   onCancel(): void {
     this.router.navigate(['/admin/companies']);
+  }
+
+  formatPhone(phone: string): string {
+    let value = phone.replace(/\D/g, '');
+
+    // Limita a 11 dígitos
+    if (value.length > 11) {
+      value = value.slice(0, 11);
+    }
+
+    // Aplica a formatação
+    if (value.length <= 10) {
+      value = value.replace(
+        /(\d{2})(\d{0,4})(\d{0,4})/,
+        (match, p1, p2, p3) => {
+          let formatted = '';
+          if (p1) formatted += `(${p1}`;
+          if (p2) formatted += `) ${p2}`;
+          if (p3) formatted += `-${p3}`;
+          return formatted;
+        }
+      );
+    } else {
+      value = value.replace(/(\d{2})(\d{5})(\d{0,4})/, (match, p1, p2, p3) => {
+        let formatted = `(${p1}) ${p2}`;
+        if (p3) formatted += `-${p3}`;
+        return formatted;
+      });
+    }
+
+    return value;
+  }
+
+  onPhoneInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = this.formatPhone(input.value);
+
+    input.value = value;
+    this.companyForm
+      .get('phone')
+      ?.setValue(value, { emitEvent: false });
   }
 }

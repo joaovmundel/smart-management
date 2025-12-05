@@ -1,98 +1,159 @@
 <div class="company-form-container">
   <form class="company-form" [formGroup]="companyForm" (ngSubmit)="onSubmit($event)" autocomplete="off">
-    <h2 class="company-form-title">
-      {{ isEdit ? 'Editar Empresa' : 'Adicionar Empresa' }}
-    </h2>
-    <div class="form-fields">
-      <div class="column-1">
-        <div class="company-form-row">
-          <mat-form-field appearance="fill" class="company-form-field half">
-            <mat-label>Nome</mat-label>
-            <input matInput type="text" formControlName="name" required />
-            <mat-error *ngIf="companyForm.get('name')?.hasError('required') && companyForm.get('name')?.touched">
-              Nome é obrigatório
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field appearance="fill" class="company-form-field half">
-            <mat-label>Email</mat-label>
-            <input matInput type="email" formControlName="email" />
-            <mat-error *ngIf="companyForm.get('email')?.hasError('email') && companyForm.get('email')?.touched">
-              Email inválido
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div class="company-form-row">
-          <mat-form-field appearance="fill" class="company-form-field half">
-            <mat-label>Website</mat-label>
-            <input matInput type="url" formControlName="websiteUrl" />
-          </mat-form-field>
-          <mat-form-field appearance="fill" class="company-form-field half">
-            <mat-label>Logo (URL)</mat-label>
-            <input matInput type="url" formControlName="logoUrl" />
-          </mat-form-field>
-        </div>
-        <div class="company-form-row">
-          <mat-form-field appearance="fill" class="company-form-field half">
-            <mat-label>CNPJ</mat-label>
-            <input matInput type="text" formControlName="cnpj" />
-          </mat-form-field>
-          <mat-form-field appearance="fill" class="company-form-field half">
-            <mat-label>Telefone</mat-label>
-            <input matInput type="text" formControlName="phone" />
-          </mat-form-field>
-        </div>
+    <button mat-icon-button class="back-button" type="button" (click)="onCancel()" matTooltip="Voltar">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    
+    <div class="form-header">
+      <h2 class="company-form-title">
+        <mat-icon class="title-icon">{{ isEdit ? 'edit' : 'add_business' }}</mat-icon>
+        {{ isEdit ? 'Editar Empresa' : 'Nova Empresa' }}
+      </h2>
+      <p class="form-subtitle">Preencha as informações da empresa</p>
+    </div>
+
+    <!-- Seção: Informações Básicas -->
+    <div class="form-section">
+      <h3 class="section-title">
+        <mat-icon class="section-icon">business</mat-icon>
+        Informações Básicas
+      </h3>
+      <div class="company-form-row">
+        <mat-form-field appearance="outline" class="company-form-field full">
+          <mat-label>Nome da Empresa</mat-label>
+          <mat-icon matPrefix>business_center</mat-icon>
+          <input matInput type="text" formControlName="name" required placeholder="Ex: Minha Empresa Ltda" />
+          <mat-error *ngIf="companyForm.get('name')?.hasError('required') && companyForm.get('name')?.touched">
+            Nome é obrigatório
+          </mat-error>
+        </mat-form-field>
       </div>
 
-      <div class="column-2">
-        <div class="company-form-row">
-          <mat-form-field appearance="fill" class="company-form-field half">
-            <mat-label>CEP</mat-label>
-            <input matInput type="text" formControlName="zipCode" maxlength="9" placeholder="12345-678" />
-            <mat-icon matSuffix *ngIf="loadingCep" class="loading-icon">
-              <mat-spinner diameter="20"></mat-spinner>
-            </mat-icon>
-            <mat-hint>Preencha para buscar endereço automaticamente</mat-hint>
-          </mat-form-field>
-          <mat-form-field appearance="fill" class="company-form-field half">
-            <mat-label>Cidade</mat-label>
-            <input matInput type="text" formControlName="city" />
-          </mat-form-field>
-        </div>
-        <div class="company-form-row">
-          <mat-form-field appearance="fill" class="company-form-field half">
-            <mat-label>Estado</mat-label>
-            <input matInput type="text" formControlName="state" />
-          </mat-form-field>
-          <mat-form-field appearance="fill" class="company-form-field half">
-            <mat-label>País</mat-label>
-            <input matInput type="text" formControlName="country" />
-          </mat-form-field>
-        </div>
-        <div class="company-form-row">
-          <mat-form-field appearance="fill" class="company-form-field full">
-            <mat-label>Endereço</mat-label>
-            <input matInput type="text" formControlName="address" />
-          </mat-form-field>
-        </div>
-        <div class="company-form-row">
-          <mat-form-field appearance="fill" class="company-form-field full">
-            <mat-label>Descrição</mat-label>
-            <textarea class="text-area--max-height" matInput formControlName="description" rows="2"
-              maxlength="250"></textarea>
-          </mat-form-field>
-        </div>
+      <div class="company-form-row">
+        <mat-form-field appearance="outline" class="company-form-field half">
+          <mat-label>CNPJ</mat-label>
+          <mat-icon matPrefix>badge</mat-icon>
+          <input matInput type="text" formControlName="cnpj" placeholder="00.000.000/0000-00" />
+          <mat-error *ngIf="companyForm.get('cnpj')?.hasError('required') && companyForm.get('cnpj')?.touched">
+            CNPJ é obrigatório
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="company-form-field half">
+          <mat-label>Telefone</mat-label>
+          <mat-icon matPrefix>phone</mat-icon>
+          <input matInput type="text" formControlName="phone" (input)="onPhoneInput($event)" placeholder="(00) 00000-0000" />
+          <mat-error *ngIf="companyForm.get('phone')?.hasError('required') && companyForm.get('phone')?.touched">
+            Telefone é obrigatório
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="company-form-row">
+        <mat-form-field appearance="outline" class="company-form-field half">
+          <mat-label>Email</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput type="email" formControlName="email" placeholder="contato@empresa.com" />
+          <mat-error *ngIf="companyForm.get('email')?.hasError('email') && companyForm.get('email')?.touched">
+            Email inválido
+          </mat-error>
+          <mat-error *ngIf="companyForm.get('email')?.hasError('required') && companyForm.get('email')?.touched">
+            Email é obrigatório
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="company-form-field half">
+          <mat-label>Website</mat-label>
+          <mat-icon matPrefix>language</mat-icon>
+          <input matInput type="url" formControlName="websiteUrl" placeholder="https://www.empresa.com" />
+        </mat-form-field>
+      </div>
+
+      <div class="company-form-row">
+        <mat-form-field appearance="outline" class="company-form-field full">
+          <mat-label>Logo (URL)</mat-label>
+          <mat-icon matPrefix>image</mat-icon>
+          <input matInput type="url" formControlName="logoUrl" placeholder="https://exemplo.com/logo.png" />
+          <mat-hint>URL da imagem do logo da empresa</mat-hint>
+        </mat-form-field>
       </div>
     </div>
+
+    <!-- Seção: Endereço -->
+    <div class="form-section">
+      <h3 class="section-title">
+        <mat-icon class="section-icon">location_on</mat-icon>
+        Endereço
+      </h3>
+      <div class="company-form-row">
+        <mat-form-field appearance="outline" class="company-form-field third">
+          <mat-label>CEP</mat-label>
+          <mat-icon matPrefix>pin_drop</mat-icon>
+          <input matInput type="text" formControlName="zipCode" maxlength="9" placeholder="12345-678" />
+          <mat-icon matSuffix *ngIf="loadingCep" class="loading-icon">
+            <mat-spinner diameter="20"></mat-spinner>
+          </mat-icon>
+          <mat-hint>Busca automática de endereço</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="company-form-field third">
+          <mat-label>Cidade</mat-label>
+          <mat-icon matPrefix>location_city</mat-icon>
+          <input matInput type="text" formControlName="city" placeholder="São Paulo" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="company-form-field third">
+          <mat-label>Estado</mat-label>
+          <mat-icon matPrefix>map</mat-icon>
+          <input matInput type="text" formControlName="state" placeholder="SP" maxlength="2" />
+        </mat-form-field>
+      </div>
+
+      <div class="company-form-row">
+        <mat-form-field appearance="outline" class="company-form-field full">
+          <mat-label>Endereço Completo</mat-label>
+          <mat-icon matPrefix>home</mat-icon>
+          <input matInput type="text" formControlName="address" placeholder="Rua, número, complemento" />
+        </mat-form-field>
+      </div>
+
+      <div class="company-form-row">
+        <mat-form-field appearance="outline" class="company-form-field full">
+          <mat-label>País</mat-label>
+          <mat-icon matPrefix>public</mat-icon>
+          <input matInput type="text" formControlName="country" placeholder="Brasil" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Seção: Informações Adicionais -->
+    <div class="form-section">
+      <h3 class="section-title">
+        <mat-icon class="section-icon">description</mat-icon>
+        Informações Adicionais
+      </h3>
+      <div class="company-form-row">
+        <mat-form-field appearance="outline" class="company-form-field full">
+          <mat-label>Descrição</mat-label>
+          <mat-icon matPrefix>notes</mat-icon>
+          <textarea 
+            class="text-area--max-height" 
+            matInput 
+            formControlName="description" 
+            rows="3"
+            maxlength="250"
+            placeholder="Descreva brevemente a empresa, seu ramo de atividade, etc."></textarea>
+          <mat-hint align="end">{{ companyForm.get('description')?.value?.length || 0 }}/250</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Ações do Formulário -->
     <div class="company-form-actions">
-      <button mat-button color="accent" type="button" (click)="onCancel()" [disabled]="loading">
+      <button mat-stroked-button color="accent" type="button" (click)="onCancel()" [disabled]="loading">
+        <mat-icon>close</mat-icon>
         Cancelar
       </button>
       <button mat-raised-button color="primary" type="submit" [disabled]="loading">
-        <ng-container *ngIf="!loading">{{ isEdit ? 'Salvar' : 'Adicionar' }}</ng-container>
-        <ng-container *ngIf="loading">
-          <mat-progress-spinner diameter="22" mode="indeterminate" color="accent"
-            class="spinner-btn"></mat-progress-spinner>
-        </ng-container>
+        <mat-icon *ngIf="!loading">{{ isEdit ? 'save' : 'add' }}</mat-icon>
+        <ng-container *ngIf="!loading">{{ isEdit ? 'Salvar Alterações' : 'Criar Empresa' }}</ng-container>
+        <mat-progress-spinner *ngIf="loading" diameter="20" mode="indeterminate" class="spinner-btn"></mat-progress-spinner>
       </button>
     </div>
   </form>
