@@ -33,6 +33,7 @@ export class AuthService {
     if (account) {
       localStorage.setItem('token', this.DEFAULT_TOKEN);
       localStorage.setItem('currentUser', JSON.stringify(account));
+      this._router.navigate(['/home']);
       return true;
     }
     throw Error('Credenciais inválidas.');

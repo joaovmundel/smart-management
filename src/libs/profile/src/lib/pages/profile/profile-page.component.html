@@ -117,7 +117,8 @@
               mat-icon-button 
               matSuffix 
               type="button"
-              (click)="hidePassword = !hidePassword">
+              (click)="hidePassword = !hidePassword"
+              tabindex="-1">
               <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
             </button>
             <mat-error *ngIf="profileForm.get('newPassword')?.invalid && profileForm.get('newPassword')?.touched">
@@ -136,7 +137,8 @@
               mat-icon-button 
               matSuffix 
               type="button"
-              (click)="hideConfirmPassword = !hideConfirmPassword">
+              (click)="hideConfirmPassword = !hideConfirmPassword"
+              tabindex="-1">
               <mat-icon>{{ hideConfirmPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
             </button>
             <mat-error *ngIf="profileForm.get('confirmPassword')?.invalid && profileForm.get('confirmPassword')?.touched">

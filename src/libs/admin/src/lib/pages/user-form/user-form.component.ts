@@ -25,8 +25,8 @@ import {
   Company,
   CompanyService,
   CreateCompanyRequest,
-  mockedUsers,
   User,
+  UserService,
 } from '@smart-management/shared';
 import { Subscription } from 'rxjs';
 
@@ -52,6 +52,7 @@ import { Subscription } from 'rxjs';
 export class UserFormComponent implements OnInit, OnDestroy {
   private readonly _titleService = inject(TitleService);
   private readonly _companyService = inject(CompanyService);
+  private readonly _userService = inject(UserService);
   companies: CreateCompanyRequest[] = [];
   companyFilterCtrl: FormControl = new FormControl('');
   filteredCompanies: CreateCompanyRequest[] = this.companies.slice();
@@ -74,64 +75,133 @@ export class UserFormComponent implements OnInit, OnDestroy {
     );
     this.userForm = this.fb.group(
       {
-        nome: ['', [Validators.required]],
+        name: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
         phone: [''],
-        empresa: [null, [Validators.required]],
-        password: [
-          '',
-          [
-            Validators.minLength(6),
-            Validators.maxLength(20),
-            Validators.required,
-          ],
-        ],
-        confirmPassword: [
-          '',
-          [
-            Validators.minLength(6),
-            Validators.maxLength(20),
-            Validators.required,
-          ],
-        ],
+        company: [null, [Validators.required]],
+        password: [''],
+        confirmPassword: [''],
       },
       { validators: this.passwordMatchValidator }
     );
   }
 
+  // Getters para facilitar acesso aos controles no template
+  get name() {
+    return this.userForm.get('name');
+  }
+
+  get email() {
+    return this.userForm.get('email');
+  }
+
+  get phone() {
+    return this.userForm.get('phone');
+  }
+
+  get company() {
+    return this.userForm.get('company');
+  }
+
+  get password() {
+    return this.userForm.get('password');
+  }
+
+  get confirmPassword() {
+    return this.userForm.get('confirmPassword');
+  }
+
   ngOnInit(): void {
     this.companies = this._companyService.companyStorage;
+    this.filteredCompanies = this.companies.slice();
     this.setupCompanySearch();
+    this.loadUserForEdit();
+    this.setupPasswordValidation();
+  }
+
+  private setupPasswordValidation(): void {
+    // Configura validação de senha baseada no modo (criação/edição)
+    this.route.params.subscribe((params: { id?: string }) => {
+      if (params['id']) {
+        // Modo edição: senha não obrigatória, mas deve ter tamanho correto se preenchida
+        this.userForm.get('password')?.setValidators([
+          Validators.minLength(6),
+          Validators.maxLength(20),
+        ]);
+        this.userForm.get('confirmPassword')?.setValidators([
+          Validators.minLength(6),
+          Validators.maxLength(20),
+        ]);
+      } else {
+        // Modo criação: senha obrigatória
+        this.userForm.get('password')?.setValidators([
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(20),
+        ]);
+        this.userForm.get('confirmPassword')?.setValidators([
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(20),
+        ]);
+      }
+      this.userForm.get('password')?.updateValueAndValidity();
+      this.userForm.get('confirmPassword')?.updateValueAndValidity();
+    });
+  }
+
+  loadUserForEdit(): void {
     this.routeSub = this.route.params.subscribe(
       (params: { id?: string }): void => {
+        console.log(params);
         if (params['id']) {
           this.isEdit = true;
           this.userId = params['id'];
-          const user: User | undefined = mockedUsers.find(
-            (u: User) => u.id === this.userId
+          const user: User | undefined = this._userService.getUserById(
+            this.userId
           );
           if (user) {
+            console.log(user);
+            
+            // Encontrar a empresa completa pelo ID
+            const userCompany = this.companies.find(c => c.id === user.companyId);
+            
             this.userForm.patchValue({
-              nome: user.name,
+              name: user.name,
               email: user.email,
               phone: user.phone,
-              companyId: user.companyId,
+              company: userCompany || null,
               password: '',
               confirmPassword: '',
             });
-            if (user.companyId && user.companyName) {
-              this.companyFilterCtrl.setValue(user.companyName);
+            
+            // Setar o nome da empresa no campo de autocomplete
+            if (userCompany) {
+              this.companyFilterCtrl.setValue(userCompany.name);
+            }
+            
+            // Formatar o telefone se existir
+            if (user.phone) {
+              const formattedPhone = this.formatPhone(user.phone);
+              this.userForm.patchValue({ phone: formattedPhone });
             }
           }
-          this.userForm.get('password')?.clearValidators();
-          this.userForm.get('confirmPassword')?.clearValidators();
-          this.userForm.get('password')?.updateValueAndValidity();
-          this.userForm.get('confirmPassword')?.updateValueAndValidity();
         }
       }
     );
   }
 
+  passwordMatchValidator(form: FormGroup) {
+    const password = form.get('password')?.value;
+    const confirm = form.get('confirmPassword')?.value;
+
+    // Só valida se ambos os campos tiverem valor
+    if (!password && !confirm) {
+      return null;
+    }
+
+    return password === confirm ? null : { passwordMismatch: true };
+  }
   private setupCompanySearch(): void {
     this.companyFilterCtrl.valueChanges.subscribe((search: string) => {
       const s = (search || '').trim().toLowerCase();
@@ -143,15 +213,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
         );
       }
     });
-  }
-
-  passwordMatchValidator(form: FormGroup): { [key: string]: boolean } | null {
-    const password = form.get('password')?.value;
-    const confirmPassword = form.get('confirmPassword')?.value;
-    if (password && confirmPassword && password !== confirmPassword) {
-      return { passwordMismatch: true };
-    }
-    return null;
   }
 
   onCompanySelected(event: MatAutocompleteSelectedEvent): void {
@@ -175,23 +236,18 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.userForm.valid) {
-      const value: User = { ...this.userForm.value };
-      if (!value.password) delete value.password;
-      if (!value.confirmPassword) delete value.confirmPassword;
       this.loading = true;
-      //TODO: Implementar a lógica
-      // Aqui você faria a chamada de API para salvar/criar usuário
-      setTimeout((): void => {
-        this.loading = false;
-        this.snackBar.open(
-          this.isEdit
-            ? 'Usuário atualizado com sucesso!'
-            : 'Usuário criado com sucesso!',
-          'Fechar',
-          { duration: 3500, panelClass: 'snackbar-success' }
-        );
-        this.router.navigate(['/admin/users']);
-      }, 1200);
+      const user: User = { ...this.userForm.value };
+      
+      // Remove senha e confirmação se estiverem vazias para não sobrescrever a senha existente
+      if (!user.password || user.password.trim() === '') {
+        delete user.password;
+      }
+      if (!user.confirmPassword || user.confirmPassword.trim() === '') {
+        delete user.confirmPassword;
+      }
+      
+      this.saveUser(user);
     } else {
       this.userForm.markAllAsTouched();
       this.snackBar.open(
@@ -202,8 +258,74 @@ export class UserFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  saveUser(user: User): void {
+    try {
+      user.createdAt = new Date().toISOString();
+      user.companyId = this.userForm.value.company.id;
+      if (this.isEdit && this.userId) {
+        this._userService.updateUser({ ...user, id: this.userId! });
+      } else {
+        this._userService.createUser(user);
+      }
+      this.snackBar.open('Usuário salvo com sucesso!', 'Fechar', {
+        duration: 3500,
+        panelClass: 'snackbar-success',
+      });
+      this.router.navigate(['/admin/users']);
+    } catch (error) {
+      this.snackBar.open(
+        `Ocorreu um erro ao salvar o usuário. ${(error as any).message}`,
+        'Fechar',
+        { duration: 3500, panelClass: 'snackbar-error' }
+      );
+    } finally {
+      this.loading = false;
+    }
+  }
+
   onCancel(): void {
     this.router.navigate(['/admin/users']);
+  }
+
+  formatPhone(phone: string): string {
+    let value = phone.replace(/\D/g, '');
+
+    // Limita a 11 dígitos
+    if (value.length > 11) {
+      value = value.slice(0, 11);
+    }
+
+    // Aplica a formatação
+    if (value.length <= 10) {
+      value = value.replace(
+        /(\d{2})(\d{0,4})(\d{0,4})/,
+        (match, p1, p2, p3) => {
+          let formatted = '';
+          if (p1) formatted += `(${p1}`;
+          if (p2) formatted += `) ${p2}`;
+          if (p3) formatted += `-${p3}`;
+          return formatted;
+        }
+      );
+    } else {
+      value = value.replace(/(\d{2})(\d{5})(\d{0,4})/, (match, p1, p2, p3) => {
+        let formatted = `(${p1}) ${p2}`;
+        if (p3) formatted += `-${p3}`;
+        return formatted;
+      });
+    }
+
+    return value;
+  }
+
+  onPhoneInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = this.formatPhone(input.value);
+
+    input.value = value;
+    this.userForm
+      .get('phone')
+      ?.setValue(value, { emitEvent: false });
   }
 
   ngOnDestroy(): void {

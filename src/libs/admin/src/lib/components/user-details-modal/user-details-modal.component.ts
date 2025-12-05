@@ -39,4 +39,17 @@ export class UserDetailsModalComponent {
       minute: '2-digit',
     });
   }
+
+  formatPhone(phone: string | undefined): string {
+    if (!phone) return 'Não informado';
+    // Remove non-digits
+    const cleaned = phone.replace(/\D/g, '');
+    // Format as (XX) XXXXX-XXXX or (XX) XXXX-XXXX
+    if (cleaned.length === 11) {
+      return cleaned.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    } else if (cleaned.length === 10) {
+      return cleaned.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+    }
+    return phone;
+  }
 }

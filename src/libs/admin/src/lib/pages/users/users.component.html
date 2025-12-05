@@ -55,7 +55,7 @@
       </ng-container>
       <ng-container matColumnDef="telefone">
         <mat-header-cell *matHeaderCellDef class="col-telefone">Telefone</mat-header-cell>
-        <mat-cell *matCellDef="let user" class="col-telefone" title="{{ user.phone || 'Não informado' }}">{{ user.phone || 'Não informado' }}</mat-cell>
+        <mat-cell *matCellDef="let user" class="col-telefone" title="{{ formatPhone(user.phone) }}">{{ formatPhone(user.phone) }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="email">
         <mat-header-cell *matHeaderCellDef class="col-email">Email</mat-header-cell>
@@ -82,6 +82,8 @@
         <mat-cell
           *matCellDef="let user"
           class="users-actions-cell table-cell--actions"
+          (mouseenter)="onActionsMouseEnter()"
+          (mouseleave)="onActionsMouseLeave()"
         >
           <button
             mat-icon-button
@@ -107,7 +109,7 @@
         class="clickable-row"
         (click)="viewUserDetails(user)"
         matTooltip="Clique para ver detalhes"
-        [matTooltipDisabled]="false"
+        [matTooltipDisabled]="!showRowTooltip"
       ></mat-row>
     </mat-table>
     <ng-template #empty>

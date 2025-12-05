@@ -1,21 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 
-export interface CreateUserRequest {
-  name: string;
-  email: string;
-  password: string;
-  phone?: string;
-  role?: 'USER' | 'ADMIN';
-  companyId?: number;
-}
-
-export interface UpdateUserRequest {
-  name?: string;
-  phone?: string;
-  role?: 'USER' | 'ADMIN';
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -41,8 +26,15 @@ export class UserService {
   }
 
   createUser(user: User): void {
-    this.accountsStorage.push(user);
-    localStorage.setItem('accounts', JSON.stringify(this.accountsStorage));
+    if (this.accountsStorage.some((u) => u.email === user.email)) {
+      throw new Error('Esse email já está em uso.');
+    } else {
+      delete (user as any).company;
+      user.id = crypto.randomUUID();
+      const accountsStorage = this.accountsStorage;
+      accountsStorage.push(user);
+      localStorage.setItem('accounts', JSON.stringify(accountsStorage));
+    }
   }
 
   updateUser(updatedUser: User): void {
@@ -50,8 +42,9 @@ export class UserService {
       (user) => user.id === updatedUser.id
     );
     if (index !== -1) {
-      this.accountsStorage[index] = updatedUser;
-      localStorage.setItem('accounts', JSON.stringify(this.accountsStorage));
+      const accountsStorage = this.accountsStorage;
+      accountsStorage[index] = updatedUser;
+      localStorage.setItem('accounts', JSON.stringify(accountsStorage));
     }
   }
   deleteUser(id: string): void {
