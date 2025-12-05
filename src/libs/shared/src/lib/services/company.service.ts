@@ -41,6 +41,7 @@ export class CompanyService {
     if (this.existsByCnpj(company.cnpj)) {
       throw new Error('CNPJ já cadastrado.');
     } else {
+      company.id = crypto.randomUUID();
       companies.push(company);
       localStorage.setItem('companies', JSON.stringify(companies));
     }

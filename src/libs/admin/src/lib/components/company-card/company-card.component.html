@@ -1,4 +1,4 @@
-<mat-card class="company-card" [class.company-card--inactive]="!isActive()">
+<mat-card class="company-card" [class.company-card--inactive]="!isActive()" (click)="onView()">
   <div class="company-card__header">
     <div class="company-card__logo-wrapper">
       <img 
