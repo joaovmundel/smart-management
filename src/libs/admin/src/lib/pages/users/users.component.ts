@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { TitleService } from 'src/libs/layout/src/lib/services/title.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'users-list',
@@ -41,6 +42,7 @@ export class UsersComponent {
   private readonly _router: Router = inject(Router);
   private readonly _titleService = inject(TitleService);
   private readonly _userService = inject(UserService);
+  private readonly _snackbar: MatSnackBar = inject(MatSnackBar);
 
   users: User[] = [];
   filteredUsers: User[] = [];
@@ -75,15 +77,25 @@ export class UsersComponent {
     this._router.navigate(['/admin/users/edit', user.id]);
   }
 
-  deleteUser(user: unknown) {
-    //TODO: Implementar a logica real de deleção
+  deleteUser(user: User) {
     this._dialog
       .open(ConfirmationModalComponent)
       .afterClosed()
       .pipe(take(1))
       .subscribe((confirmed) => {
         if (confirmed) {
-          console.log(`Estamos deletando ${user}`);
+          if (user.email === this._userService.getCurrentUser().email) {
+            this._snackbar.open('Usuário não pode se deletar', 'Fechar', {
+              duration: 3000,
+            });
+            throw new Error('Usuário não pode se deletar');
+          } else {
+            this._userService.deleteUser(user.id);
+            this._snackbar.open('Usuário deletado com sucesso', 'Fechar', {
+              duration: 3000,
+            });
+          }
+          this.loadUsers();
         }
       });
   }

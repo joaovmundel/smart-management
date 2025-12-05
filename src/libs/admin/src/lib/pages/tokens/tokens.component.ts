@@ -46,7 +46,7 @@ export class TokensComponent implements OnInit, OnDestroy {
   }
 
   loadTokens(): void {
-    this.tokens = this.tokenService.tokens;
+    this.tokens = this.tokenService.registrationTokenStorage;
   }
 
   copyToken(token: string): void {

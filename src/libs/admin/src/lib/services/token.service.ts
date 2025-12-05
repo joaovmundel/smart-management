@@ -5,19 +5,16 @@ import { TokenStorage } from '../models/token-storage.model';
   providedIn: 'root',
 })
 export class TokenService {
-  registrationTokenStorage: TokenStorage[] = JSON.parse(
-    localStorage.getItem('registrationTokens') || '[]'
-  );
-
-  get tokens(): TokenStorage[] {
-    return this.registrationTokenStorage;
+  get registrationTokenStorage(): TokenStorage[] {
+    return JSON.parse(localStorage.getItem('registrationTokens') || '[]');
   }
 
   saveToken(tokenData: TokenStorage): void {
-    this.registrationTokenStorage.push(tokenData);
+    const registrationTokenStorage = this.registrationTokenStorage;
+    registrationTokenStorage.push(tokenData);
     localStorage.setItem(
       'registrationTokens',
-      JSON.stringify(this.registrationTokenStorage)
+      JSON.stringify(registrationTokenStorage)
     );
   }
 
@@ -30,12 +27,12 @@ export class TokenService {
   }
 
   deleteToken(token: string): void {
-    this.registrationTokenStorage = this.registrationTokenStorage.filter(
+    const registrationTokenStorage = this.registrationTokenStorage.filter(
       (t) => t.token !== token
     );
     localStorage.setItem(
       'registrationTokens',
-      JSON.stringify(this.registrationTokenStorage)
+      JSON.stringify(registrationTokenStorage)
     );
   }
 }

@@ -12,9 +12,9 @@ import { User } from 'src/libs/shared/src/lib/models/user.model';
 export class AppComponent {
   title = 'smart-management';
   private isAdminRegistered = false;
-  accountsStorage: User[] = JSON.parse(
-    localStorage.getItem('accounts') || '[]'
-  );
+  get accountsStorage(): User[] {
+    return JSON.parse(localStorage.getItem('accounts') || '[]');
+  }
 
   constructor() {
     if (!this.isAdminRegistered) {
@@ -32,7 +32,7 @@ export class AppComponent {
       return;
     }
     const adminUser: User = {
-      id: crypto.randomUUID().toString(),
+      id: crypto.randomUUID(),
       name: 'Admin User',
       email: 'admin@example.com',
       password: 'adminpassword',
@@ -40,7 +40,8 @@ export class AppComponent {
       role: 'ADMIN',
       createdAt: new Date().toISOString(),
     };
-    this.accountsStorage.push(adminUser);
-    localStorage.setItem('accounts', JSON.stringify(this.accountsStorage));
+    const accountsStorage = this.accountsStorage;
+    accountsStorage.push(adminUser);
+    localStorage.setItem('accounts', JSON.stringify(accountsStorage));
   }
 }

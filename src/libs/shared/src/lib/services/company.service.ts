@@ -21,9 +21,9 @@ export interface UpdateCompanyRequest {
   providedIn: 'root',
 })
 export class CompanyService {
-  private companyStorage: CreateCompanyRequest[] = JSON.parse(
-    localStorage.getItem('companies') || '[]'
-  );
+  private get companyStorage(): CreateCompanyRequest[] {
+    return JSON.parse(localStorage.getItem('companies') || '[]');
+  }
 
   listCompanies(): CreateCompanyRequest[] {
     return this.companyStorage;

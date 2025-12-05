@@ -2,11 +2,11 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { CompanyService, User } from '@smart-management/shared';
+import { TokenService } from '@smart-management/admin';
+import { environment } from '@smart-management/environments';
+import { User } from '@smart-management/shared';
 import { Observable, throwError } from 'rxjs';
 import { RegisterData } from '../models/auth.model';
-import { environment } from '@smart-management/environments';
-import { TokenService } from '@smart-management/admin';
 
 @Injectable({
   providedIn: 'root',
@@ -15,13 +15,12 @@ export class AuthService {
   private readonly _router = inject(Router);
   private readonly _http = inject(HttpClient);
   private readonly _tokenService = inject(TokenService);
-  private readonly _companyService = inject(CompanyService);
   RECOVER_API = environment.API_URL + '/v1/recover-password';
   DEFAULT_TOKEN =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30';
-  accountsStorage: User[] = JSON.parse(
-    localStorage.getItem('accounts') || '[]'
-  );
+  private get accountsStorage(): User[] {
+    return JSON.parse(localStorage.getItem('accounts') || '[]');
+  }
 
   isRegistred(email: string): boolean {
     return this.accountsStorage.some((account) => account.email === email);
@@ -51,21 +50,22 @@ export class AuthService {
       throw Error('Token de registro inválido.');
     }
     const token = this._tokenService.findToken(registerData.token || '');
-    const company = this._companyService.getCompanyById(token?.companyId || '');
     const user: User = {
       id: crypto.randomUUID(),
       email: registerData.email,
       password: registerData.password,
       name: registerData.name,
       phone: '',
-      companyId: company?.id,
-      companyName: company?.name,
+      companyId: token?.companyId || '',
+      companyName: token?.companyName || '',
       role: 'USER',
       registerToken: token?.token,
       createdAt: new Date().toISOString(),
     };
-    this.accountsStorage.push(user);
-    localStorage.setItem('accounts', JSON.stringify(this.accountsStorage));
+    const accountsStorage = this.accountsStorage;
+    accountsStorage.push(user);
+    this._tokenService.deleteToken(token?.token || '');
+    localStorage.setItem('accounts', JSON.stringify(accountsStorage));
   }
 
   changePassword(

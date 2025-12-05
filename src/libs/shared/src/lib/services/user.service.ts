@@ -20,9 +20,9 @@ export interface UpdateUserRequest {
   providedIn: 'root',
 })
 export class UserService {
-  private accountsStorage: User[] = JSON.parse(
-    localStorage.getItem('accounts') || '[]'
-  );
+  private get accountsStorage(): User[] {
+    return JSON.parse(localStorage.getItem('accounts') || '[]');
+  }
 
   getCurrentUser(): User {
     const userData = localStorage.getItem('currentUser');
@@ -55,9 +55,9 @@ export class UserService {
     }
   }
   deleteUser(id: string): void {
-    this.accountsStorage = this.accountsStorage.filter(
+    const accountsStorage = this.accountsStorage.filter(
       (user) => user.id !== id
     );
-    localStorage.setItem('accounts', JSON.stringify(this.accountsStorage));
+    localStorage.setItem('accounts', JSON.stringify(accountsStorage));
   }
 }
