@@ -117,11 +117,9 @@
 
   &__cards-area {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    padding: 12px;
-    justify-items: center;
-    align-items: stretch;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    padding: 16px;
     max-width: 100%;
   }
 
@@ -132,27 +130,54 @@
     color: white;
     font-weight: 500;
     gap: 16px;
-    margin: 24px 0 0 0;
+    margin: 32px 0 16px 0;
+    padding: 0 16px;
 
-    button:disabled {
-      background: #555;
-      cursor: not-allowed;
+    span {
+      min-width: 120px;
+      text-align: center;
+    }
+
+    button {
+      min-width: 100px;
+      transition: all 0.2s ease;
+
+      &:not(:disabled):hover {
+        transform: translateY(-2px);
+      }
+
+      &:disabled {
+        background: #555;
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
     }
   }
 
   // Media queries para responsividade
-  @media (max-width: 1400px) {
+  @media (max-width: 1600px) {
     &__cards-area {
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
     }
   }
 
   @media (max-width: 1200px) {
     &__cards-area {
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px;
+      padding: 12px;
+    }
+
+    &__pagination {
+      margin: 24px 0 12px 0;
+    }
+  }
+
+  @media (max-width: 900px) {
+    &__cards-area {
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 16px;
-      padding: 8px;
     }
   }
 
@@ -162,9 +187,9 @@
     }
 
     &__cards-area {
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      padding: 4px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+      padding: 10px;
     }
 
     &__search-field {
@@ -173,17 +198,54 @@
 
     &__list-header {
       margin-bottom: 16px;
+      gap: 6px;
+    }
+
+    &__pagination {
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 20px 0 12px 0;
+
+      button {
+        min-width: 80px;
+      }
+    }
+  }
+
+  @media (max-width: 600px) {
+    &__cards-area {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
     }
   }
 
   @media (max-width: 480px) {
     &__cards-area {
       grid-template-columns: 1fr;
-      gap: 12px;
+      gap: 16px;
+      padding: 8px;
+    }
+
+    &__search-box {
+      flex: 1;
     }
 
     &__search-field {
-      width: 200px;
+      width: 100%;
+      max-width: none;
+    }
+
+    &__list-header {
+      margin-bottom: 12px;
+    }
+
+    &__pagination {
+      gap: 8px;
+      font-size: 14px;
+
+      span {
+        min-width: 100px;
+      }
     }
   }
 }

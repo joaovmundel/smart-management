@@ -43,8 +43,7 @@ export class CompanyComponent {
   private readonly _companyService = inject(CompanyService);
   private readonly _snackBar = inject(MatSnackBar);
 
-  companyList: CreateCompanyRequest[] =
-    this._companyService.companyStorage || [];
+  companyList: CreateCompanyRequest[] = [];
   isLoading = false;
   hasError = false;
   page = 1;
@@ -60,21 +59,12 @@ export class CompanyComponent {
     try {
       this.isLoading = true;
       this.hasError = false;
-      
+
       // Simulating data load from service
       this.companyList = this._companyService.companyStorage || [];
-      
-      // Mock data generation for testing
-      if (this.companyList.length > 0) {
-        for (let i = 0; i < 103; i++) {
-          const companyCopy = { ...this.companyList[0] } as CreateCompanyRequest;
-          companyCopy.name = `${this.companyList[0].name} [${i}]`;
-          this.companyList.push(companyCopy);
-        }
-      }
-      
+
       this.isLoading = false;
-    } catch (error) {
+    } catch {
       this.isLoading = false;
       this.hasError = true;
       this._snackBar.open(
@@ -124,15 +114,11 @@ export class CompanyComponent {
           try {
             //TODO: Implements delete method
             console.log(`Deletando a empresa ${company.id}`);
-            this._snackBar.open(
-              'Empresa excluída com sucesso!',
-              'Fechar',
-              {
-                duration: 3000,
-                panelClass: ['snackbar-success'],
-              }
-            );
-          } catch (error) {
+            this._snackBar.open('Empresa excluída com sucesso!', 'Fechar', {
+              duration: 3000,
+              panelClass: ['snackbar-success'],
+            });
+          } catch {
             this._snackBar.open(
               'Erro ao excluir empresa. Tente novamente.',
               'Fechar',
