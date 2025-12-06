@@ -18,6 +18,7 @@ export * from './lib/interceptors/jwt.interceptor';
 
 //Guards
 export * from './lib/guards/auth.guard';
+export * from './lib/guards/admin.guard';
 
 //Mocks
 export * from './lib/mocks/empresa.mock';

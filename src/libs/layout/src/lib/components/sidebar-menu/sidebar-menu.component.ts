@@ -10,6 +10,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { UserService } from '@smart-management/shared';
 import { navbarRoutes } from '../../config/navbar-routes.config';
 import { DropdownItem, NavItem } from '../../models/navigation.model';
 import { SidebarService } from '../../services/sidebar.service';
@@ -29,10 +30,11 @@ import { NavItemComponent } from '../navitem/navitem.component';
   ],
 })
 export class SidebarMenuComponent implements OnInit, OnDestroy {
-  navItems: (NavItem | DropdownItem)[] = navbarRoutes;
+  navItems: (NavItem | DropdownItem)[] = [];
 
   private readonly _router = inject(Router);
   private readonly _sidebarService = inject(SidebarService);
+  private readonly _userService = inject(UserService);
 
   private subscriptions = new Subscription();
 
@@ -42,6 +44,23 @@ export class SidebarMenuComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.checkScreenSize();
     this.setupRouterListener();
+    this.filterNavItems();
+  }
+
+  private filterNavItems(): void {
+    const currentUser = this._userService.getCurrentUser();
+    const isAdmin = currentUser?.role === 'ADMIN';
+
+    if (isAdmin) {
+      this.navItems = navbarRoutes;
+    } else {
+      this.navItems = navbarRoutes.filter(item => {
+        if ('isDropdown' in item && item.label === 'Admin') {
+          return false;
+        }
+        return true;
+      });
+    }
   }
 
   ngOnDestroy(): void {

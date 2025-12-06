@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 import { LayoutComponent } from '@smart-management/layout';
-import { authGuard } from '@smart-management/shared';
+import { adminGuard, authGuard } from '@smart-management/shared';
 
 export const appRoutes: Route[] = [
   {
@@ -50,26 +50,31 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'admin/tokens',
+        canActivate: [adminGuard],
         loadComponent: () =>
           import('@smart-management/admin').then((m) => m.TokensComponent),
       },
       {
         path: 'admin/companies',
+        canActivate: [adminGuard],
         loadComponent: () =>
           import('@smart-management/admin').then((m) => m.CompanyComponent),
       },
       {
         path: 'admin/companies/create',
+        canActivate: [adminGuard],
         loadComponent: () =>
           import('@smart-management/admin').then((m) => m.CompanyFormComponent),
       },
       {
         path: 'admin/companies/edit/:id',
+        canActivate: [adminGuard],
         loadComponent: () =>
           import('@smart-management/admin').then((m) => m.CompanyFormComponent),
       },
       {
         path: 'admin/companies/:id',
+        canActivate: [adminGuard],
         loadComponent: () =>
           import('@smart-management/admin').then(
             (m) => m.CompanyDetailsComponent
@@ -77,16 +82,19 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'admin/users',
+        canActivate: [adminGuard],
         loadComponent: () =>
           import('@smart-management/admin').then((m) => m.UsersComponent),
       },
       {
         path: 'admin/users/create',
+        canActivate: [adminGuard],
         loadComponent: () =>
           import('@smart-management/admin').then((m) => m.UserFormComponent),
       },
       {
         path: 'admin/users/edit/:id',
+        canActivate: [adminGuard],
         loadComponent: () =>
           import('@smart-management/admin').then((m) => m.UserFormComponent),
       },

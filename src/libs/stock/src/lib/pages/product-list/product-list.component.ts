@@ -33,7 +33,7 @@ export class ProductListComponent implements OnInit {
   }
 
   loadProducts(): void {
-    this.products = this._productService.products;
+    this.products = this._productService.listProducts();
   }
 
   goToCreateProduct() {

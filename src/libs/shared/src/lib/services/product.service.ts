@@ -56,6 +56,12 @@ export class ProductService {
 
   private readonly _userService = inject(UserService);
 
+  listProducts(): Product[] {
+    return this.products.filter(
+      (p) => p.companyId === this._userService.getCurrentUser()?.companyId
+    );
+  }
+
   addProduct(product: Product): void {
     let products = this.products;
     product.companyId = this._userService.getCurrentUser()?.companyId || '';
