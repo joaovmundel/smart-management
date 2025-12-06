@@ -20,8 +20,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { TitleService } from '@smart-management/layout';
+import { ProductService, SalesService, UserService } from '@smart-management/shared';
+import { StockService } from '../../services/stock.service';
 import { PaymentMethod, Sale, SaleItem, SaleStatus } from '../../models/sale.model';
-import { productListMock } from '../../mocks/product.mock';
 import { Product } from '../../models/product.model';
 
 type SaleItemFormValue = {
@@ -57,12 +58,17 @@ export class SalesFormComponent implements OnInit, OnDestroy {
   private readonly _route = inject(ActivatedRoute);
   private readonly _snackBar = inject(MatSnackBar);
   private readonly _title = inject(TitleService);
+  private readonly _salesService = inject(SalesService);
+  private readonly _productService = inject(ProductService);
+  private readonly _stockService = inject(StockService);
+  private readonly _userService = inject(UserService);
   private readonly _destroy$ = new Subject<void>();
 
   isEditMode = false;
   saleId: string | null = null;
+  existingSale?: Sale;
 
-  products: Product[] = productListMock;
+  products: Product[] = [];
   paymentMethods: { value: PaymentMethod; label: string }[] = [
     { value: 'pix', label: 'PIX' },
     { value: 'credit', label: 'Cartão de crédito' },
@@ -85,6 +91,8 @@ export class SalesFormComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit(): void {
+    this.loadProducts();
+    
     // Detectar se estamos no modo de edição
     this.saleId = this._route.snapshot.paramMap.get('id');
     this.isEditMode = !!this.saleId;
@@ -101,6 +109,14 @@ export class SalesFormComponent implements OnInit, OnDestroy {
     if (this.isEditMode) {
       this.loadSaleData();
     }
+  }
+
+  private loadProducts(): void {
+    const stockedProducts = this._stockService.listStockedProducts();
+    this.products = stockedProducts.map(sp => ({
+      ...sp,
+      category: this._productService.findCategoryById(sp.categoryId)
+    })) as Product[];
   }
 
   ngOnDestroy(): void {
@@ -146,15 +162,45 @@ export class SalesFormComponent implements OnInit, OnDestroy {
 
     const sale = this.buildSale();
 
-    console.log(this.isEditMode ? 'Venda atualizada:' : 'Venda registrada:', sale);
-
-    const successMessage = this.isEditMode ? 'Venda atualizada com sucesso!' : 'Venda registrada com sucesso!';
-    this._snackBar.open(successMessage, 'Fechar', {
-      duration: 3000,
-      panelClass: ['success-snackbar'],
-    });
-
-    this.backToSalesList();
+    try {
+      if (this.isEditMode && this.existingSale) {
+        this._salesService.editSale(sale);
+        this._snackBar.open('Venda atualizada com sucesso!', 'Fechar', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        });
+      } else {
+        const insufficientProducts = this._salesService.createSale(sale);
+        
+        if (insufficientProducts.length > 0) {
+          this._snackBar.open(
+            `Estoque insuficiente para: ${insufficientProducts.join(', ')}`,
+            'Fechar',
+            {
+              duration: 5000,
+              panelClass: ['error-snackbar'],
+            }
+          );
+          return;
+        }
+        
+        this._snackBar.open('Venda registrada com sucesso!', 'Fechar', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        });
+      }
+      
+      this.backToSalesList();
+    } catch (error) {
+      this._snackBar.open(
+        (error as Error).message || 'Erro ao salvar venda',
+        'Fechar',
+        {
+          duration: 3000,
+          panelClass: ['error-snackbar'],
+        }
+      );
+    }
   }
 
   backToSalesList(): void {
@@ -166,9 +212,44 @@ export class SalesFormComponent implements OnInit, OnDestroy {
   }
 
   private loadSaleData(): void {
-    // TODO: Implementar carregamento de dados da venda para edição
-    // Por enquanto, apenas um mock
-    console.log('Carregando dados da venda:', this.saleId);
+    if (!this.saleId) return;
+    
+    const sales = this._salesService.listSales();
+    const sale = sales.find(s => s.id === this.saleId);
+    
+    if (!sale) {
+      this._snackBar.open('Venda não encontrada', 'Fechar', {
+        duration: 3000,
+        panelClass: ['error-snackbar'],
+      });
+      this.backToSalesList();
+      return;
+    }
+    
+    this.existingSale = sale;
+    
+    // Preencher formulário com dados da venda
+    this.saleForm.patchValue({
+      customerName: sale.customerName || '',
+      saleDate: sale.saleDate,
+      paymentMethod: sale.paymentMethod,
+      status: sale.status,
+      notes: sale.notes || '',
+    });
+    
+    // Limpar items e adicionar os da venda
+    this.items.clear();
+    sale.items.forEach(item => {
+      const itemGroup = this._fb.group({
+        productId: [item.product.id, Validators.required],
+        quantity: [item.quantity, [Validators.required, Validators.min(1)]],
+        unitPrice: [item.unitPrice, [Validators.required, Validators.min(0)]],
+        discount: [item.discount || 0, [Validators.min(0)]],
+      });
+      this.items.push(itemGroup);
+    });
+    
+    this.calculateTotals();
   }
 
   resetForm(): void {
@@ -243,7 +324,7 @@ export class SalesFormComponent implements OnInit, OnDestroy {
   private buildSale(): Sale {
     const value = this.saleForm.getRawValue();
 
-  const items: SaleItem[] = (value.items as SaleItemFormValue[]).map((item) => {
+    const items: SaleItem[] = (value.items as SaleItemFormValue[]).map((item) => {
       const product = this.products.find((p) => p.id === item.productId);
       return {
         product: product as Product,
@@ -254,12 +335,15 @@ export class SalesFormComponent implements OnInit, OnDestroy {
     });
 
     return {
-      id: `S-${Date.now()}`,
+      id: this.isEditMode && this.existingSale ? this.existingSale.id : '',
+      saleCode: this.existingSale?.saleCode,
       saleDate: value.saleDate,
       paymentMethod: value.paymentMethod,
       status: value.status,
       customerName: value.customerName,
       notes: value.notes,
+      companyId: this._userService.getCurrentUser()?.companyId,
+      createdAt: this.existingSale?.createdAt,
       items,
     };
   }

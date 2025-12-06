@@ -12,12 +12,16 @@ export interface SaleItem {
 
 export interface Sale {
   id: string;
+  saleCode?: string;
   saleDate: Date;
   status: SaleStatus;
   paymentMethod: PaymentMethod;
   items: SaleItem[];
   customerName?: string;
   notes?: string;
+  companyId?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface SaleWithMetrics extends Sale {

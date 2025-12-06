@@ -9,6 +9,12 @@
   gap: 2rem;
 }
 
+.text-area--max-height {
+  max-height: 200px;
+  min-height: 80px;
+  resize: vertical;
+}
+
 .page-header {
   display: flex;
   justify-content: space-between;

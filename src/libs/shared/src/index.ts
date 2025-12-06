@@ -11,6 +11,7 @@ export * from './lib/services/user.service';
 export * from './lib/services/company.service';
 export * from './lib/services/viacep.service';
 export * from './lib/services/product.service';
+export * from './lib/services/sales.service';
 
 //Interceptors
 export * from './lib/interceptors/jwt.interceptor';

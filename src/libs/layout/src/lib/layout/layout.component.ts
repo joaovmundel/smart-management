@@ -1,7 +1,6 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { HeaderComponent } from '../components/header/header.component';
 import { SidebarMenuComponent } from '../components/sidebar-menu/sidebar-menu.component';
 import { NewHeaderComponent } from '../components/new-header/new-header.component';
 import { filter } from 'rxjs';
@@ -9,7 +8,7 @@ import { filter } from 'rxjs';
 @Component({
   selector: 'lib-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule, HeaderComponent, SidebarMenuComponent, NewHeaderComponent],
+  imports: [CommonModule, RouterModule, SidebarMenuComponent, NewHeaderComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
 })

@@ -4,29 +4,37 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TitleService } from '@smart-management/layout';
+import { SalesService } from '@smart-management/shared';
 import { SalesTableComponent } from '../../components/sales-table/sales-table.component';
 import { SaleDetailsModalComponent } from '../../components/sale-details-modal/sale-details-modal.component';
 import { DeleteConfirmationModalComponent } from '../../components/delete-confirmation-modal/delete-confirmation-modal.component';
 import { Sale, SaleWithMetrics } from '../../models/sale.model';
-import { salesMock } from '../../mocks/sales.mock';
 
 @Component({
   selector: 'sm-sales-list',
   templateUrl: './sales-list.component.html',
   styleUrls: ['./sales-list.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, SalesTableComponent],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatSnackBarModule, SalesTableComponent],
 })
 export class SalesListComponent implements OnInit {
   private readonly _router = inject(Router);
   private readonly _title = inject(TitleService);
   private readonly _dialog = inject(MatDialog);
+  private readonly _salesService = inject(SalesService);
+  private readonly _snackBar = inject(MatSnackBar);
 
-  sales: Sale[] = [...salesMock];
+  sales: Sale[] = [];
 
   ngOnInit(): void {
     this._title.setTitle('Vendas');
+    this.loadSales();
+  }
+
+  private loadSales(): void {
+    this.sales = this._salesService.listSales();
   }
 
   goToCreateSale(): void {
@@ -49,14 +57,30 @@ export class SalesListComponent implements OnInit {
       width: '400px',
       data: {
         title: 'Confirmar Exclusão',
-        message: `Tem certeza que deseja excluir a venda #${sale.id}${sale.customerName ? ` do cliente "${sale.customerName}"` : ''}?`,
+        message: `Tem certeza que deseja excluir a venda ${sale.saleCode || `#${sale.id}`}${sale.customerName ? ` do cliente "${sale.customerName}"` : ''}?`,
         item: sale,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.sales = this.sales.filter((s) => s.id !== saleId);
+        try {
+          this._salesService.deleteSale(saleId);
+          this.loadSales();
+          this._snackBar.open('Venda excluída com sucesso!', 'Fechar', {
+            duration: 3000,
+            panelClass: ['success-snackbar'],
+          });
+        } catch (error) {
+          this._snackBar.open(
+            (error as Error).message || 'Erro ao excluir venda',
+            'Fechar',
+            {
+              duration: 3000,
+              panelClass: ['error-snackbar'],
+            }
+          );
+        }
       }
     });
   }

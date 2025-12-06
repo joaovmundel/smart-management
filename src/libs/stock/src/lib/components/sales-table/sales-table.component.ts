@@ -48,7 +48,7 @@ export class SalesTableComponent implements OnInit, AfterViewInit, OnChanges {
   dataSource = new MatTableDataSource<SaleWithMetrics>();
 
   displayedColumns: string[] = [
-    'id',
+    'saleCode',
     'saleDate',
     'customerName',
     'totalUnits',
