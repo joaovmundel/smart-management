@@ -1,15 +1,16 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ApiService } from './api.service';
+import { inject, Injectable } from '@angular/core';
+import { UserService } from './user.service';
+import { Category } from '@smart-management/stock';
 
 export interface Product {
-  id: number;
+  id: string;
   name: string;
   description?: string;
-  price: number;
-  stockQuantity: number;
-  category?: string;
-  barcode?: string;
+  costPrice: number;
+  salePrice: number;
+  categoryId: string;
+  photoUrl?: string;
+  companyId: string;
   createdAt: string;
   updatedAt?: string;
 }
@@ -42,74 +43,81 @@ export interface StockMovement {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
-
-  constructor(private apiService: ApiService) {}
-
-  /**
-   * Listar todos os produtos
-   */
-  getProducts(): Observable<Product[]> {
-    return this.apiService.get<Product[]>('/products');
+  get products(): Product[] {
+    return JSON.parse(localStorage.getItem('products') || '[]');
   }
 
-  /**
-   * Obter produto por ID
-   */
-  getProduct(id: number): Observable<Product> {
-    return this.apiService.get<Product>(`/products/${id}`);
+  get categories(): Category[] {
+    return JSON.parse(localStorage.getItem('categories') || '[]');
   }
 
-  /**
-   * Criar novo produto
-   */
-  createProduct(productData: CreateProductRequest): Observable<Product> {
-    return this.apiService.post<Product>('/products', productData);
+  private readonly _userService = inject(UserService);
+
+  addProduct(product: Product): void {
+    let products = this.products;
+    product.companyId = this._userService.getCurrentUser()?.companyId || '';
+    products.push(product);
+    localStorage.setItem('products', JSON.stringify(products));
   }
 
-  /**
-   * Atualizar produto
-   */
-  updateProduct(id: number, productData: UpdateProductRequest): Observable<Product> {
-    return this.apiService.put<Product>(`/products/${id}`, productData);
+  removeProduct(productId: string): void {
+    let products = this.products;
+    products = products.filter((p) => p.id !== productId);
+    localStorage.setItem('products', JSON.stringify(products));
   }
 
-  /**
-   * Deletar produto
-   */
-  deleteProduct(id: number): Observable<void> {
-    return this.apiService.delete<void>(`/products/${id}`);
+  updateProduct(productId: string, updatedData: Product): void {
+    let products = this.products;
+    updatedData.companyId = this._userService.getCurrentUser()?.companyId || '';
+    products = products.map((p) =>
+      p.id === productId
+        ? { ...p, ...updatedData, updatedAt: new Date().toISOString() }
+        : p
+    );
+    localStorage.setItem('products', JSON.stringify(products));
   }
 
-  /**
-   * Obter movimentações de estoque
-   */
-  getStockMovements(productId?: number): Observable<StockMovement[]> {
-    const endpoint = productId ? `/stock/movements?productId=${productId}` : '/stock/movements';
-    return this.apiService.get<StockMovement[]>(endpoint);
+  findProductById(productId: string): Product | undefined {
+    return this.products.find(
+      (p) =>
+        p.id === productId &&
+        p.companyId === this._userService.getCurrentUser()?.companyId
+    );
   }
 
-  /**
-   * Registrar entrada de estoque
-   */
-  stockIn(productId: number, quantity: number, reason?: string): Observable<StockMovement> {
-    return this.apiService.post<StockMovement>('/stock/in', {
-      productId,
-      quantity,
-      reason
-    });
+  findCategoryById(categoryId: string): Category | undefined {
+    return this.categories.find(
+      (c) =>
+        c.id === categoryId &&
+        c.companyId === this._userService.getCurrentUser()?.companyId
+    );
   }
 
-  /**
-   * Registrar saída de estoque
-   */
-  stockOut(productId: number, quantity: number, reason?: string): Observable<StockMovement> {
-    return this.apiService.post<StockMovement>('/stock/out', {
-      productId,
-      quantity,
-      reason
-    });
+  listCategories(): Category[] {
+    return this.categories.filter(
+      (c) => c.companyId === this._userService.getCurrentUser()?.companyId
+    );
+  }
+
+  findCategoryByCompanyId(companyId: string): Category[] {
+    return this.categories.filter(
+      (c) => c.companyId === this._userService.getCurrentUser()?.companyId
+    );
+  }
+
+  createCategory(category: Category): void {
+    let categories = this.categories;
+    category.companyId = this._userService.getCurrentUser()?.companyId || '';
+    categories.push(category);
+    localStorage.setItem('categories', JSON.stringify(categories));
+  }
+
+  deleteCategory(categoryId: string): void {
+    let categories = this.categories;
+    categories = categories.filter((c) => c.id !== categoryId);
+    localStorage.setItem('categories', JSON.stringify(categories));
   }
 }

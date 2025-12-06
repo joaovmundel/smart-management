@@ -5,7 +5,7 @@ import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -15,9 +15,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { TitleService } from '@smart-management/layout';
+import { ProductService } from '@smart-management/shared';
 import { CategoryModalComponent } from '../../components/category-modal/category-modal.component';
 import { Category } from '../../models/category.model';
 import { Product } from '../../models/product.model';
@@ -42,58 +43,77 @@ import { Product } from '../../models/product.model';
 })
 export class ProductFormPageComponent implements OnInit, OnDestroy {
   private readonly _router = inject(Router);
+  private readonly _route = inject(ActivatedRoute);
   private readonly _destroy$ = new Subject<void>();
   private readonly _formBuilder = inject(FormBuilder);
   private readonly _snackBar = inject(MatSnackBar);
   private readonly _title = inject(TitleService);
   private readonly _dialog = inject(MatDialog);
+  private readonly _productService = inject(ProductService);
 
   productForm!: FormGroup;
   isInvalidForm = true;
+  isEditMode = false;
+  productId: string | null = null;
 
-  // Mock categories - em produção, isso viria de um serviço
-  categories: Category[] = [
-    {
-      id: '1',
-      name: 'Eletrônicos',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '2',
-      name: 'Roupas',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '3',
-      name: 'Casa e Jardim',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '4',
-      name: 'Esportes',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  ];
+  categories: Category[] = [];
 
   ngOnInit(): void {
-    this._title.setTitle('Formulário de produto');
+    this.loadCategories();
     this.initForm();
+    this.checkEditMode();
     this.listenFormChanges();
   }
 
+  private checkEditMode(): void {
+    this.productId = this._route.snapshot.paramMap.get('id');
+    this.isEditMode = !!this.productId;
+
+    if (this.isEditMode && this.productId) {
+      this._title.setTitle('Editar produto');
+      this.loadProduct(this.productId);
+    } else {
+      this._title.setTitle('Novo produto');
+    }
+  }
+
+  private loadProduct(productId: string): void {
+    const product = this._productService.findProductById(productId);
+
+    if (product) {
+      this.productForm.patchValue({
+        name: product.name,
+        description: product.description || '',
+        photoUrl: product.photoUrl || '',
+        grossValue: product.costPrice,
+        saleValue: product.salePrice,
+        categoryId: product.categoryId,
+      });
+    } else {
+      this._snackBar.open('Produto não encontrado', 'Fechar', {
+        duration: 3000,
+        panelClass: ['error-snackbar'],
+      });
+      this.backToProductList();
+    }
+  }
+
+  private loadCategories(): void {
+    this.categories = this._productService.listCategories();
+  }
+
   private initForm(): void {
-    this.productForm = this._formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      description: [''],
-      photoUrl: [''],
-      grossValue: [0, [Validators.required, Validators.min(0)]],
-      saleValue: [0, [Validators.required, Validators.min(0)]],
-      categoryId: ['', [Validators.required]],
-    }, { validators: this.saleValueValidator });
+    this.productForm = this._formBuilder.group(
+      {
+        name: ['', [Validators.required, Validators.minLength(2)]],
+        description: [''],
+        photoUrl: [''],
+        grossValue: [0, [Validators.required, Validators.min(0)]],
+        saleValue: [0, [Validators.required, Validators.min(0)]],
+        categoryId: ['', [Validators.required]],
+      },
+      { validators: this.saleValueValidator }
+    );
   }
 
   private saleValueValidator(form: FormGroup) {
@@ -109,35 +129,49 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.productForm.valid) {
       const formValue = this.productForm.value;
-      const selectedCategory = this.categories.find(c => c.id === formValue.categoryId);
-      
-      const product: Product = {
-        id: this.generateId(),
+
+      const productData: ProductService['products'][0] = {
+        id:
+          this.isEditMode && this.productId
+            ? this.productId
+            : this.generateId(),
         name: formValue.name,
         description: formValue.description,
         photoUrl: formValue.photoUrl,
-        grossValue: formValue.grossValue,
-        saleValue: formValue.saleValue,
-        category: selectedCategory || this.categories[0],
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        costPrice: formValue.grossValue,
+        salePrice: formValue.saleValue,
+        categoryId: formValue.categoryId,
+        companyId: '',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
-      console.log('Product created:', product);
-
-      this._snackBar.open('Produto criado com sucesso!', 'Fechar', {
-        duration: 3000,
-        panelClass: ['success-snackbar']
-      });
+      if (this.isEditMode && this.productId) {
+        this._productService.updateProduct(this.productId, productData);
+        this._snackBar.open('Produto atualizado com sucesso!', 'Fechar', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        });
+      } else {
+        this._productService.addProduct(productData);
+        this._snackBar.open('Produto criado com sucesso!', 'Fechar', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        });
+      }
 
       // Navegar de volta para a lista de produtos
       this.backToProductList();
     } else {
       this.markFormGroupTouched();
-      this._snackBar.open('Por favor, preencha todos os campos obrigatórios.', 'Fechar', {
-        duration: 3000,
-        panelClass: ['error-snackbar']
-      });
+      this._snackBar.open(
+        'Por favor, preencha todos os campos obrigatórios.',
+        'Fechar',
+        {
+          duration: 3000,
+          panelClass: ['error-snackbar'],
+        }
+      );
     }
   }
 
@@ -148,10 +182,10 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
       photoUrl: '',
       grossValue: 0,
       saleValue: 0,
-      categoryId: ''
+      categoryId: '',
     });
 
-    Object.values(this.productForm.controls).forEach(control => {
+    Object.values(this.productForm.controls).forEach((control) => {
       control.markAsPristine();
       control.markAsUntouched();
       control.setErrors(null);
@@ -160,13 +194,15 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
   }
 
   private listenFormChanges(): void {
-    this.productForm.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
-      this.isInvalidForm = this.productForm.invalid;
-    });
+    this.productForm.valueChanges
+      .pipe(takeUntil(this._destroy$))
+      .subscribe(() => {
+        this.isInvalidForm = this.productForm.invalid;
+      });
   }
 
   private markFormGroupTouched(): void {
-    Object.keys(this.productForm.controls).forEach(key => {
+    Object.keys(this.productForm.controls).forEach((key) => {
       const control = this.productForm.get(key);
       control?.markAsTouched();
     });
@@ -193,7 +229,10 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
       return `O valor mínimo é ${minValue}`;
     }
 
-    if (controlName === 'saleValue' && this.productForm.hasError('saleValueInvalid')) {
+    if (
+      controlName === 'saleValue' &&
+      this.productForm.hasError('saleValueInvalid')
+    ) {
       return 'O preço de venda deve ser maior que o preço de custo';
     }
 
@@ -227,16 +266,19 @@ export class ProductFormPageComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.action === 'save') {
         const currentCategoryId = this.productForm.get('categoryId')?.value;
-        this.categories = result.categories;
-        
+        this.loadCategories();
+
         // Se a categoria selecionada foi deletada, limpar o campo
-        if (currentCategoryId && !this.categories.find(c => c.id === currentCategoryId)) {
+        if (
+          currentCategoryId &&
+          !this.categories.find((c) => c.id === currentCategoryId)
+        ) {
           this.productForm.patchValue({ categoryId: '' });
         }
 
         this._snackBar.open('Categorias atualizadas com sucesso!', 'Fechar', {
           duration: 3000,
-          panelClass: ['success-snackbar']
+          panelClass: ['success-snackbar'],
         });
       }
     });

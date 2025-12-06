@@ -45,6 +45,13 @@ export class UserService {
   }
 
   updateUser(updatedUser: User): void {
+    // Se a senha não foi fornecida ou está vazia, preservar a senha existente
+    if (!updatedUser.password || updatedUser.password.trim() === '') {
+      const existingUser = this.getUserById(updatedUser.id!);
+      if (existingUser) {
+        updatedUser.password = existingUser.password;
+      }
+    }
     const index = this.accountsStorage.findIndex(
       (user) => user.id === updatedUser.id
     );
@@ -52,6 +59,9 @@ export class UserService {
       const accountsStorage = this.accountsStorage;
       accountsStorage[index] = updatedUser;
       localStorage.setItem('accounts', JSON.stringify(accountsStorage));
+    }
+    if (updatedUser.id === this.getCurrentUser().id) {
+      this.updateCurrentUser(updatedUser);
     }
   }
   deleteUser(id: string): void {

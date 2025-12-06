@@ -177,7 +177,7 @@ export class StockFormComponent implements OnInit, OnDestroy {
   getProductMargin(): number {
     const product = this.getSelectedProduct();
     if (product) {
-      return product.saleValue - product.grossValue;
+      return product.salePrice - product.costPrice;
     }
     return 0;
   }

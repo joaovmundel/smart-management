@@ -16,11 +16,12 @@ export const productMock: Product = {
     'Camiseta Básica 100% Algodão - Conforto e Estilo para o Dia a Dia',
   photoUrl:
     'https://cdn.iset.io/assets/66687/produtos/15075/85dd7b4a5c88270a082be4ff5320471a672142e48456a.png',
-  saleValue: 39.99,
-  grossValue: 19.99,
-  category: categoryMock,
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  salePrice: 39.99,
+  costPrice: 19.99,
+  categoryId: categoryMock.id,
+  companyId: 'company-123',
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 };
 export const productListMock: Product[] = [
   productMock,
@@ -30,11 +31,12 @@ export const productListMock: Product[] = [
     description: 'Description for Product 2',
     photoUrl:
       'https://images.vexels.com/media/users/3/153096/isolated/preview/9f420eda3be1ce9b846edc9cba4bc84a-icone-de-traco-de-camiseta-com-gola-redonda.png',
-    saleValue: 50.0,
-    grossValue: 25.0,
-    category: categoryMock,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    salePrice: 50.0,
+    costPrice: 25.0,
+    categoryId: categoryMock.id,
+    companyId: 'company-123',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: '3',
@@ -42,11 +44,12 @@ export const productListMock: Product[] = [
     description: 'Description for Product 3',
     photoUrl:
       'https://images.vexels.com/media/users/3/153096/isolated/preview/9f420eda3be1ce9b846edc9cba4bc84a-icone-de-traco-de-camiseta-com-gola-redonda.png',
-    saleValue: 80.0,
-    grossValue: 40.0,
-    category: categoryMock,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    salePrice: 80.0,
+    costPrice: 40.0,
+    categoryId: categoryMock.id,
+    companyId: 'company-123',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: '4',
@@ -54,11 +57,12 @@ export const productListMock: Product[] = [
     description: 'Description for Product 4',
     photoUrl:
       'https://images.vexels.com/media/users/3/153096/isolated/preview/9f420eda3be1ce9b846edc9cba4bc84a-icone-de-traco-de-camiseta-com-gola-redonda.png',
-    saleValue: 49.9,
-    grossValue: 29.9,
-    category: categoryMock,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    salePrice: 49.9,
+    costPrice: 29.9,
+    categoryId: categoryMock.id,
+    companyId: 'company-123',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
 ];
 
@@ -98,5 +102,5 @@ export const stockedProductsMock: IStockedProduct[] = [
     totalSales: 120,
     stockedValue: 747.5,
     potentialProfit: 300,
-  }
+  },
 ];

@@ -129,7 +129,7 @@ export class SalesFormComponent implements OnInit, OnDestroy {
     const productId = itemGroup.get('productId')?.value;
     const product = this.products.find((p) => p.id === productId);
     if (product) {
-      itemGroup.patchValue({ unitPrice: product.saleValue }, { emitEvent: false });
+      itemGroup.patchValue({ unitPrice: product.salePrice }, { emitEvent: false });
       this.calculateTotals();
     }
   }
@@ -225,7 +225,7 @@ export class SalesFormComponent implements OnInit, OnDestroy {
     const aggregate = snapshot.reduce(
       (acc, item) => {
         const product = this.products.find((p) => p.id === item.productId);
-        const price = item.unitPrice || product?.saleValue || 0;
+        const price = item.unitPrice || product?.salePrice || 0;
         const quantity = item.quantity || 0;
         const discount = item.discount || 0;
         acc.totalGross += price * quantity;
@@ -248,7 +248,7 @@ export class SalesFormComponent implements OnInit, OnDestroy {
       return {
         product: product as Product,
         quantity: item.quantity,
-        unitPrice: item.unitPrice || product?.saleValue || 0,
+        unitPrice: item.unitPrice || product?.salePrice || 0,
         discount: item.discount || 0,
       };
     });

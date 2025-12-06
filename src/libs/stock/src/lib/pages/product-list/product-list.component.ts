@@ -7,23 +7,34 @@ import { TitleService } from '@smart-management/layout';
 import { ProductTableComponent } from '../../components/product-table/product-table.component';
 import { Product } from '../../models/product.model';
 import { productListMock } from '../../mocks/product.mock';
+import { ProductService } from '@smart-management/shared';
 
 @Component({
   selector: 'sm-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss'],
   standalone: true,
-  imports: [ProductTableComponent, CommonModule, MatButtonModule, MatIconModule],
+  imports: [
+    ProductTableComponent,
+    CommonModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
 })
 export class ProductListComponent implements OnInit {
+  private readonly _productService = inject(ProductService);
   private readonly _title = inject(TitleService);
   private readonly _router = inject(Router);
 
-  // Mock data - em produção, isso viria de um serviço
-  products: Product[] = productListMock;
+  products: Product[] = [];
 
   ngOnInit() {
     this._title.setTitle('Produtos');
+    this.loadProducts();
+  }
+
+  loadProducts(): void {
+    this.products = this._productService.products;
   }
 
   goToCreateProduct() {
@@ -35,8 +46,7 @@ export class ProductListComponent implements OnInit {
   }
 
   onDeleteProduct(productId: string) {
-    console.log('Deleting product:', productId);
-    // Remover produto da lista
-    this.products = this.products.filter(p => p.id !== productId);
+    this._productService.removeProduct(productId);
+    this.loadProducts();
   }
 }

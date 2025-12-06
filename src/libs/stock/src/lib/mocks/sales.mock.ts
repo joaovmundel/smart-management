@@ -15,12 +15,12 @@ export const salesMock: Sale[] = [
       {
         product: productOne,
         quantity: 2,
-        unitPrice: productOne.saleValue,
+        unitPrice: productOne.salePrice,
       },
       {
         product: productTwo,
         quantity: 1,
-        unitPrice: productTwo.saleValue,
+        unitPrice: productTwo.salePrice,
         discount: 5,
       },
     ],
@@ -35,7 +35,7 @@ export const salesMock: Sale[] = [
       {
         product: productThree,
         quantity: 3,
-        unitPrice: productThree.saleValue,
+        unitPrice: productThree.salePrice,
       },
     ],
   },
@@ -50,7 +50,7 @@ export const salesMock: Sale[] = [
       {
         product: productOne,
         quantity: 10,
-        unitPrice: productOne.saleValue,
+        unitPrice: productOne.salePrice,
         discount: 40,
       },
     ],
@@ -65,12 +65,12 @@ export const salesMock: Sale[] = [
       {
         product: productFour,
         quantity: 1,
-        unitPrice: productFour.saleValue,
+        unitPrice: productFour.salePrice,
       },
       {
         product: productTwo,
         quantity: 2,
-        unitPrice: productTwo.saleValue,
+        unitPrice: productTwo.salePrice,
         discount: 10,
       },
     ],
@@ -85,12 +85,12 @@ export const salesMock: Sale[] = [
       {
         product: productThree,
         quantity: 1,
-        unitPrice: productThree.saleValue,
+        unitPrice: productThree.salePrice,
       },
       {
         product: productOne,
         quantity: 1,
-        unitPrice: productOne.saleValue,
+        unitPrice: productOne.salePrice,
       },
     ],
   },

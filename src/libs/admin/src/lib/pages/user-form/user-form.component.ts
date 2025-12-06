@@ -63,6 +63,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   loading = false;
   isEdit = false;
   userId?: string;
+  existingUser?: User;
 
   constructor(
     private fb: FormBuilder,
@@ -161,6 +162,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
             this.userId
           );
           if (user) {
+            this.existingUser = user;
             console.log(user);
             
             // Encontrar a empresa completa pelo ID
@@ -237,16 +239,10 @@ export class UserFormComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     if (this.userForm.valid) {
       this.loading = true;
-      const user: User = { ...this.userForm.value };
-      
-      // Remove senha e confirmação se estiverem vazias para não sobrescrever a senha existente
-      if (!user.password || user.password.trim() === '') {
-        delete user.password;
-      }
-      if (!user.confirmPassword || user.confirmPassword.trim() === '') {
-        delete user.confirmPassword;
-      }
-      
+      // Mesclar dados existentes com dados do formulário
+      const user: User = this.isEdit && this.existingUser
+        ? { ...this.existingUser, ...this.userForm.value }
+        : { ...this.userForm.value };
       this.saveUser(user);
     } else {
       this.userForm.markAllAsTouched();
@@ -260,7 +256,9 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   saveUser(user: User): void {
     try {
-      user.createdAt = new Date().toISOString();
+      if (!this.isEdit) {
+        user.createdAt = new Date().toISOString();
+      }
       user.companyId = this.userForm.value.company.id;
       if (this.isEdit && this.userId) {
         this._userService.updateUser({ ...user, id: this.userId! });

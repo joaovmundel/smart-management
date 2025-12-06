@@ -16,6 +16,13 @@
   }
 }
 
+
+.text-area--max-height {
+  max-height: 80px;
+  min-height: 50px;
+  resize: vertical;
+}
+
 .product-form-card {
   min-height: 100vh;
   max-height: 100%;

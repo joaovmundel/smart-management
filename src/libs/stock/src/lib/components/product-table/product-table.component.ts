@@ -21,6 +21,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Product } from '../../models/product.model';
 import { DeleteConfirmationModalComponent } from '../delete-confirmation-modal/delete-confirmation-modal.component';
+import { ProductService } from '@smart-management/shared';
 
 @Component({
   selector: 'sm-product-table',
@@ -48,6 +49,7 @@ export class ProductTableComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   private readonly _dialog = inject(MatDialog);
+  private readonly _productService = inject(ProductService);
 
   dataSource = new MatTableDataSource<Product>();
   displayedColumns: string[] = [
@@ -55,13 +57,28 @@ export class ProductTableComponent implements OnInit, AfterViewInit, OnChanges {
     'name',
     'description',
     'category',
-    'saleValue',
-    'grossValue',
+    'salePrice',
+    'costPrice',
     'actions',
   ];
   searchTerm = '';
 
   ngOnInit() {
+    this.loadProducts();
+  }
+
+  loadProducts(): void {
+    this.products = this.products.map(product => ({
+      ...product,
+      category: this._productService.findCategoryById(product.categoryId) || {
+        id: '',
+        name: 'Sem Categoria',
+        description: '',
+        companyId: '',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    }));
     this.dataSource.data = this.products;
   }
 

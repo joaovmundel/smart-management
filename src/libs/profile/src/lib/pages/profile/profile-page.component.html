@@ -39,7 +39,7 @@
         
         <div *ngIf="user?.companyId" class="user-info-item">
           <mat-icon>business</mat-icon>
-          <span>{{ user?.companyName }}</span>
+          <span>{{ $any(user)?.company.name }}</span>
         </div>
         
         <div *ngIf="user?.createdAt" class="user-info-item">

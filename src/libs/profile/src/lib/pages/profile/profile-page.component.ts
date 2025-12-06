@@ -215,6 +215,7 @@ export class ProfilePageComponent implements OnInit {
           duration: 3000,
           panelClass: 'snackbar-success',
         });
+        window.location.reload();
       },
       error: (error) => {
         console.error('Error updating user profile:', error);

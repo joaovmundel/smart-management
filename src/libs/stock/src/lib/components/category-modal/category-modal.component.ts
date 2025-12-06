@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { ProductService } from '@smart-management/shared';
 import { Category } from '../../models/category.model';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -29,6 +30,9 @@ import { DeleteConfirmationModalComponent } from '../delete-confirmation-modal/d
   ],
 })
 export class CategoryModalComponent implements OnInit {
+  private readonly _productService = inject(ProductService);
+  private cdr = inject(ChangeDetectorRef);
+  
   categoryForm!: FormGroup;
   categories: Category[] = [];
 
@@ -37,15 +41,18 @@ export class CategoryModalComponent implements OnInit {
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<CategoryModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { categories: Category[] }
-  ) {
-    this.categories = [...data.categories];
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.loadCategories();
     this.categoryForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
       description: ['']
     });
+  }
+
+  private loadCategories(): void {
+    this.categories = this._productService.listCategories();
   }
 
   onCreateCategory(): void {
@@ -54,12 +61,15 @@ export class CategoryModalComponent implements OnInit {
         id: this.generateId(),
         name: this.categoryForm.value.name,
         description: this.categoryForm.value.description,
+        companyId: '',
         createdAt: new Date(),
         updatedAt: new Date()
       };
       
-      this.categories.push(newCategory);
+      this._productService.createCategory(newCategory);
+      this.loadCategories();
       this.categoryForm.reset();
+      this.cdr.detectChanges();
     } else {
       this.categoryForm.markAllAsTouched();
     }
@@ -77,16 +87,14 @@ export class CategoryModalComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        const index = this.categories.findIndex(c => c.id === category.id);
-        if (index !== -1) {
-          this.categories.splice(index, 1);
-        }
+        this._productService.deleteCategory(category.id);
+        this.loadCategories();
       }
     });
   }
 
   onSave(): void {
-    this.dialogRef.close({ action: 'save', categories: this.categories });
+    this.dialogRef.close({ action: 'save' });
   }
 
   onCancel(): void {
