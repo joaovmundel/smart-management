@@ -4,10 +4,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { TitleService } from '@smart-management/layout';
+import { SalesService } from '@smart-management/shared';
 import { InfoCardComponent } from '../../components/info-card/info-card.component';
 import { SimpleInfoCardComponent, SimpleInfoItem } from '../../components/simple-info-card/simple-info-card.component';
 import { Sale, SaleWithMetrics } from '../../models/sale.model';
-import { salesMock } from '../../mocks/sales.mock';
 
 interface TopProductRow {
   productName: string;
@@ -18,6 +18,7 @@ interface TopProductRow {
 
 interface RecentSaleRow {
   id: string;
+  saleCode?: string;
   saleDate: Date;
   customerName?: string;
   totalNet: number;
@@ -47,8 +48,9 @@ interface SummaryCard {
 })
 export class SalesDashboardComponent implements OnInit {
   private readonly _title = inject(TitleService);
+  private readonly _salesService = inject(SalesService);
 
-  sales: Sale[] = salesMock;
+  sales: Sale[] = [];
   salesWithMetrics: SaleWithMetrics[] = [];
 
   revenueTotal = 0;
@@ -64,11 +66,16 @@ export class SalesDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this._title.setTitle('Dashboard de vendas');
+    this.loadSales();
     this.salesWithMetrics = this.sales.map((sale) => this.enrichSale(sale));
     this.calculateSummary();
     this.calculateTopProducts();
     this.calculateRecentSales();
     this.calculateBreakdowns();
+  }
+
+  private loadSales(): void {
+    this.sales = this._salesService.listSales();
   }
 
   formatCurrency(value: number): string {
@@ -104,6 +111,7 @@ export class SalesDashboardComponent implements OnInit {
 
     return {
       ...sale,
+      saleDate: typeof sale.saleDate === 'string' ? new Date(sale.saleDate) : sale.saleDate,
       totalGross: totals.totalGross,
       totalDiscount: totals.totalDiscount,
       totalNet: totals.totalNet,
@@ -112,7 +120,10 @@ export class SalesDashboardComponent implements OnInit {
   }
 
   private calculateSummary(): void {
-    const aggregate = this.salesWithMetrics.reduce(
+    // Considerar apenas vendas concluídas para faturamento
+    const completedSales = this.salesWithMetrics.filter(s => s.status === 'completed');
+    
+    const aggregate = completedSales.reduce(
       (acc, sale) => {
         acc.revenue += sale.totalNet;
         acc.units += sale.totalUnits;
@@ -157,8 +168,10 @@ export class SalesDashboardComponent implements OnInit {
 
   private calculateTopProducts(): void {
     const byProduct = new Map<string, TopProductRow>();
+    // Considerar apenas vendas concluídas
+    const completedSales = this.salesWithMetrics.filter(s => s.status === 'completed');
 
-    for (const sale of this.salesWithMetrics) {
+    for (const sale of completedSales) {
       for (const item of sale.items) {
         const key = item.product.id;
         const existing = byProduct.get(key);
@@ -189,6 +202,7 @@ export class SalesDashboardComponent implements OnInit {
     const rows = this.salesWithMetrics
       .map<RecentSaleRow>((sale) => ({
         id: sale.id,
+        saleCode: sale.saleCode,
         saleDate: sale.saleDate,
         customerName: sale.customerName,
         totalNet: sale.totalNet,

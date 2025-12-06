@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { SidebarService } from '../../services/sidebar.service';
 import { TitleService } from '../../services/title.service';
 import { User, UserService } from '@smart-management/shared';
+import { AuthService } from '@smart-management/auth';
 
 @Component({
   selector: 'lib-new-header',
@@ -33,6 +34,7 @@ export class NewHeaderComponent implements OnInit, OnDestroy {
   private titleSubscription?: Subscription;
   private readonly sidebarService = inject(SidebarService);
   private readonly _userService = inject(UserService);
+  private readonly _authService = inject(AuthService);
 
   isOpen$ = this.sidebarService.isOpen$;
 
@@ -84,8 +86,7 @@ export class NewHeaderComponent implements OnInit, OnDestroy {
 
   logout(): void {
     this.isProfileDropdownOpen = false;
-    // TODO: Implement logout logic
-    this.router.navigate(['/login']);
+    this._authService.logout();
   }
 
   private loadUserProfile(): void {

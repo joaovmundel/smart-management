@@ -1,31 +1,34 @@
-<div class="sidebar-menu-container"
-     [class.sidebar-open]="isOpen$ | async"
-     [class.sidebar-closed]="!(isOpen$ | async)">
+<div
+  class="sidebar-menu-container"
+  [class.sidebar-open]="isOpen$ | async"
+  [class.sidebar-closed]="!(isOpen$ | async)"
+>
   <!-- Overlay para mobile quando sidebar está aberto -->
-  <div 
-    class="sidebar-overlay" 
+  <div
+    class="sidebar-overlay"
     *ngIf="(isMobile$ | async) && (isOpen$ | async)"
-    (click)="closeSidebar()">
-  </div>
+    (click)="closeSidebar()"
+  ></div>
 
-  <mat-drawer 
-    #drawer 
-    class="sidebar-menu" 
-    [mode]="(isMobile$ | async) ? 'over' : 'side'" 
+  <mat-drawer
+    #drawer
+    class="sidebar-menu"
+    [mode]="(isMobile$ | async) ? 'over' : 'side'"
     [opened]="isOpen$ | async"
     [class.mobile]="isMobile$ | async"
     [disableClose]="false"
-    position="start">
-    
+    position="start"
+  >
     <div class="sidebar-menu__header">
       <a class="sidebar-menu__title" (click)="goHome()">Smart Management</a>
-      
+
       <!-- Botão de fechar para mobile -->
-      <button 
+      <button
         *ngIf="isMobile$ | async"
         class="sidebar-menu__close-btn"
         (click)="closeSidebar()"
-        aria-label="Fechar menu">
+        aria-label="Fechar menu"
+      >
         ✕
       </button>
     </div>
@@ -38,10 +41,10 @@
         <lib-navitem [item]="$any(item)" [isSuspended]="true"></lib-navitem>
         }
       </li>
-      
+
       <li class="sidebar-menu__logout" (click)="onItemClick()">
         <lib-navitem
-          [item]="{ label: 'Logout', route: '/login' }"
+          [item]="{ label: 'Logout', route: '/logout' }"
           [isSuspended]="true"
           [hasIcon]="true"
           iconName="logout"

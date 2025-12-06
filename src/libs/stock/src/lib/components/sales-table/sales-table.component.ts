@@ -67,7 +67,7 @@ export class SalesTableComponent implements OnInit, AfterViewInit, OnChanges {
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.filterPredicate = (data: SaleWithMetrics, filter: string) => {
-      const target = `${data.id} ${data.customerName ?? ''} ${data.items
+      const target = `${data.saleCode ?? ''} ${data.customerName ?? ''} ${data.items
         .map((item) => item.product.name)
         .join(' ')}`.toLowerCase();
       return target.includes(filter);

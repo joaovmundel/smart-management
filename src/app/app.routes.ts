@@ -29,6 +29,11 @@ export const appRoutes: Route[] = [
       import('@smart-management/auth').then((m) => m.SetPasswordComponent),
   },
   {
+    path: 'logout',
+    loadComponent: () =>
+      import('@smart-management/auth').then((m) => m.LogoutComponent),
+  },
+  {
     path: '',
     redirectTo: '/home',
     pathMatch: 'full',

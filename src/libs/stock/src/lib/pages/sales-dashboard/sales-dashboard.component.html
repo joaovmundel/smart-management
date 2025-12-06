@@ -79,7 +79,7 @@
         <table mat-table [dataSource]="recentSales" class="full-width">
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>Código</th>
-            <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+            <td mat-cell *matCellDef="let row">{{ row.saleCode || row.id }}</td>
           </ng-container>
 
           <ng-container matColumnDef="saleDate">
