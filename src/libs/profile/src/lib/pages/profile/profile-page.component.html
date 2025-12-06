@@ -4,7 +4,7 @@
     <mat-card-content class="user-info-content">
       <div class="user-avatar">
         <img 
-          [src]="user?.photo || 'default-avatar.svg'" 
+          [src]="getUserPhoto()" 
           [alt]="user?.name"
           class="avatar-image"
           (error)="onImageError($event)">
@@ -92,7 +92,9 @@
           <input
             matInput
             formControlName="phone"
-            placeholder="Digite seu telefone">
+            placeholder="(00) 00000-0000"
+            maxlength="15"
+            (input)="onPhoneInput($event)">
           <mat-icon matSuffix>phone</mat-icon>
           <mat-error *ngIf="profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched">
             {{ getErrorMessage('phone') }}

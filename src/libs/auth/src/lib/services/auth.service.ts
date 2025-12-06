@@ -43,6 +43,15 @@ export class AuthService {
     return this._tokenService.tokenExists(token);
   }
 
+  validatePassword(userId: string, password: string): boolean {
+    const user = this.accountsStorage.find((account) => account.id === userId);
+    return user?.password === password;
+  }
+
+  isValidPassword(password: string): boolean {
+    return password.length >= 6;
+  }
+
   register(registerData: RegisterData): void {
     if (this.isRegistred(registerData.email)) {
       throw Error('Usuário já registrado.');

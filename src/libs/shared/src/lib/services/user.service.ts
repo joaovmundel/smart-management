@@ -17,6 +17,13 @@ export class UserService {
     return {} as User;
   }
 
+  updateCurrentUser(user: User): void {
+    const updatedUser = this.getUserById(user.id!);
+    if (updatedUser) {
+      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    }
+  }
+
   listUsers(): User[] {
     return this.accountsStorage;
   }

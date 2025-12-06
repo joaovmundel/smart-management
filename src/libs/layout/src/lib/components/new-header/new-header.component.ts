@@ -89,8 +89,15 @@ export class NewHeaderComponent implements OnInit, OnDestroy {
   }
 
   private loadUserProfile(): void {
-    // TODO: Load user profile from service
-    // For now, using mock data
     this.user = this._userService.getCurrentUser();
+  }
+
+  getUserPhoto(): string {
+    return this.user?.photo || this.defaultAvatar;
+  }
+
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = this.defaultAvatar;
   }
 }

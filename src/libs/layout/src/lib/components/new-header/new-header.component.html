@@ -20,10 +20,10 @@
       [class.active]="isProfileDropdownOpen"
       aria-label="Perfil do usuário">
       <img
-        [src]="user?.photo || defaultAvatar"
+        [src]="getUserPhoto()"
         [alt]="user?.name || 'Usuário'"
         class="profile-avatar"
-        onerror="this.src=defaultAvatar">
+        (error)="onImageError($event)">
       <span class="profile-name">{{ user?.name || 'Usuário' }}</span>
       <mat-icon class="profile-arrow" [class.rotated]="isProfileDropdownOpen">expand_more</mat-icon>
     </button>
@@ -31,10 +31,10 @@
     <div class="profile-dropdown" [style.display]="isProfileDropdownOpen ? 'block' : 'none'">
       <div class="profile-dropdown__header">
         <img
-          [src]="user?.photo || defaultAvatar"
+          [src]="getUserPhoto()"
           [alt]="user?.name || 'Usuário'"
           class="profile-dropdown__avatar"
-          onerror="this.src=defaultAvatar">
+          (error)="onImageError($event)">
         <div class="profile-dropdown__info">
           <div class="profile-dropdown__name">{{ user?.name || 'Usuário' }}</div>
           <div class="profile-dropdown__email">{{ user?.email || 'email@exemplo.com' }}</div>
