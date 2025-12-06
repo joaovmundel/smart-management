@@ -23,3 +23,6 @@ export * from './lib/mocks/empresa.mock';
 export * from './lib/mocks/token.mock';
 export * from './lib/mocks/user.mock';
 export * from './lib/mocks/company.mock';
+
+//Utils
+export * from './lib/utils/object.utils';

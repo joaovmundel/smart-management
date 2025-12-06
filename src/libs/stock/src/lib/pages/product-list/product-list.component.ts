@@ -4,10 +4,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { TitleService } from '@smart-management/layout';
+import { ProductService } from '@smart-management/shared';
 import { ProductTableComponent } from '../../components/product-table/product-table.component';
 import { Product } from '../../models/product.model';
-import { productListMock } from '../../mocks/product.mock';
-import { ProductService } from '@smart-management/shared';
 
 @Component({
   selector: 'sm-product-list',

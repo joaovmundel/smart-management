@@ -6,10 +6,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { InfoCardComponent } from '../../components/info-card/info-card.component';
 import { StockTableComponent } from '../../components/stock-table/stock-table.component';
 import { SimpleInfoCardComponent } from '../../components/simple-info-card/simple-info-card.component';
-import { stockedProductsMock } from '../../mocks/product.mock';
-import { IStockedProduct } from '../../models/stock.model';
+import { IStockedProductWithMetadata } from '../../models/stock.model';
 import { Router } from '@angular/router';
 import { TitleService } from '@smart-management/layout';
+import { StockService } from '../../services/stock.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'sm-stock',
@@ -20,6 +21,7 @@ import { TitleService } from '@smart-management/layout';
     CommonModule,
     MatExpansionModule,
     MatIconModule,
+    MatSnackBarModule,
     StockTableComponent,
     InfoCardComponent,
     SimpleInfoCardComponent,
@@ -28,8 +30,10 @@ import { TitleService } from '@smart-management/layout';
 export class StockComponent implements OnInit {
   private readonly _router = inject(Router);
   private readonly _titleService = inject(TitleService);
+  private readonly _stockService = inject(StockService);
+  private readonly _snackBar = inject(MatSnackBar);
 
-  products: IStockedProduct[] = stockedProductsMock;
+  products: IStockedProductWithMetadata[] = [];
   isSmallScreen = false;
 
   stockedValue = 0;
@@ -42,9 +46,14 @@ export class StockComponent implements OnInit {
   stockInfo = [];
 
   ngOnInit(): void {
+    this.loadProducts();
     this.calculateTotals();
     this.loadStockInfoValues();
     this._titleService.setTitle('Estoque');
+  }
+
+  private loadProducts(): void {
+    this.products = this._stockService.listStockedProducts();
   }
 
   calculateTotals(): void {
@@ -99,14 +108,39 @@ export class StockComponent implements OnInit {
   }
 
 
-  onEditProduct(stockedProduct: IStockedProduct): void {
-    // Lógica para editar o produto
-    console.log('Editar produto:', stockedProduct);
-    this._router.navigate(['/stock/edit', stockedProduct.product?.id]);
+  onEditProduct(stockedProduct: IStockedProductWithMetadata): void {
+    this._router.navigate(['/stock/edit', stockedProduct.id]);
   }
 
   onDeleteProduct(productId: string): void {
-    // Lógica para deletar o produto
-    console.log('Deletar produto com ID:', productId);
+    try {
+      this._stockService.deleteStockedProduct(productId);
+      this.loadProducts();
+      this.resetTotals();
+      this.calculateTotals();
+      this.loadStockInfoValues();
+      this._snackBar.open('Produto removido do estoque com sucesso!', 'Fechar', {
+        duration: 3000,
+        panelClass: ['success-snackbar'],
+      });
+    } catch (error) {
+      this._snackBar.open(
+        (error as Error).message || 'Erro ao remover produto do estoque',
+        'Fechar',
+        {
+          duration: 3000,
+          panelClass: ['error-snackbar'],
+        }
+      );
+    }
+  }
+
+  private resetTotals(): void {
+    this.stockedValue = 0;
+    this.potentialProfit = 0;
+    this.criticalProducts = 0;
+    this.attentionProducts = 0;
+    this.excessProducts = 0;
+    this.totalProducts = 0;
   }
 }

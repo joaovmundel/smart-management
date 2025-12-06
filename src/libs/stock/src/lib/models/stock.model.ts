@@ -1,7 +1,6 @@
 import { Product } from './product.model';
 
-export interface IStockedProduct {
-  product: Product;
+export interface IStockedProduct extends Product {
   minAmount: number;
   maxAmount: number;
   currentAmount: number;

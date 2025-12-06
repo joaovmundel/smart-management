@@ -68,7 +68,7 @@ export const productListMock: Product[] = [
 
 export const stockedProductsMock: IStockedProduct[] = [
   {
-    product: productMock,
+    ...productMock,
     minAmount: 10,
     maxAmount: 100,
     currentAmount: 52,
@@ -77,7 +77,7 @@ export const stockedProductsMock: IStockedProduct[] = [
     potentialProfit: 500,
   },
   {
-    product: productListMock[1],
+    ...productListMock[1],
     minAmount: 5,
     maxAmount: 50,
     currentAmount: 5,
@@ -86,7 +86,7 @@ export const stockedProductsMock: IStockedProduct[] = [
     potentialProfit: 500,
   },
   {
-    product: productListMock[2],
+    ...productListMock[2],
     minAmount: 10,
     maxAmount: 30,
     currentAmount: 31,
@@ -95,7 +95,7 @@ export const stockedProductsMock: IStockedProduct[] = [
     potentialProfit: 480,
   },
   {
-    product: productListMock[3],
+    ...productListMock[3],
     minAmount: 20,
     maxAmount: 80,
     currentAmount: 25,

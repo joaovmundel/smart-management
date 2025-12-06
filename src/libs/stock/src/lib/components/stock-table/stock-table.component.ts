@@ -57,7 +57,7 @@ export class StockTableComponent implements OnInit, AfterViewInit, OnChanges {
   dataSource = new MatTableDataSource<IStockedProduct>();
 
   displayedColumns: string[] = [
-    'photo',
+    'photoUrl',
     'name',
     'totalSales',
     'minAmount',
@@ -72,7 +72,7 @@ export class StockTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnInit(): void {
     this.updateDataSource();
-    this._titleService.setTitle('Estoque')
+    this._titleService.setTitle('Estoque');
   }
 
   ngAfterViewInit(): void {
@@ -82,7 +82,7 @@ export class StockTableComponent implements OnInit, AfterViewInit, OnChanges {
       data: IStockedProduct,
       filter: string
     ) => {
-      const productName = data.product?.name?.toLowerCase() || '';
+      const productName = data.name?.toLowerCase() || '';
       return productName.includes(filter);
     };
   }
@@ -147,14 +147,14 @@ export class StockTableComponent implements OnInit, AfterViewInit, OnChanges {
       width: '400px',
       data: {
         title: 'Confirmar Exclusão',
-        message: `Tem certeza que deseja excluir o produto "${stockedProduct?.product?.name}"?`,
+        message: `Tem certeza que deseja excluir o produto "${stockedProduct?.name}"?`,
         item: stockedProduct,
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.deleteProduct.emit(stockedProduct.product.id);
+        this.deleteProduct.emit(stockedProduct.id);
       }
     });
   }

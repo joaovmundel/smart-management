@@ -23,14 +23,14 @@
   <div class="table-container">
     <table mat-table [dataSource]="dataSource" class="stock-table">
       <!-- Coluna da Foto -->
-      <ng-container matColumnDef="photo">
+      <ng-container matColumnDef="photoUrl">
         <th mat-header-cell *matHeaderCellDef>Foto</th>
         <td mat-cell *matCellDef="let stockedProduct" class="photo-cell">
           <div class="product-photo">
             <img
-              *ngIf="stockedProduct?.product?.photoUrl; else noPhoto"
-              [src]="stockedProduct?.product?.photoUrl"
-              [alt]="stockedProduct?.product?.name"
+              *ngIf="stockedProduct?.photoUrl; else noPhoto"
+              [src]="stockedProduct?.photoUrl"
+              [alt]="stockedProduct?.name"
               class="product-image"
             />
             <ng-template #noPhoto>
@@ -46,7 +46,7 @@
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Nome</th>
         <td mat-cell *matCellDef="let stockedProduct" class="name-cell">
-          <div class="product-name">{{ stockedProduct?.product?.name }}</div>
+          <div class="product-name">{{ stockedProduct?.name }}</div>
         </td>
       </ng-container>
 

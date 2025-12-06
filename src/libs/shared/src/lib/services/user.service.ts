@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
+import { mergePreservingValues } from '../utils/object.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -45,19 +46,15 @@ export class UserService {
   }
 
   updateUser(updatedUser: User): void {
-    // Se a senha não foi fornecida ou está vazia, preservar a senha existente
-    if (!updatedUser.password || updatedUser.password.trim() === '') {
-      const existingUser = this.getUserById(updatedUser.id!);
-      if (existingUser) {
-        updatedUser.password = existingUser.password;
-      }
-    }
     const index = this.accountsStorage.findIndex(
       (user) => user.id === updatedUser.id
     );
     if (index !== -1) {
       const accountsStorage = this.accountsStorage;
-      accountsStorage[index] = updatedUser;
+      const existingUser = accountsStorage[index];
+      
+      // Mesclar preservando valores existentes quando os novos são vazios
+      accountsStorage[index] = mergePreservingValues(existingUser, updatedUser);
       localStorage.setItem('accounts', JSON.stringify(accountsStorage));
     }
     if (updatedUser.id === this.getCurrentUser().id) {

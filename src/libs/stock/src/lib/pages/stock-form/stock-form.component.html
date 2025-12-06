@@ -34,7 +34,7 @@
                                     <span class="product-description">{{ product.description }}</span>
                                 </div>
                                 <div class="product-price">
-                                    R$ {{ product.saleValue | number:'1.2-2' }}
+                                    R$ {{ product.salePrice | number:'1.2-2' }}
                                 </div>
                             </div>
                         </mat-option>
@@ -120,11 +120,11 @@
                         </div>
                         <div class="info-item">
                             <strong>Valor de Venda:</strong>
-                            <span>R$ {{ getSelectedProduct()?.saleValue | number:'1.2-2' }}</span>
+                            <span>R$ {{ getSelectedProduct()?.salePrice | number:'1.2-2' }}</span>
                         </div>
                         <div class="info-item">
                             <strong>Valor de Custo:</strong>
-                            <span>R$ {{ getSelectedProduct()?.grossValue | number:'1.2-2' }}</span>
+                            <span>R$ {{ getSelectedProduct()?.costPrice | number:'1.2-2' }}</span>
                         </div>
                         <div class="info-item">
                             <strong>Margem de Lucro:</strong>
@@ -144,7 +144,7 @@
 
             <button mat-raised-button color="primary" type="submit" (click)="onSubmit()" [disabled]="isInvalidForm">
                 <mat-icon>add</mat-icon>
-                Adicionar ao Estoque
+                Salvar estoque
             </button>
         </mat-card-actions>
     </mat-card>
